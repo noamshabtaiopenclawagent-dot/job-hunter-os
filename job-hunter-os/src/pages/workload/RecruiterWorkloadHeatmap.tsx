@@ -327,3 +327,4 @@ export const RecruiterWorkloadHeatmap: React.FC<Props> = ({ data = [], loading =
     </div>
   );
 };
+
