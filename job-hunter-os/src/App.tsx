@@ -4,6 +4,7 @@ import { GlobalNavigationShell } from './components/GlobalNavigationShell';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { CandidateSourcingVelocityRadar } from './pages/dashboard/CandidateSourcingVelocityRadar';
 import { RoadmapShippedArtifactsMappingBoard } from './pages/dashboard/RoadmapShippedArtifactsMappingBoard';
+import { ReviewBacklogCleanupEvidenceConsole } from './pages/dashboard/ReviewBacklogCleanupEvidenceConsole';
 import { RecruiterWorkloadHeatmap } from './pages/workload/RecruiterWorkloadHeatmap';
 import { OfferStabilityTuner } from './pages/offer/OfferStabilityTuner';
 import { RecruiterPriorityInboxSmartTriageWorkspace } from './pages/triage/RecruiterPriorityInboxSmartTriageWorkspace';
@@ -48,6 +49,39 @@ const mockRoadmapMappings = [
     integrationDelta: 'Integrated triage route + nav + bulk action keyboard flow',
     kpiProof: 'Committed integrated slice with assign/snooze/escalate optimistic rollback behavior',
     reusableOutputs: ['Bulk action optimistic rollback handler', 'Saved filter presets pattern', 'Rationale drawer interaction shell'],
+  },
+];
+
+const mockReviewCleanupTasks = [
+  {
+    id: 'rv1',
+    title: '[JHOS-P1] Offer Decision Collaboration Canvas verification',
+    artifactPath: '/src/pages/offer/OfferDecisionCollaborationCanvasWithConsensusSignals.tsx',
+    integrationDelta: 'App route + nav + offer domain integration + test coverage',
+    kpiProof: 'Consensus/thread/blocker/one-click actions verified in integrated view',
+    evidenceLinks: ['commit:7adc088', 'test:OfferDecisionCollaborationCanvasWithConsensusSignals.test.tsx'],
+    verified: true,
+    closed: false,
+  },
+  {
+    id: 'rv2',
+    title: '[JHOS-P1] Candidate Journey Friction Heatmap verification',
+    artifactPath: '/src/pages/dashboard/CandidateJourneyFrictionHeatmapWithInterventionDesigner.tsx',
+    integrationDelta: 'Dashboard route + nav + intervention designer + projection chips',
+    kpiProof: 'Heatmap filters/drilldown/projection behavior validated via integrated flow',
+    evidenceLinks: ['commit:e755f8d', 'test:CandidateJourneyFrictionHeatmapWithInterventionDesigner.test.tsx'],
+    verified: true,
+    closed: false,
+  },
+  {
+    id: 'rv3',
+    title: '[JHOS-P1] Recruiter Priority Inbox Smart Triage verification',
+    artifactPath: '/src/pages/triage/RecruiterPriorityInboxSmartTriageWorkspace.tsx',
+    integrationDelta: 'Triage route + nav + bulk keyboard action workflow',
+    kpiProof: 'Optimistic assign/snooze/escalate behavior validated',
+    evidenceLinks: ['commit:4afa146', 'test:RecruiterPriorityInboxSmartTriageWorkspace.test.tsx'],
+    verified: true,
+    closed: false,
   },
 ];
 
@@ -112,6 +146,8 @@ export const App: React.FC = () => {
             </div>
           </div>
         );
+      case 'review-backlog-cleanup':
+        return <ReviewBacklogCleanupEvidenceConsole tasks={mockReviewCleanupTasks} />;
       case 'roadmap-mapping':
         return <RoadmapShippedArtifactsMappingBoard items={mockRoadmapMappings} />;
       case 'sourcing-radar':
