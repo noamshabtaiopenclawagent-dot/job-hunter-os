@@ -3,6 +3,7 @@ import { TelemetryProvider } from './providers/TelemetryProvider';
 import { GlobalNavigationShell } from './components/GlobalNavigationShell';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { CandidateSourcingVelocityRadar } from './pages/dashboard/CandidateSourcingVelocityRadar';
+import { RoadmapShippedArtifactsMappingBoard } from './pages/dashboard/RoadmapShippedArtifactsMappingBoard';
 import { RecruiterWorkloadHeatmap } from './pages/workload/RecruiterWorkloadHeatmap';
 import { OfferStabilityTuner } from './pages/offer/OfferStabilityTuner';
 import { RecruiterPriorityInboxSmartTriageWorkspace } from './pages/triage/RecruiterPriorityInboxSmartTriageWorkspace';
@@ -15,6 +16,39 @@ const mockSourcingData = [
   { id: '2', role: 'Frontend Engineer', channel: 'referral' as const, velocityPerWeek: 3, costPerHire: 3000, qualityBaseline: 92, pipelineConversionRate: 15.5, timeToFillBaseline: 22, budgetAllocation: 5000 },
   { id: '3', role: 'Backend Engineer', channel: 'agency' as const, velocityPerWeek: 5, costPerHire: 22000, qualityBaseline: 85, pipelineConversionRate: 8.5, timeToFillBaseline: 28, budgetAllocation: 45000 },
   { id: '4', role: 'Data Scientist', channel: 'outbound' as const, velocityPerWeek: 8, costPerHire: 6500, qualityBaseline: 82, pipelineConversionRate: 6.5, timeToFillBaseline: 40, budgetAllocation: 25000 },
+];
+
+const mockRoadmapMappings = [
+  {
+    id: 'rm1',
+    name: 'Offer Decision Collaboration Canvas',
+    path: '/src/pages/offer/OfferDecisionCollaborationCanvasWithConsensusSignals.tsx',
+    stage: 'phase-0' as const,
+    status: 'ready_reuse' as const,
+    integrationDelta: 'Integrated into App route + global nav + offer module test coverage',
+    kpiProof: 'Committed integrated slice with consensus timeline, blockers lane, optimistic actions',
+    reusableOutputs: ['Consensus scoring utility', 'Optimistic comment persistence pattern', 'Blocker lane interaction model'],
+  },
+  {
+    id: 'rm2',
+    name: 'Candidate Journey Friction Heatmap',
+    path: '/src/pages/dashboard/CandidateJourneyFrictionHeatmapWithInterventionDesigner.tsx',
+    stage: 'phase-1' as const,
+    status: 'pending_validation' as const,
+    integrationDelta: 'Integrated into dashboard nav with role/source/stage filters and intervention side panel',
+    kpiProof: 'Committed route-integrated slice with what-if projection chips and partial telemetry state handling',
+    reusableOutputs: ['Heatmap color-scale thresholds', 'Intervention projection model', 'Partial telemetry guardrails'],
+  },
+  {
+    id: 'rm3',
+    name: 'Recruiter Priority Inbox Smart Triage',
+    path: '/src/pages/triage/RecruiterPriorityInboxSmartTriageWorkspace.tsx',
+    stage: 'phase-1' as const,
+    status: 'mapped' as const,
+    integrationDelta: 'Integrated triage route + nav + bulk action keyboard flow',
+    kpiProof: 'Committed integrated slice with assign/snooze/escalate optimistic rollback behavior',
+    reusableOutputs: ['Bulk action optimistic rollback handler', 'Saved filter presets pattern', 'Rationale drawer interaction shell'],
+  },
 ];
 
 const mockWorkloadData = [
@@ -78,6 +112,8 @@ export const App: React.FC = () => {
             </div>
           </div>
         );
+      case 'roadmap-mapping':
+        return <RoadmapShippedArtifactsMappingBoard items={mockRoadmapMappings} />;
       case 'sourcing-radar':
         return <CandidateSourcingVelocityRadar data={mockSourcingData} />;
       case 'journey-friction-heatmap':

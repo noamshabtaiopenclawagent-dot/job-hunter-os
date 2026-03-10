@@ -9,6 +9,7 @@ type NavItem = {
 
 const defaultNavItems: NavItem[] = [
   { id: 'dashboard', label: 'Dashboard', icon: '📊' },
+  { id: 'roadmap-mapping', label: 'Roadmap Artifact Mapping', icon: '🗺️' },
   { id: 'sourcing-radar', label: 'Sourcing Velocity Radar', icon: '📡' },
   { id: 'journey-friction-heatmap', label: 'Journey Friction Heatmap', icon: '🧭' },
   { id: 'workload-heatmap', label: 'Recruiter Workload Heatmap', icon: '🔥' },
