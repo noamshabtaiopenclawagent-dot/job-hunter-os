@@ -7,6 +7,7 @@ import { RecruiterWorkloadHeatmap } from './pages/workload/RecruiterWorkloadHeat
 import { OfferStabilityTuner } from './pages/offer/OfferStabilityTuner';
 import { RecruiterPriorityInboxSmartTriageWorkspace } from './pages/triage/RecruiterPriorityInboxSmartTriageWorkspace';
 import { CandidateJourneyFrictionHeatmapWithInterventionDesigner } from './pages/dashboard/CandidateJourneyFrictionHeatmapWithInterventionDesigner';
+import { OfferDecisionCollaborationCanvasWithConsensusSignals } from './pages/offer/OfferDecisionCollaborationCanvasWithConsensusSignals';
 
 // Extended mock data for the sourcing radar until backend wiring is complete
 const mockSourcingData = [
@@ -46,6 +47,23 @@ const mockJourneyFrictionData = [
   { id: 'f8', role: 'Data Engineer' as const, source: 'outbound' as const, stage: 'interview' as const, volume: 40, dropOffRate: 28, avgCycleDays: 11, drivers: [{ label: 'Interviewer load contention', impact: 36 }] },
 ];
 
+const mockOfferConsensusSignals = [
+  { id: 'os1', participant: 'Alice (Recruiter)', role: 'recruiter' as const, confidence: 72, stance: 'counter' as const, note: 'Candidate expects adjusted equity band', updatedAt: '2026-03-10T14:10:00Z' },
+  { id: 'os2', participant: 'Dana (Hiring Manager)', role: 'hiring_manager' as const, confidence: 81, stance: 'approve' as const, note: 'Strong business case and urgency', updatedAt: '2026-03-10T14:18:00Z' },
+  { id: 'os3', participant: 'Finance Approver', role: 'approver' as const, confidence: 58, stance: 'hold' as const, note: 'Need comp-band confirmation', updatedAt: '2026-03-10T14:26:00Z' },
+];
+
+const mockOfferConsensusComments = [
+  { id: 'oc1', author: 'Alice', role: 'recruiter' as const, tag: 'counter' as const, text: 'Recommend targeted equity adjustment to preserve close probability.' },
+  { id: 'oc2', author: 'Dana', role: 'hiring_manager' as const, tag: 'approve' as const, text: 'Role-critical hire; delay will impact Q2 delivery.' },
+  { id: 'oc3', author: 'Finance', role: 'approver' as const, tag: 'hold' as const, text: 'Need updated peer comp reference before final sign-off.' },
+];
+
+const mockOfferConsensusBlockers = [
+  { id: 'ob1', label: 'Comp-band exception validation', owner: 'Finance', severity: 'high' as const, resolved: false },
+  { id: 'ob2', label: 'Final VP approval slot', owner: 'VP People', severity: 'medium' as const, resolved: false },
+];
+
 export const App: React.FC = () => {
   const [activeView, setActiveView] = useState('offer-stability');
 
@@ -68,6 +86,8 @@ export const App: React.FC = () => {
         return <RecruiterWorkloadHeatmap data={mockWorkloadData} />;
       case 'offer-stability':
         return <OfferStabilityTuner data={mockOfferData} />;
+      case 'offer-decision-canvas':
+        return <OfferDecisionCollaborationCanvasWithConsensusSignals signals={mockOfferConsensusSignals} comments={mockOfferConsensusComments} blockers={mockOfferConsensusBlockers} />;
       case 'priority-inbox-triage':
         return <RecruiterPriorityInboxSmartTriageWorkspace data={mockTriageData} />;
       case 'sla-anticipation':

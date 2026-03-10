@@ -15,6 +15,7 @@ const defaultNavItems: NavItem[] = [
   { id: 'priority-inbox-triage', label: 'Priority Inbox Smart Triage', icon: '📥' },
   { id: 'sla-anticipation', label: 'SLA Breach Anticipation', icon: '⏱️' },
   { id: 'offer-stability', label: 'Offer Negotiation Stability', icon: '🤝' },
+  { id: 'offer-decision-canvas', label: 'Offer Decision Collaboration', icon: '🧩' },
   { id: 'interview-reliability', label: 'Interview Panel Reliability', icon: '📝' },
 ];
 
