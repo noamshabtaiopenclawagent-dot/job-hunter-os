@@ -11,6 +11,7 @@ type OrgNode = {
   workload: number;
   approvalsPending?: number;
   slaRisk?: number;
+  priorityAction?: string;
 };
 
 type LiveSignal = {
@@ -163,6 +164,9 @@ export const OrgTreeUxHardeningRoleBasedNavigationClarity: React.FC<Props> = ({ 
                 </span>
                 <span style={{ background: '#fef3c7', color: '#92400e', borderRadius: 999, padding: '2px 8px', fontSize: 11 }}>
                   SLA risk: {selected.slaRisk ?? 0}%
+                </span>
+                <span style={{ background: '#ede9fe', color: '#5b21b6', borderRadius: 999, padding: '2px 8px', fontSize: 11 }}>
+                  next action: {selected.priorityAction ?? 'none'}
                 </span>
               </div>
             </div>

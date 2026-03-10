@@ -4,8 +4,8 @@ import { OrgTreeUxHardeningRoleBasedNavigationClarity } from './OrgTreeUxHardeni
 
 describe('OrgTreeUxHardeningRoleBasedNavigationClarity', () => {
   const nodes = [
-    { id: '1', name: 'Lead', role: 'lead' as const, parentId: null, active: true, workload: 70, approvalsPending: 2, slaRisk: 35 },
-    { id: '2', name: 'Recruiter', role: 'recruiter' as const, parentId: '1', active: true, workload: 80, approvalsPending: 4, slaRisk: 61 },
+    { id: '1', name: 'Lead', role: 'lead' as const, parentId: null, active: true, workload: 70, approvalsPending: 2, slaRisk: 35, priorityAction: 'Approve roadmap order' },
+    { id: '2', name: 'Recruiter', role: 'recruiter' as const, parentId: '1', active: true, workload: 80, approvalsPending: 4, slaRisk: 61, priorityAction: 'Escalate candidate' },
   ];
 
   it('renders empty state', () => {
@@ -19,6 +19,7 @@ describe('OrgTreeUxHardeningRoleBasedNavigationClarity', () => {
     expect(screen.getByText(/Suggested modules/)).toBeInTheDocument();
     expect(screen.getByText(/approvals pending/)).toBeInTheDocument();
     expect(screen.getByText(/SLA risk/)).toBeInTheDocument();
+    expect(screen.getByText(/next action/)).toBeInTheDocument();
     expect(screen.getByText(/injected live-signal snapshot/)).toBeInTheDocument();
   });
 
