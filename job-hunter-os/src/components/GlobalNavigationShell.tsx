@@ -10,6 +10,7 @@ type NavItem = {
 const defaultNavItems: NavItem[] = [
   { id: 'dashboard', label: 'Dashboard', icon: '📊' },
   { id: 'sourcing-radar', label: 'Sourcing Velocity Radar', icon: '📡' },
+  { id: 'journey-friction-heatmap', label: 'Journey Friction Heatmap', icon: '🧭' },
   { id: 'workload-heatmap', label: 'Recruiter Workload Heatmap', icon: '🔥' },
   { id: 'priority-inbox-triage', label: 'Priority Inbox Smart Triage', icon: '📥' },
   { id: 'sla-anticipation', label: 'SLA Breach Anticipation', icon: '⏱️' },

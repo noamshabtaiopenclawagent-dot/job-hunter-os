@@ -6,6 +6,7 @@ import { CandidateSourcingVelocityRadar } from './pages/dashboard/CandidateSourc
 import { RecruiterWorkloadHeatmap } from './pages/workload/RecruiterWorkloadHeatmap';
 import { OfferStabilityTuner } from './pages/offer/OfferStabilityTuner';
 import { RecruiterPriorityInboxSmartTriageWorkspace } from './pages/triage/RecruiterPriorityInboxSmartTriageWorkspace';
+import { CandidateJourneyFrictionHeatmapWithInterventionDesigner } from './pages/dashboard/CandidateJourneyFrictionHeatmapWithInterventionDesigner';
 
 // Extended mock data for the sourcing radar until backend wiring is complete
 const mockSourcingData = [
@@ -34,6 +35,17 @@ const mockTriageData = [
   { id: 't4', candidateName: 'Maya Azulay', role: 'Data Engineer', recruiter: 'Diana Prince', stage: 'closing' as const, slaHoursRemaining: 2, stageUrgency: 88, expectedConversionLift: 90, slaRisk: 84, owner: 'diana' },
 ];
 
+const mockJourneyFrictionData = [
+  { id: 'f1', role: 'Data Analyst' as const, source: 'linkedin' as const, stage: 'applied' as const, volume: 140, dropOffRate: 18, avgCycleDays: 6, drivers: [{ label: 'Slow first response', impact: 34 }, { label: 'Low signal JD', impact: 20 }] },
+  { id: 'f2', role: 'Data Analyst' as const, source: 'linkedin' as const, stage: 'screen' as const, volume: 110, dropOffRate: 29, avgCycleDays: 9, drivers: [{ label: 'Scheduling lag', impact: 37 }, { label: 'Rubric mismatch', impact: 22 }], partial: true },
+  { id: 'f3', role: 'Data Analyst' as const, source: 'linkedin' as const, stage: 'interview' as const, volume: 75, dropOffRate: 33, avgCycleDays: 12, drivers: [{ label: 'Panel inconsistency', impact: 41 }] },
+  { id: 'f4', role: 'Product Analyst' as const, source: 'referral' as const, stage: 'screen' as const, volume: 80, dropOffRate: 14, avgCycleDays: 7, drivers: [{ label: 'Minor scope ambiguity', impact: 15 }] },
+  { id: 'f5', role: 'Product Analyst' as const, source: 'referral' as const, stage: 'interview' as const, volume: 54, dropOffRate: 21, avgCycleDays: 10, drivers: [{ label: 'Case-study turnaround', impact: 29 }] },
+  { id: 'f6', role: 'Business Analyst' as const, source: 'agency' as const, stage: 'offer' as const, volume: 31, dropOffRate: 47, avgCycleDays: 15, drivers: [{ label: 'Comp mismatch', impact: 52 }, { label: 'Approval latency', impact: 33 }] },
+  { id: 'f7', role: 'Data Engineer' as const, source: 'outbound' as const, stage: 'screen' as const, volume: 68, dropOffRate: 24, avgCycleDays: 8, drivers: [{ label: 'Outreach personalization gap', impact: 31 }] },
+  { id: 'f8', role: 'Data Engineer' as const, source: 'outbound' as const, stage: 'interview' as const, volume: 40, dropOffRate: 28, avgCycleDays: 11, drivers: [{ label: 'Interviewer load contention', impact: 36 }] },
+];
+
 export const App: React.FC = () => {
   const [activeView, setActiveView] = useState('offer-stability');
 
@@ -50,6 +62,8 @@ export const App: React.FC = () => {
         );
       case 'sourcing-radar':
         return <CandidateSourcingVelocityRadar data={mockSourcingData} />;
+      case 'journey-friction-heatmap':
+        return <CandidateJourneyFrictionHeatmapWithInterventionDesigner data={mockJourneyFrictionData} />;
       case 'workload-heatmap':
         return <RecruiterWorkloadHeatmap data={mockWorkloadData} />;
       case 'offer-stability':
