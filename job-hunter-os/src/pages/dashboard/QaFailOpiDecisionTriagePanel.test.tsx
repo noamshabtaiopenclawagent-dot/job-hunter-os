@@ -10,8 +10,8 @@ describe('QaFailOpiDecisionTriagePanel', () => {
   });
 
   it('renders required check mapping table', () => {
-    render(<QaFailOpiDecisionTriagePanel taskId="t1" qaTaskId="q1" issueTitle="Issue" checksRequired={6} checks={[{ id: 'C1', behavior: 'Status chips', expectedEvidence: 'DOM assertion' }]} />);
-    expect(screen.getByText(/Required 6-check evidence map/)).toBeInTheDocument();
+    render(<QaFailOpiDecisionTriagePanel taskId="t1" qaTaskId="q1" issueTitle="Issue" checksRequired={8} checks={[{ id: 'C1', behavior: 'Status chips', expectedEvidence: 'DOM assertion' }]} />);
+    expect(screen.getByText(/Required 8-check evidence map/)).toBeInTheDocument();
     expect(screen.getByText(/C1/)).toBeInTheDocument();
   });
 });

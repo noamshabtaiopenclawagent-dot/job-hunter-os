@@ -37,7 +37,7 @@ export const QaFailOpiDecisionTriagePanel: React.FC<Props> = ({ taskId, qaTaskId
         <div><strong>Evidence gap:</strong> Missing reproducible mapping for {checksRequired}/{checksRequired} claimed checks</div>
       </div>
       <div style={{ border: '1px solid #e5e7eb', borderRadius: 8, padding: 8, marginBottom: 10, background: '#f9fafb' }}>
-        <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 6 }}>Required 6-check evidence map</div>
+        <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 6 }}>Required {checksRequired}-check evidence map ({checks.length}/{checksRequired} defined)</div>
         <ul style={{ margin: 0, paddingLeft: 16, fontSize: 12 }}>
           {checks.map((c) => (
             <li key={c.id}><strong>{c.id}</strong> {c.behavior} -> {c.expectedEvidence}</li>

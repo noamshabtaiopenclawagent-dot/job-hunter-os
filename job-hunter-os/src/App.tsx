@@ -213,13 +213,15 @@ export const App: React.FC = () => {
       case 'error-telemetry-unification':
         return <DashboardErrorTelemetryUnificationPanel localModules={mockErrorTelemetryModules} />;
       case 'qa-fail-opi-triage':
-        return <QaFailOpiDecisionTriagePanel taskId="e2c892b6-8f64-4032-bd1e-a1b85669c0a0" qaTaskId="4ff866fc-d75a-4121-bcfe-60b99180240f" issueTitle="[JHOS-DEV] Scanner source health cards UI" checksRequired={6} checks={[
-          { id: 'C1', behavior: 'Status chips render correctly', expectedEvidence: 'DOM assertion + screenshot/log' },
-          { id: 'C2', behavior: 'Latency/success indicators visible', expectedEvidence: 'Metric row assertions' },
-          { id: 'C3', behavior: 'Per-source refresh triggers', expectedEvidence: 'Refresh handler call evidence' },
-          { id: 'C4', behavior: 'Global refresh triggers', expectedEvidence: 'Global refresh handler evidence' },
-          { id: 'C5', behavior: 'aria-live feedback updates', expectedEvidence: 'Accessible live-region assertion' },
-          { id: 'C6', behavior: '6/6 checks mapped to KPIs', expectedEvidence: 'Test output + mapping table' },
+        return <QaFailOpiDecisionTriagePanel taskId="49ab9853-d091-422e-a82a-57d5e6a754a5" qaTaskId="4436869d-43a6-4e9b-932e-d9ffddfb326d" issueTitle="[JHOS-DEV] Match explainability drawer" checksRequired={8} checks={[
+          { id: 'C1', behavior: 'Drawer opens from trigger', expectedEvidence: 'Open-state DOM assertion' },
+          { id: 'C2', behavior: 'Drawer closes via close control', expectedEvidence: 'Close-state DOM assertion' },
+          { id: 'C3', behavior: 'Four weighted criteria render', expectedEvidence: 'Criteria count assertion = 4' },
+          { id: 'C4', behavior: 'Weighted overall score displayed', expectedEvidence: 'Score value assertion' },
+          { id: 'C5', behavior: 'Per-criterion visual bars shown', expectedEvidence: 'Bar element presence assertions' },
+          { id: 'C6', behavior: 'Per-criterion reason text shown', expectedEvidence: 'Reason content assertions' },
+          { id: 'C7', behavior: 'Weights affect aggregate score', expectedEvidence: 'Deterministic score-calculation test' },
+          { id: 'C8', behavior: '8/8 checks mapped to evidence', expectedEvidence: 'Test/log artifact linked per check' },
         ]} />;
       case 'sourcing-radar':
         return <CandidateSourcingVelocityRadar data={mockSourcingData} />;
