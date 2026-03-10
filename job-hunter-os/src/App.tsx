@@ -226,17 +226,15 @@ export const App: React.FC = () => {
       case 'error-telemetry-unification':
         return <DashboardErrorTelemetryUnificationPanel localModules={mockErrorTelemetryModules} />;
       case 'qa-fail-opi-triage':
-        return <QaFailOpiDecisionTriagePanel taskId="4a29a71f-8541-4692-835b-22b83bb46b2d" qaTaskId="a61ed948-cf39-4807-aa54-26ed9e31232f" issueTitle="[JHOS-DEV] Scanner source diagnostics modal" checksRequired={10} risk="medium" checks={[
-          { id: 'C1', behavior: 'Failure metadata list renders', expectedEvidence: 'Metadata rows assertion', kpi: 'diagnostic completeness' },
-          { id: 'C2', behavior: 'Latency sparkline renders', expectedEvidence: 'Sparkline container/points assertion', kpi: 'latency observability' },
-          { id: 'C3', behavior: 'Retry action triggers', expectedEvidence: 'Retry handler invocation assertion', kpi: 'recovery activation rate' },
-          { id: 'C4', behavior: 'Pause action triggers', expectedEvidence: 'Pause handler invocation assertion', kpi: 'safe-halt control reliability' },
-          { id: 'C5', behavior: 'Report action triggers', expectedEvidence: 'Report handler invocation assertion', kpi: 'incident escalation latency' },
-          { id: 'C6', behavior: 'Loading state shown', expectedEvidence: 'Loading UI assertion', kpi: 'state transition clarity' },
-          { id: 'C7', behavior: 'Empty state shown', expectedEvidence: 'Empty UI assertion', kpi: 'zero-data UX clarity' },
-          { id: 'C8', behavior: 'Error state shown', expectedEvidence: 'Error UI assertion', kpi: 'error visibility' },
-          { id: 'C9', behavior: 'Escape closes modal', expectedEvidence: 'Escape key interaction assertion', kpi: 'keyboard exit compliance' },
-          { id: 'C10', behavior: 'Tab focus trap enforced', expectedEvidence: 'Keyboard focus cycle assertion + test log', kpi: 'a11y focus integrity' },
+        return <QaFailOpiDecisionTriagePanel taskId="2fc130df-14b4-4379-8b48-2d0326f731a1" qaTaskId="90c889f2-15a6-47ae-8e00-f5639b0570fb" issueTitle="[JHOS-DEV] Scanner source SLA breach heatmap" checksRequired={8} risk="medium" checks={[
+          { id: 'C1', behavior: 'Hourly per-source heatmap cells with severity color scale', expectedEvidence: 'Heatmap cells color assertion', kpi: 'visual severity distinction' },
+          { id: 'C2', behavior: 'Role filter applied', expectedEvidence: 'Role filter interaction assertion', kpi: 'target precision' },
+          { id: 'C3', behavior: 'Source filter applied', expectedEvidence: 'Source filter interaction assertion', kpi: 'target precision' },
+          { id: 'C4', behavior: 'Hover titles shown', expectedEvidence: 'Hover tooltip assertion', kpi: 'contextual clarity' },
+          { id: 'C5', behavior: 'Click-to-open incident drilldown', expectedEvidence: 'Drilldown click assertion', kpi: 'drilldown speed' },
+          { id: 'C6', behavior: 'Compact mode toggled', expectedEvidence: 'Compact layout class assertion', kpi: 'dashboard density' },
+          { id: 'C7', behavior: 'Loading state shown', expectedEvidence: 'Loading spinner assertion', kpi: 'state transparency' },
+          { id: 'C8', behavior: 'Empty/error states shown', expectedEvidence: 'Empty/error message assertion', kpi: 'state transparency' },
         ]} />;
       case 'scanner-diagnostics-modal':
         return <ScannerSourceDiagnosticsModal open source={mockScannerDiagnosticsSource} />;

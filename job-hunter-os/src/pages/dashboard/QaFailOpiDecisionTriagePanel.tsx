@@ -43,7 +43,7 @@ export const QaFailOpiDecisionTriagePanel: React.FC<Props> = ({ taskId, qaTaskId
         <div style={{ fontSize: 12, fontWeight: 600, marginBottom: 6 }}>Required {checksRequired}-check evidence map ({checks.length}/{checksRequired} defined)</div>
         <ul style={{ margin: 0, paddingLeft: 16, fontSize: 12 }}>
           {checks.map((c) => (
-            <li key={c.id}><strong>{c.id}</strong> {c.behavior} -> {c.expectedEvidence}{c.kpi ? ` (KPI: ${c.kpi})` : ''}</li>
+            <li key={c.id}><strong>{c.id}</strong> {c.behavior} -&gt; {c.expectedEvidence}{c.kpi ? ` (KPI: ${c.kpi})` : ''}</li>
           ))}
         </ul>
       </div>
