@@ -213,7 +213,14 @@ export const App: React.FC = () => {
       case 'error-telemetry-unification':
         return <DashboardErrorTelemetryUnificationPanel localModules={mockErrorTelemetryModules} />;
       case 'qa-fail-opi-triage':
-        return <QaFailOpiDecisionTriagePanel taskId="e2c892b6-8f64-4032-bd1e-a1b85669c0a0" qaTaskId="4ff866fc-d75a-4121-bcfe-60b99180240f" issueTitle="[JHOS-DEV] Scanner source health cards UI" checksRequired={6} />;
+        return <QaFailOpiDecisionTriagePanel taskId="e2c892b6-8f64-4032-bd1e-a1b85669c0a0" qaTaskId="4ff866fc-d75a-4121-bcfe-60b99180240f" issueTitle="[JHOS-DEV] Scanner source health cards UI" checksRequired={6} checks={[
+          { id: 'C1', behavior: 'Status chips render correctly', expectedEvidence: 'DOM assertion + screenshot/log' },
+          { id: 'C2', behavior: 'Latency/success indicators visible', expectedEvidence: 'Metric row assertions' },
+          { id: 'C3', behavior: 'Per-source refresh triggers', expectedEvidence: 'Refresh handler call evidence' },
+          { id: 'C4', behavior: 'Global refresh triggers', expectedEvidence: 'Global refresh handler evidence' },
+          { id: 'C5', behavior: 'aria-live feedback updates', expectedEvidence: 'Accessible live-region assertion' },
+          { id: 'C6', behavior: '6/6 checks mapped to KPIs', expectedEvidence: 'Test output + mapping table' },
+        ]} />;
       case 'sourcing-radar':
         return <CandidateSourcingVelocityRadar data={mockSourcingData} />;
       case 'journey-friction-heatmap':
