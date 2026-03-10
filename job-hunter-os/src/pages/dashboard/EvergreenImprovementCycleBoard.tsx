@@ -16,14 +16,16 @@ type Proposal = {
   approvalRequired: boolean;
   status: 'draft' | 'approval_requested' | 'approved';
   approvalRequestId?: string;
+  impactScore: number;
 };
 
 type Props = {
   insights?: InsightCard[];
   proposals?: Proposal[];
+  onCreateApprovalRequest?: (proposalId: string) => Promise<{ requestId: string }>;
 };
 
-export const EvergreenImprovementCycleBoard: React.FC<Props> = ({ insights = [], proposals = [] }) => {
+export const EvergreenImprovementCycleBoard: React.FC<Props> = ({ insights = [], proposals = [], onCreateApprovalRequest }) => {
   const [proposalState, setProposalState] = useState(proposals);
 
   const delta = useMemo(() => {
@@ -37,8 +39,20 @@ export const EvergreenImprovementCycleBoard: React.FC<Props> = ({ insights = [],
     return Math.round((insights.filter((i) => i.current > i.baseline).length / insights.length) * 100);
   }, [insights]);
 
-  const requestApproval = (id: string) => {
-    setProposalState((prev) => prev.map((p) => (p.id === id ? { ...p, status: 'approval_requested', approvalRequestId: `APR-${id}-${Date.now().toString().slice(-4)}` } : p)));
+  const requestApproval = async (id: string) => {
+    const fallbackId = `APR-${id}-${Date.now().toString().slice(-4)}`;
+    let requestId = fallbackId;
+
+    if (onCreateApprovalRequest) {
+      try {
+        const response = await onCreateApprovalRequest(id);
+        requestId = response.requestId;
+      } catch {
+        requestId = fallbackId;
+      }
+    }
+
+    setProposalState((prev) => prev.map((p) => (p.id === id ? { ...p, status: 'approval_requested', approvalRequestId: requestId } : p)));
   };
 
   return (
@@ -75,6 +89,7 @@ export const EvergreenImprovementCycleBoard: React.FC<Props> = ({ insights = [],
               <div key={p.id} style={{ border: '1px solid #e5e7eb', borderRadius: 8, padding: 8, background: '#fff' }}>
                 <div style={{ fontWeight: 600, fontSize: 13 }}>{p.title}</div>
                 <div style={{ fontSize: 12, color: '#374151', marginTop: 4 }}>{p.rationale}</div>
+                <div style={{ marginTop: 4, fontSize: 11, color: '#1e3a8a' }}>Impact score: {p.impactScore}/100</div>
                 <div style={{ marginTop: 6, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
                   <span style={{ fontSize: 11, color: '#6b7280' }}>status: {p.status}</span>
                   {p.approvalRequestId && <span style={{ fontSize: 11, color: '#1e3a8a' }}>request: {p.approvalRequestId}</span>}

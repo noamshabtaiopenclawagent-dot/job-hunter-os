@@ -124,8 +124,8 @@ const mockEvergreenInsights = [
 ];
 
 const mockEvergreenProposals = [
-  { id: 'ep1', title: 'Cross-module Decision Inbox Unifier', rationale: 'Unify decision actions from triage/offer/dashboard into one queue to cut context-switching and improve execution latency.', approvalRequired: true, status: 'draft' as const },
-  { id: 'ep2', title: 'Auto-Calibrating KPI Guardrails Engine', rationale: 'Use rolling outcomes to auto-adjust thresholds (risk, quality, SLA) and reduce manual tuning drift.', approvalRequired: true, status: 'draft' as const },
+  { id: 'ep1', title: 'Cross-module Decision Inbox Unifier', rationale: 'Unify decision actions from triage/offer/dashboard into one queue to cut context-switching and improve execution latency.', approvalRequired: true, status: 'draft' as const, impactScore: 87 },
+  { id: 'ep2', title: 'Auto-Calibrating KPI Guardrails Engine', rationale: 'Use rolling outcomes to auto-adjust thresholds (risk, quality, SLA) and reduce manual tuning drift.', approvalRequired: true, status: 'draft' as const, impactScore: 82 },
 ];
 
 const mockErrorTelemetryModules = [
@@ -208,7 +208,7 @@ export const App: React.FC = () => {
       case 'org-tree-ux-hardening':
         return <OrgTreeUxHardeningRoleBasedNavigationClarity nodes={mockOrgTreeNodes} signalsEndpoint="/api/org-tree/risk-signals" intentsEndpoint="/api/org-tree/intent-signals" />;
       case 'evergreen-cycle':
-        return <EvergreenImprovementCycleBoard insights={mockEvergreenInsights} proposals={mockEvergreenProposals} />;
+        return <EvergreenImprovementCycleBoard insights={mockEvergreenInsights} proposals={mockEvergreenProposals} onCreateApprovalRequest={async (proposalId) => ({ requestId: `BOARD-APR-${proposalId}` })} />;
       case 'error-telemetry-unification':
         return <DashboardErrorTelemetryUnificationPanel localModules={mockErrorTelemetryModules} />;
       case 'sourcing-radar':
