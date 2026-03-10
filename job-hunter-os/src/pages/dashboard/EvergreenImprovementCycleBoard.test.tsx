@@ -22,5 +22,6 @@ describe('EvergreenImprovementCycleBoard', () => {
     render(<EvergreenImprovementCycleBoard insights={insights} proposals={proposals} />);
     fireEvent.click(screen.getAllByText('Request approval')[0]);
     expect(screen.getByText(/approval_requested/)).toBeInTheDocument();
+    expect(screen.getByText(/request: APR-/)).toBeInTheDocument();
   });
 });

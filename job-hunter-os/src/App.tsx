@@ -118,8 +118,8 @@ const mockOrgTreeNodes = [
 ];
 
 const mockEvergreenInsights = [
-  { id: 'ev1', module: 'Dashboard Actionability', metric: 'Action completion visibility', baseline: 52, current: 81, note: 'Owner/ETA/action status now visible in one panel.' },
-  { id: 'ev2', module: 'Org Tree UX', metric: 'Role-route clarity', baseline: 48, current: 79, note: 'Role-based navigation guidance added per selected node.' },
+  { id: 'ev1', module: 'Dashboard Actionability', metric: 'Action completion visibility', baseline: 52, current: 83, note: 'Owner/ETA/action status now visible in one panel with decision-action lifecycle.' },
+  { id: 'ev2', module: 'Org Tree UX', metric: 'Role-route clarity', baseline: 48, current: 82, note: 'Role-based navigation guidance + hierarchy drilldown improved routing clarity.' },
 ];
 
 const mockEvergreenProposals = [
