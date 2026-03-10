@@ -199,7 +199,7 @@ export const App: React.FC = () => {
       case 'dashboard-actionability':
         return <DashboardActionabilityUpgradeDecisionActions actions={mockDashboardDecisionActions} />;
       case 'org-tree-ux-hardening':
-        return <OrgTreeUxHardeningRoleBasedNavigationClarity nodes={mockOrgTreeNodes} />;
+        return <OrgTreeUxHardeningRoleBasedNavigationClarity nodes={mockOrgTreeNodes} signalsEndpoint="/api/org-tree/risk-signals" />;
       case 'evergreen-cycle':
         return <EvergreenImprovementCycleBoard insights={mockEvergreenInsights} proposals={mockEvergreenProposals} />;
       case 'sourcing-radar':

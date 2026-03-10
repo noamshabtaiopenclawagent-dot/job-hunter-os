@@ -14,11 +14,12 @@ describe('OrgTreeUxHardeningRoleBasedNavigationClarity', () => {
   });
 
   it('renders hierarchy and role guidance', () => {
-    render(<OrgTreeUxHardeningRoleBasedNavigationClarity nodes={nodes} />);
+    render(<OrgTreeUxHardeningRoleBasedNavigationClarity nodes={nodes} liveSignalsSnapshot={[{ nodeId: '2', approvalsPending: 7, slaRisk: 80, validatedAt: '2026-03-10T20:40:00Z' }]} />);
     expect(screen.getByText('Hierarchy')).toBeInTheDocument();
     expect(screen.getByText(/Suggested modules/)).toBeInTheDocument();
     expect(screen.getByText(/approvals pending/)).toBeInTheDocument();
     expect(screen.getByText(/SLA risk/)).toBeInTheDocument();
+    expect(screen.getByText(/injected live-signal snapshot/)).toBeInTheDocument();
   });
 
   it('supports role filtering', () => {

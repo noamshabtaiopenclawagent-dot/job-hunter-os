@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 type OrgRole = 'lead' | 'recruiter' | 'analyst' | 'coordinator';
 
@@ -13,11 +13,20 @@ type OrgNode = {
   slaRisk?: number;
 };
 
+type LiveSignal = {
+  nodeId: string;
+  approvalsPending: number;
+  slaRisk: number;
+  validatedAt: string;
+};
+
 type Props = {
   nodes?: OrgNode[];
   loading?: boolean;
   error?: string | null;
   onRetry?: () => void;
+  signalsEndpoint?: string;
+  liveSignalsSnapshot?: LiveSignal[];
 };
 
 const roleColor: Record<OrgRole, string> = {
@@ -34,15 +43,50 @@ const roleNav: Record<OrgRole, string[]> = {
   coordinator: ['Review Backlog Cleanup', 'Israel Source Hardening', 'Dashboard Actionability'],
 };
 
-export const OrgTreeUxHardeningRoleBasedNavigationClarity: React.FC<Props> = ({ nodes = [], loading = false, error = null, onRetry }) => {
+export const OrgTreeUxHardeningRoleBasedNavigationClarity: React.FC<Props> = ({ nodes = [], loading = false, error = null, onRetry, signalsEndpoint = '/api/org-tree/risk-signals', liveSignalsSnapshot = [] }) => {
   const [roleFilter, setRoleFilter] = useState<'all' | OrgRole>('all');
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [liveSignals, setLiveSignals] = useState<LiveSignal[]>(liveSignalsSnapshot);
+  const [validationNote, setValidationNote] = useState<string>('Using baseline signals');
+
+  useEffect(() => {
+    if (liveSignalsSnapshot.length) {
+      setValidationNote('Using injected live-signal snapshot');
+      return;
+    }
+
+    let mounted = true;
+    fetch(signalsEndpoint)
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
+      .then((payload) => {
+        if (!mounted) return;
+        const items = Array.isArray(payload?.items) ? payload.items : [];
+        setLiveSignals(items);
+        setValidationNote(items.length ? 'Live org-task API signals validated' : 'No live signals returned');
+      })
+      .catch(() => {
+        if (!mounted) return;
+        setValidationNote('Live signal fetch failed; fallback values applied');
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, [signalsEndpoint, liveSignalsSnapshot]);
+
+  const enrichedNodes = useMemo(() => {
+    const map = new Map(liveSignals.map((s) => [s.nodeId, s]));
+    return nodes.map((n) => {
+      const live = map.get(n.id);
+      return live ? { ...n, approvalsPending: live.approvalsPending, slaRisk: live.slaRisk } : n;
+    });
+  }, [nodes, liveSignals]);
 
   const filtered = useMemo(() => {
-    return nodes
+    return enrichedNodes
       .filter((n) => (roleFilter === 'all' ? true : n.role === roleFilter))
       .sort((a, b) => (a.parentId === null ? -1 : 1) - (b.parentId === null ? -1 : 1));
-  }, [nodes, roleFilter]);
+  }, [enrichedNodes, roleFilter]);
 
   const selected = filtered.find((n) => n.id === selectedId) ?? filtered[0] ?? null;
 
@@ -67,6 +111,7 @@ export const OrgTreeUxHardeningRoleBasedNavigationClarity: React.FC<Props> = ({ 
         <div>
           <h2 style={{ margin: 0, fontSize: 18 }}>Org Tree UX Hardening</h2>
           <p style={{ margin: '4px 0 0 0', fontSize: 14, color: '#6b7280' }}>Clarifies reporting lines and role-based navigation pathways.</p>
+          <div style={{ marginTop: 6, fontSize: 12, color: '#1e3a8a' }}>{validationNote}</div>
         </div>
         <select value={roleFilter} onChange={(e) => setRoleFilter(e.target.value as 'all' | OrgRole)}>
           <option value='all'>All roles</option>
