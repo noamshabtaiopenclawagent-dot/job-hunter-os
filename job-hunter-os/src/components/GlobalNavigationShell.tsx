@@ -11,6 +11,7 @@ const defaultNavItems: NavItem[] = [
   { id: 'dashboard', label: 'Dashboard', icon: '📊' },
   { id: 'review-backlog-cleanup', label: 'Review Backlog Cleanup', icon: '✅' },
   { id: 'roadmap-mapping', label: 'Roadmap Artifact Mapping', icon: '🗺️' },
+  { id: 'israel-source-hardening', label: 'Israel Source Hardening', icon: '🇮🇱' },
   { id: 'sourcing-radar', label: 'Sourcing Velocity Radar', icon: '📡' },
   { id: 'journey-friction-heatmap', label: 'Journey Friction Heatmap', icon: '🧭' },
   { id: 'workload-heatmap', label: 'Recruiter Workload Heatmap', icon: '🔥' },

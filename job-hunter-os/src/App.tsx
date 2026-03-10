@@ -5,6 +5,7 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import { CandidateSourcingVelocityRadar } from './pages/dashboard/CandidateSourcingVelocityRadar';
 import { RoadmapShippedArtifactsMappingBoard } from './pages/dashboard/RoadmapShippedArtifactsMappingBoard';
 import { ReviewBacklogCleanupEvidenceConsole } from './pages/dashboard/ReviewBacklogCleanupEvidenceConsole';
+import { IsraelFirstSourceConnectorsHardeningQualityGate } from './pages/dashboard/IsraelFirstSourceConnectorsHardeningQualityGate';
 import { RecruiterWorkloadHeatmap } from './pages/workload/RecruiterWorkloadHeatmap';
 import { OfferStabilityTuner } from './pages/offer/OfferStabilityTuner';
 import { RecruiterPriorityInboxSmartTriageWorkspace } from './pages/triage/RecruiterPriorityInboxSmartTriageWorkspace';
@@ -85,6 +86,13 @@ const mockReviewCleanupTasks = [
   },
 ];
 
+const mockIsraelSourceHardeningData = [
+  { id: 'is1', source: 'AllJobs IL', region: 'israel' as const, status: 'healthy' as const, latencyMs: 420, successRate: 98, parsedJobs: 220, uniqueJobs: 174, qualityScore: 86 },
+  { id: 'is2', source: 'Drushim', region: 'israel' as const, status: 'degraded' as const, latencyMs: 980, successRate: 88, parsedJobs: 160, uniqueJobs: 105, qualityScore: 69, lastError: 'Rate-limit burst protection' },
+  { id: 'is3', source: 'LinkedIn ISR', region: 'israel' as const, status: 'healthy' as const, latencyMs: 510, successRate: 95, parsedJobs: 300, uniqueJobs: 218, qualityScore: 82, partial: true },
+  { id: 'is4', source: 'Global Agency Feed', region: 'global' as const, status: 'down' as const, latencyMs: 2200, successRate: 40, parsedJobs: 85, uniqueJobs: 42, qualityScore: 51, lastError: 'Auth token expired' },
+];
+
 const mockWorkloadData = [
   { id: '1', recruiter: 'Alice Smith', department: 'Engineering', complexity: 'high' as const, activeReqs: 12, candidatesInProcess: 85, workloadDensityScore: 92, burnoutRiskBaseline: 88, slaDegradationBaseline: 65, continuityFailureBaseline: 45 },
   { id: '2', recruiter: 'Bob Jones', department: 'Sales', complexity: 'medium' as const, activeReqs: 8, candidatesInProcess: 40, workloadDensityScore: 65, burnoutRiskBaseline: 45, slaDegradationBaseline: 20, continuityFailureBaseline: 15 },
@@ -150,6 +158,8 @@ export const App: React.FC = () => {
         return <ReviewBacklogCleanupEvidenceConsole tasks={mockReviewCleanupTasks} />;
       case 'roadmap-mapping':
         return <RoadmapShippedArtifactsMappingBoard items={mockRoadmapMappings} />;
+      case 'israel-source-hardening':
+        return <IsraelFirstSourceConnectorsHardeningQualityGate data={mockIsraelSourceHardeningData} />;
       case 'sourcing-radar':
         return <CandidateSourcingVelocityRadar data={mockSourcingData} />;
       case 'journey-friction-heatmap':
