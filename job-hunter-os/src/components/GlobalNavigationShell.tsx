@@ -18,6 +18,7 @@ const defaultNavItems: NavItem[] = [
   { id: 'evergreen-cycle', label: 'Evergreen Improvement', icon: '♻️' },
   { id: 'error-telemetry-unification', label: 'Error Telemetry Unification', icon: '🩺' },
   { id: 'qa-fail-opi-triage', label: 'QA FAIL OPI Triage', icon: '🛑' },
+  { id: 'scanner-diagnostics-modal', label: 'Scanner Diagnostics Modal', icon: '🧪' },
   { id: 'sourcing-radar', label: 'Sourcing Velocity Radar', icon: '📡' },
   { id: 'journey-friction-heatmap', label: 'Journey Friction Heatmap', icon: '🧭' },
   { id: 'workload-heatmap', label: 'Recruiter Workload Heatmap', icon: '🔥' },

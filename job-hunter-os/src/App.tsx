@@ -12,6 +12,7 @@ import { OrgTreeUxHardeningRoleBasedNavigationClarity } from './pages/dashboard/
 import { EvergreenImprovementCycleBoard } from './pages/dashboard/EvergreenImprovementCycleBoard';
 import { DashboardErrorTelemetryUnificationPanel } from './pages/dashboard/DashboardErrorTelemetryUnificationPanel';
 import { QaFailOpiDecisionTriagePanel } from './pages/dashboard/QaFailOpiDecisionTriagePanel';
+import { ScannerSourceDiagnosticsModal } from './pages/dashboard/ScannerSourceDiagnosticsModal';
 import { RecruiterWorkloadHeatmap } from './pages/workload/RecruiterWorkloadHeatmap';
 import { OfferStabilityTuner } from './pages/offer/OfferStabilityTuner';
 import { RecruiterPriorityInboxSmartTriageWorkspace } from './pages/triage/RecruiterPriorityInboxSmartTriageWorkspace';
@@ -135,6 +136,18 @@ const mockErrorTelemetryModules = [
   { module: 'Evergreen Improvement', localErrorRate: 5.6, fallbackActive: false },
 ];
 
+const mockScannerDiagnosticsSource = {
+  id: 'sd1',
+  source: 'AllJobs IL',
+  latencySeries: [320, 410, 380, 520, 460, 430],
+  failureMeta: [
+    { key: 'last_error', value: 'HTTP 429' },
+    { key: 'retry_count', value: '3' },
+    { key: 'window', value: '5m' },
+  ],
+  status: 'ready' as const,
+};
+
 const mockWorkloadData = [
   { id: '1', recruiter: 'Alice Smith', department: 'Engineering', complexity: 'high' as const, activeReqs: 12, candidatesInProcess: 85, workloadDensityScore: 92, burnoutRiskBaseline: 88, slaDegradationBaseline: 65, continuityFailureBaseline: 45 },
   { id: '2', recruiter: 'Bob Jones', department: 'Sales', complexity: 'medium' as const, activeReqs: 8, candidatesInProcess: 40, workloadDensityScore: 65, burnoutRiskBaseline: 45, slaDegradationBaseline: 20, continuityFailureBaseline: 15 },
@@ -225,6 +238,8 @@ export const App: React.FC = () => {
           { id: 'C9', behavior: 'Escape closes modal', expectedEvidence: 'Escape key interaction assertion', kpi: 'keyboard exit compliance' },
           { id: 'C10', behavior: 'Tab focus trap enforced', expectedEvidence: 'Keyboard focus cycle assertion + test log', kpi: 'a11y focus integrity' },
         ]} />;
+      case 'scanner-diagnostics-modal':
+        return <ScannerSourceDiagnosticsModal open source={mockScannerDiagnosticsSource} />;
       case 'sourcing-radar':
         return <CandidateSourcingVelocityRadar data={mockSourcingData} />;
       case 'journey-friction-heatmap':
