@@ -207,7 +207,7 @@ export const App: React.FC = () => {
       case 'dashboard-actionability':
         return <DashboardActionabilityUpgradeDecisionActions actions={mockDashboardDecisionActions} />;
       case 'org-tree-ux-hardening':
-        return <OrgTreeUxHardeningRoleBasedNavigationClarity nodes={mockOrgTreeNodes} signalsEndpoint="/api/org-tree/risk-signals" intentsEndpoint="/api/org-tree/intent-signals" />;
+        return <OrgTreeUxHardeningRoleBasedNavigationClarity nodes={mockOrgTreeNodes} signalsEndpoint="/api/org-tree/risk-signals" intentsEndpoint="/api/org-tree/intent-signals" qaOwner="Alex" />;
       case 'evergreen-cycle':
         return <EvergreenImprovementCycleBoard insights={mockEvergreenInsights} proposals={mockEvergreenProposals} onCreateApprovalRequest={async (proposalId) => ({ requestId: `BOARD-APR-${proposalId}` })} />;
       case 'error-telemetry-unification':
