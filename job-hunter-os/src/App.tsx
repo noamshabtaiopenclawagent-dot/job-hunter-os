@@ -11,6 +11,7 @@ import { DashboardActionabilityUpgradeDecisionActions } from './pages/dashboard/
 import { OrgTreeUxHardeningRoleBasedNavigationClarity } from './pages/dashboard/OrgTreeUxHardeningRoleBasedNavigationClarity';
 import { EvergreenImprovementCycleBoard } from './pages/dashboard/EvergreenImprovementCycleBoard';
 import { DashboardErrorTelemetryUnificationPanel } from './pages/dashboard/DashboardErrorTelemetryUnificationPanel';
+import { QaFailOpiDecisionTriagePanel } from './pages/dashboard/QaFailOpiDecisionTriagePanel';
 import { RecruiterWorkloadHeatmap } from './pages/workload/RecruiterWorkloadHeatmap';
 import { OfferStabilityTuner } from './pages/offer/OfferStabilityTuner';
 import { RecruiterPriorityInboxSmartTriageWorkspace } from './pages/triage/RecruiterPriorityInboxSmartTriageWorkspace';
@@ -211,6 +212,8 @@ export const App: React.FC = () => {
         return <EvergreenImprovementCycleBoard insights={mockEvergreenInsights} proposals={mockEvergreenProposals} onCreateApprovalRequest={async (proposalId) => ({ requestId: `BOARD-APR-${proposalId}` })} />;
       case 'error-telemetry-unification':
         return <DashboardErrorTelemetryUnificationPanel localModules={mockErrorTelemetryModules} />;
+      case 'qa-fail-opi-triage':
+        return <QaFailOpiDecisionTriagePanel taskId="2e7a819b-edcf-4296-92f5-c3cb815892fc" qaTaskId="4ff866fc-d75a-4121-bcfe-60b99180240f" issueTitle="[JHOS-DEV] Scanner source health cards UI" checksRequired={6} />;
       case 'sourcing-radar':
         return <CandidateSourcingVelocityRadar data={mockSourcingData} />;
       case 'journey-friction-heatmap':
