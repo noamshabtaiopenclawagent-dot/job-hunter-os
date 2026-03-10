@@ -15,6 +15,7 @@ const defaultNavItems: NavItem[] = [
   { id: 'cv-jd-calibration', label: 'CV-JD Calibration', icon: '🎯' },
   { id: 'dashboard-actionability', label: 'Dashboard Actionability', icon: '⚡' },
   { id: 'org-tree-ux-hardening', label: 'Org Tree UX Hardening', icon: '🌳' },
+  { id: 'evergreen-cycle', label: 'Evergreen Improvement', icon: '♻️' },
   { id: 'sourcing-radar', label: 'Sourcing Velocity Radar', icon: '📡' },
   { id: 'journey-friction-heatmap', label: 'Journey Friction Heatmap', icon: '🧭' },
   { id: 'workload-heatmap', label: 'Recruiter Workload Heatmap', icon: '🔥' },

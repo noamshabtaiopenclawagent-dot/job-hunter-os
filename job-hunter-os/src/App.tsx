@@ -9,6 +9,7 @@ import { IsraelFirstSourceConnectorsHardeningQualityGate } from './pages/dashboa
 import { CvJdExplainableMatchCalibrationThresholdTuning } from './pages/dashboard/CvJdExplainableMatchCalibrationThresholdTuning';
 import { DashboardActionabilityUpgradeDecisionActions } from './pages/dashboard/DashboardActionabilityUpgradeDecisionActions';
 import { OrgTreeUxHardeningRoleBasedNavigationClarity } from './pages/dashboard/OrgTreeUxHardeningRoleBasedNavigationClarity';
+import { EvergreenImprovementCycleBoard } from './pages/dashboard/EvergreenImprovementCycleBoard';
 import { RecruiterWorkloadHeatmap } from './pages/workload/RecruiterWorkloadHeatmap';
 import { OfferStabilityTuner } from './pages/offer/OfferStabilityTuner';
 import { RecruiterPriorityInboxSmartTriageWorkspace } from './pages/triage/RecruiterPriorityInboxSmartTriageWorkspace';
@@ -116,6 +117,16 @@ const mockOrgTreeNodes = [
   { id: 'org4', name: 'NOA', role: 'coordinator' as const, parentId: 'org1', active: false, workload: 32 },
 ];
 
+const mockEvergreenInsights = [
+  { id: 'ev1', module: 'Dashboard Actionability', metric: 'Action completion visibility', baseline: 52, current: 81, note: 'Owner/ETA/action status now visible in one panel.' },
+  { id: 'ev2', module: 'Org Tree UX', metric: 'Role-route clarity', baseline: 48, current: 79, note: 'Role-based navigation guidance added per selected node.' },
+];
+
+const mockEvergreenProposals = [
+  { id: 'ep1', title: 'Cross-module Decision Inbox Unifier', rationale: 'Unify decision actions from triage/offer/dashboard into one queue to cut context-switching and improve execution latency.', approvalRequired: true, status: 'draft' as const },
+  { id: 'ep2', title: 'Auto-Calibrating KPI Guardrails Engine', rationale: 'Use rolling outcomes to auto-adjust thresholds (risk, quality, SLA) and reduce manual tuning drift.', approvalRequired: true, status: 'draft' as const },
+];
+
 const mockWorkloadData = [
   { id: '1', recruiter: 'Alice Smith', department: 'Engineering', complexity: 'high' as const, activeReqs: 12, candidatesInProcess: 85, workloadDensityScore: 92, burnoutRiskBaseline: 88, slaDegradationBaseline: 65, continuityFailureBaseline: 45 },
   { id: '2', recruiter: 'Bob Jones', department: 'Sales', complexity: 'medium' as const, activeReqs: 8, candidatesInProcess: 40, workloadDensityScore: 65, burnoutRiskBaseline: 45, slaDegradationBaseline: 20, continuityFailureBaseline: 15 },
@@ -189,6 +200,8 @@ export const App: React.FC = () => {
         return <DashboardActionabilityUpgradeDecisionActions actions={mockDashboardDecisionActions} />;
       case 'org-tree-ux-hardening':
         return <OrgTreeUxHardeningRoleBasedNavigationClarity nodes={mockOrgTreeNodes} />;
+      case 'evergreen-cycle':
+        return <EvergreenImprovementCycleBoard insights={mockEvergreenInsights} proposals={mockEvergreenProposals} />;
       case 'sourcing-radar':
         return <CandidateSourcingVelocityRadar data={mockSourcingData} />;
       case 'journey-friction-heatmap':
