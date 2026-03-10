@@ -226,15 +226,16 @@ export const App: React.FC = () => {
       case 'error-telemetry-unification':
         return <DashboardErrorTelemetryUnificationPanel localModules={mockErrorTelemetryModules} />;
       case 'qa-fail-opi-triage':
-        return <QaFailOpiDecisionTriagePanel taskId="2fc130df-14b4-4379-8b48-2d0326f731a1" qaTaskId="90c889f2-15a6-47ae-8e00-f5639b0570fb" issueTitle="[JHOS-DEV] Scanner source SLA breach heatmap" checksRequired={8} risk="medium" checks={[
-          { id: 'C1', behavior: 'Hourly per-source heatmap cells with severity color scale', expectedEvidence: 'Heatmap cells color assertion', kpi: 'visual severity distinction' },
-          { id: 'C2', behavior: 'Role filter applied', expectedEvidence: 'Role filter interaction assertion', kpi: 'target precision' },
-          { id: 'C3', behavior: 'Source filter applied', expectedEvidence: 'Source filter interaction assertion', kpi: 'target precision' },
-          { id: 'C4', behavior: 'Hover titles shown', expectedEvidence: 'Hover tooltip assertion', kpi: 'contextual clarity' },
-          { id: 'C5', behavior: 'Click-to-open incident drilldown', expectedEvidence: 'Drilldown click assertion', kpi: 'drilldown speed' },
-          { id: 'C6', behavior: 'Compact mode toggled', expectedEvidence: 'Compact layout class assertion', kpi: 'dashboard density' },
-          { id: 'C7', behavior: 'Loading state shown', expectedEvidence: 'Loading spinner assertion', kpi: 'state transparency' },
-          { id: 'C8', behavior: 'Empty/error states shown', expectedEvidence: 'Empty/error message assertion', kpi: 'state transparency' },
+        return <QaFailOpiDecisionTriagePanel taskId="6541f3e9-5859-4e37-ba5a-d7432aeca322" qaTaskId="4bfd8be8-28d6-486a-b46f-0dfb9f53c06f" issueTitle="[JHOS-DEV] Pipeline conversion funnel with stage drilldown" checksRequired={9} risk="medium" checks={[
+          { id: 'C1', behavior: 'Role filter updates funnel', expectedEvidence: 'Role filter interaction + render assertion', kpi: 'filter precision' },
+          { id: 'C2', behavior: 'Stage conversion metrics display', expectedEvidence: 'Conversion % DOM assertion', kpi: 'metric observability' },
+          { id: 'C3', behavior: 'Drop-off metrics display', expectedEvidence: 'Drop-off count DOM assertion', kpi: 'metric observability' },
+          { id: 'C4', behavior: 'Clickable stage drilldown list', expectedEvidence: 'Stage click -> drilldown list render', kpi: 'drilldown depth' },
+          { id: 'C5', behavior: 'Responsive grid layout', expectedEvidence: 'Grid class assertion', kpi: 'UI responsiveness' },
+          { id: 'C6', behavior: 'Transition-safe styling', expectedEvidence: 'Animation/transition class assertion', kpi: 'UX smoothness' },
+          { id: 'C7', behavior: 'Manual refresh feedback', expectedEvidence: 'Refresh button click -> loading state', kpi: 'sync clarity' },
+          { id: 'C8', behavior: 'Empty state handling', expectedEvidence: 'Empty data -> empty message render', kpi: 'state handling' },
+          { id: 'C9', behavior: 'Error state handling', expectedEvidence: 'Error data -> error message render', kpi: 'state handling' },
         ]} />;
       case 'scanner-diagnostics-modal':
         return <ScannerSourceDiagnosticsModal open source={mockScannerDiagnosticsSource} />;
