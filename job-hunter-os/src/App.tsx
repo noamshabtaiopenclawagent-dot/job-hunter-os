@@ -8,6 +8,7 @@ import { ReviewBacklogCleanupEvidenceConsole } from './pages/dashboard/ReviewBac
 import { IsraelFirstSourceConnectorsHardeningQualityGate } from './pages/dashboard/IsraelFirstSourceConnectorsHardeningQualityGate';
 import { CvJdExplainableMatchCalibrationThresholdTuning } from './pages/dashboard/CvJdExplainableMatchCalibrationThresholdTuning';
 import { DashboardActionabilityUpgradeDecisionActions } from './pages/dashboard/DashboardActionabilityUpgradeDecisionActions';
+import { OrgTreeUxHardeningRoleBasedNavigationClarity } from './pages/dashboard/OrgTreeUxHardeningRoleBasedNavigationClarity';
 import { RecruiterWorkloadHeatmap } from './pages/workload/RecruiterWorkloadHeatmap';
 import { OfferStabilityTuner } from './pages/offer/OfferStabilityTuner';
 import { RecruiterPriorityInboxSmartTriageWorkspace } from './pages/triage/RecruiterPriorityInboxSmartTriageWorkspace';
@@ -108,6 +109,13 @@ const mockDashboardDecisionActions = [
   { id: 'da3', title: 'Rebalance recruiter triage ownership', owner: 'Talent Lead', module: 'Priority Inbox Triage', etaHours: 6, expectedImpact: 'Lower SLA breach probability in high-density queues', priority: 'medium' as const, kpiDelta: 4, status: 'open' as const },
 ];
 
+const mockOrgTreeNodes = [
+  { id: 'org1', name: 'OPI', role: 'lead' as const, parentId: null, active: true, workload: 72 },
+  { id: 'org2', name: 'BOB', role: 'recruiter' as const, parentId: 'org1', active: true, workload: 84 },
+  { id: 'org3', name: 'MAYA', role: 'analyst' as const, parentId: 'org1', active: true, workload: 61 },
+  { id: 'org4', name: 'NOA', role: 'coordinator' as const, parentId: 'org1', active: false, workload: 32 },
+];
+
 const mockWorkloadData = [
   { id: '1', recruiter: 'Alice Smith', department: 'Engineering', complexity: 'high' as const, activeReqs: 12, candidatesInProcess: 85, workloadDensityScore: 92, burnoutRiskBaseline: 88, slaDegradationBaseline: 65, continuityFailureBaseline: 45 },
   { id: '2', recruiter: 'Bob Jones', department: 'Sales', complexity: 'medium' as const, activeReqs: 8, candidatesInProcess: 40, workloadDensityScore: 65, burnoutRiskBaseline: 45, slaDegradationBaseline: 20, continuityFailureBaseline: 15 },
@@ -179,6 +187,8 @@ export const App: React.FC = () => {
         return <CvJdExplainableMatchCalibrationThresholdTuning data={mockCvJdCalibrationData} />;
       case 'dashboard-actionability':
         return <DashboardActionabilityUpgradeDecisionActions actions={mockDashboardDecisionActions} />;
+      case 'org-tree-ux-hardening':
+        return <OrgTreeUxHardeningRoleBasedNavigationClarity nodes={mockOrgTreeNodes} />;
       case 'sourcing-radar':
         return <CandidateSourcingVelocityRadar data={mockSourcingData} />;
       case 'journey-friction-heatmap':
