@@ -213,7 +213,7 @@ export const App: React.FC = () => {
       case 'error-telemetry-unification':
         return <DashboardErrorTelemetryUnificationPanel localModules={mockErrorTelemetryModules} />;
       case 'qa-fail-opi-triage':
-        return <QaFailOpiDecisionTriagePanel taskId="2e7a819b-edcf-4296-92f5-c3cb815892fc" qaTaskId="4ff866fc-d75a-4121-bcfe-60b99180240f" issueTitle="[JHOS-DEV] Scanner source health cards UI" checksRequired={6} />;
+        return <QaFailOpiDecisionTriagePanel taskId="e2c892b6-8f64-4032-bd1e-a1b85669c0a0" qaTaskId="4ff866fc-d75a-4121-bcfe-60b99180240f" issueTitle="[JHOS-DEV] Scanner source health cards UI" checksRequired={6} />;
       case 'sourcing-radar':
         return <CandidateSourcingVelocityRadar data={mockSourcingData} />;
       case 'journey-friction-heatmap':
