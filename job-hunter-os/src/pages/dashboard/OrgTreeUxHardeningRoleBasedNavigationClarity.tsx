@@ -21,13 +21,20 @@ type LiveSignal = {
   validatedAt: string;
 };
 
+type IntentSignal = {
+  nodeId: string;
+  priorityAction: string;
+};
+
 type Props = {
   nodes?: OrgNode[];
   loading?: boolean;
   error?: string | null;
   onRetry?: () => void;
   signalsEndpoint?: string;
+  intentsEndpoint?: string;
   liveSignalsSnapshot?: LiveSignal[];
+  liveIntentSnapshot?: IntentSignal[];
 };
 
 const roleColor: Record<OrgRole, string> = {
@@ -44,26 +51,31 @@ const roleNav: Record<OrgRole, string[]> = {
   coordinator: ['Review Backlog Cleanup', 'Israel Source Hardening', 'Dashboard Actionability'],
 };
 
-export const OrgTreeUxHardeningRoleBasedNavigationClarity: React.FC<Props> = ({ nodes = [], loading = false, error = null, onRetry, signalsEndpoint = '/api/org-tree/risk-signals', liveSignalsSnapshot = [] }) => {
+export const OrgTreeUxHardeningRoleBasedNavigationClarity: React.FC<Props> = ({ nodes = [], loading = false, error = null, onRetry, signalsEndpoint = '/api/org-tree/risk-signals', intentsEndpoint = '/api/org-tree/intent-signals', liveSignalsSnapshot = [], liveIntentSnapshot = [] }) => {
   const [roleFilter, setRoleFilter] = useState<'all' | OrgRole>('all');
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [liveSignals, setLiveSignals] = useState<LiveSignal[]>(liveSignalsSnapshot);
+  const [intentSignals, setIntentSignals] = useState<IntentSignal[]>(liveIntentSnapshot);
   const [validationNote, setValidationNote] = useState<string>('Using baseline signals');
 
   useEffect(() => {
-    if (liveSignalsSnapshot.length) {
+    if (liveSignalsSnapshot.length || liveIntentSnapshot.length) {
       setValidationNote('Using injected live-signal snapshot');
       return;
     }
 
     let mounted = true;
-    fetch(signalsEndpoint)
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
-      .then((payload) => {
+    Promise.all([
+      fetch(signalsEndpoint).then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`)))),
+      fetch(intentsEndpoint).then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`)))),
+    ])
+      .then(([riskPayload, intentPayload]) => {
         if (!mounted) return;
-        const items = Array.isArray(payload?.items) ? payload.items : [];
-        setLiveSignals(items);
-        setValidationNote(items.length ? 'Live org-task API signals validated' : 'No live signals returned');
+        const riskItems = Array.isArray(riskPayload?.items) ? riskPayload.items : [];
+        const intentItems = Array.isArray(intentPayload?.items) ? intentPayload.items : [];
+        setLiveSignals(riskItems);
+        setIntentSignals(intentItems);
+        setValidationNote(riskItems.length || intentItems.length ? 'Live org-task risk+intent signals validated' : 'No live signals returned');
       })
       .catch(() => {
         if (!mounted) return;
@@ -73,15 +85,17 @@ export const OrgTreeUxHardeningRoleBasedNavigationClarity: React.FC<Props> = ({ 
     return () => {
       mounted = false;
     };
-  }, [signalsEndpoint, liveSignalsSnapshot]);
+  }, [signalsEndpoint, intentsEndpoint, liveSignalsSnapshot, liveIntentSnapshot]);
 
   const enrichedNodes = useMemo(() => {
-    const map = new Map(liveSignals.map((s) => [s.nodeId, s]));
+    const riskMap = new Map(liveSignals.map((s) => [s.nodeId, s]));
+    const intentMap = new Map(intentSignals.map((s) => [s.nodeId, s.priorityAction]));
     return nodes.map((n) => {
-      const live = map.get(n.id);
-      return live ? { ...n, approvalsPending: live.approvalsPending, slaRisk: live.slaRisk } : n;
+      const live = riskMap.get(n.id);
+      const priorityAction = intentMap.get(n.id) ?? n.priorityAction;
+      return live ? { ...n, approvalsPending: live.approvalsPending, slaRisk: live.slaRisk, priorityAction } : { ...n, priorityAction };
     });
-  }, [nodes, liveSignals]);
+  }, [nodes, liveSignals, intentSignals]);
 
   const filtered = useMemo(() => {
     return enrichedNodes
