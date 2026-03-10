@@ -7,6 +7,7 @@ import { RoadmapShippedArtifactsMappingBoard } from './pages/dashboard/RoadmapSh
 import { ReviewBacklogCleanupEvidenceConsole } from './pages/dashboard/ReviewBacklogCleanupEvidenceConsole';
 import { IsraelFirstSourceConnectorsHardeningQualityGate } from './pages/dashboard/IsraelFirstSourceConnectorsHardeningQualityGate';
 import { CvJdExplainableMatchCalibrationThresholdTuning } from './pages/dashboard/CvJdExplainableMatchCalibrationThresholdTuning';
+import { DashboardActionabilityUpgradeDecisionActions } from './pages/dashboard/DashboardActionabilityUpgradeDecisionActions';
 import { RecruiterWorkloadHeatmap } from './pages/workload/RecruiterWorkloadHeatmap';
 import { OfferStabilityTuner } from './pages/offer/OfferStabilityTuner';
 import { RecruiterPriorityInboxSmartTriageWorkspace } from './pages/triage/RecruiterPriorityInboxSmartTriageWorkspace';
@@ -101,6 +102,12 @@ const mockCvJdCalibrationData = [
   { id: 'm4', candidate: 'Roi Azulai', role: 'Data Engineer', skillsFit: 58, domainFit: 62, seniorityFit: 70, locationFit: 81, historicalOutcome: 'rejected' as const, partial: true },
 ];
 
+const mockDashboardDecisionActions = [
+  { id: 'da1', title: 'Re-route aging interview loops', owner: 'Recruiting Ops', module: 'Journey Heatmap', etaHours: 4, expectedImpact: 'Reduce interview-stage drop-offs in overloaded cohorts', priority: 'critical' as const, kpiDelta: 8, status: 'open' as const },
+  { id: 'da2', title: 'Escalate stalled offer approvals', owner: 'Finance Partner', module: 'Offer Decision Canvas', etaHours: 2, expectedImpact: 'Shorten approval cycle time for high-confidence offers', priority: 'high' as const, kpiDelta: 6, status: 'open' as const },
+  { id: 'da3', title: 'Rebalance recruiter triage ownership', owner: 'Talent Lead', module: 'Priority Inbox Triage', etaHours: 6, expectedImpact: 'Lower SLA breach probability in high-density queues', priority: 'medium' as const, kpiDelta: 4, status: 'open' as const },
+];
+
 const mockWorkloadData = [
   { id: '1', recruiter: 'Alice Smith', department: 'Engineering', complexity: 'high' as const, activeReqs: 12, candidatesInProcess: 85, workloadDensityScore: 92, burnoutRiskBaseline: 88, slaDegradationBaseline: 65, continuityFailureBaseline: 45 },
   { id: '2', recruiter: 'Bob Jones', department: 'Sales', complexity: 'medium' as const, activeReqs: 8, candidatesInProcess: 40, workloadDensityScore: 65, burnoutRiskBaseline: 45, slaDegradationBaseline: 20, continuityFailureBaseline: 15 },
@@ -170,6 +177,8 @@ export const App: React.FC = () => {
         return <IsraelFirstSourceConnectorsHardeningQualityGate data={mockIsraelSourceHardeningData} />;
       case 'cv-jd-calibration':
         return <CvJdExplainableMatchCalibrationThresholdTuning data={mockCvJdCalibrationData} />;
+      case 'dashboard-actionability':
+        return <DashboardActionabilityUpgradeDecisionActions actions={mockDashboardDecisionActions} />;
       case 'sourcing-radar':
         return <CandidateSourcingVelocityRadar data={mockSourcingData} />;
       case 'journey-friction-heatmap':

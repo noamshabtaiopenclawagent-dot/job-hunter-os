@@ -13,6 +13,7 @@ const defaultNavItems: NavItem[] = [
   { id: 'roadmap-mapping', label: 'Roadmap Artifact Mapping', icon: '🗺️' },
   { id: 'israel-source-hardening', label: 'Israel Source Hardening', icon: '🇮🇱' },
   { id: 'cv-jd-calibration', label: 'CV-JD Calibration', icon: '🎯' },
+  { id: 'dashboard-actionability', label: 'Dashboard Actionability', icon: '⚡' },
   { id: 'sourcing-radar', label: 'Sourcing Velocity Radar', icon: '📡' },
   { id: 'journey-friction-heatmap', label: 'Journey Friction Heatmap', icon: '🧭' },
   { id: 'workload-heatmap', label: 'Recruiter Workload Heatmap', icon: '🔥' },
