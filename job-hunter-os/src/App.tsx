@@ -10,6 +10,7 @@ import { CvJdExplainableMatchCalibrationThresholdTuning } from './pages/dashboar
 import { DashboardActionabilityUpgradeDecisionActions } from './pages/dashboard/DashboardActionabilityUpgradeDecisionActions';
 import { OrgTreeUxHardeningRoleBasedNavigationClarity } from './pages/dashboard/OrgTreeUxHardeningRoleBasedNavigationClarity';
 import { EvergreenImprovementCycleBoard } from './pages/dashboard/EvergreenImprovementCycleBoard';
+import { DashboardErrorTelemetryUnificationPanel } from './pages/dashboard/DashboardErrorTelemetryUnificationPanel';
 import { RecruiterWorkloadHeatmap } from './pages/workload/RecruiterWorkloadHeatmap';
 import { OfferStabilityTuner } from './pages/offer/OfferStabilityTuner';
 import { RecruiterPriorityInboxSmartTriageWorkspace } from './pages/triage/RecruiterPriorityInboxSmartTriageWorkspace';
@@ -127,6 +128,12 @@ const mockEvergreenProposals = [
   { id: 'ep2', title: 'Auto-Calibrating KPI Guardrails Engine', rationale: 'Use rolling outcomes to auto-adjust thresholds (risk, quality, SLA) and reduce manual tuning drift.', approvalRequired: true, status: 'draft' as const },
 ];
 
+const mockErrorTelemetryModules = [
+  { module: 'Dashboard Actionability', localErrorRate: 7.4, fallbackActive: false },
+  { module: 'Org Tree UX Hardening', localErrorRate: 11.8, fallbackActive: true },
+  { module: 'Evergreen Improvement', localErrorRate: 5.6, fallbackActive: false },
+];
+
 const mockWorkloadData = [
   { id: '1', recruiter: 'Alice Smith', department: 'Engineering', complexity: 'high' as const, activeReqs: 12, candidatesInProcess: 85, workloadDensityScore: 92, burnoutRiskBaseline: 88, slaDegradationBaseline: 65, continuityFailureBaseline: 45 },
   { id: '2', recruiter: 'Bob Jones', department: 'Sales', complexity: 'medium' as const, activeReqs: 8, candidatesInProcess: 40, workloadDensityScore: 65, burnoutRiskBaseline: 45, slaDegradationBaseline: 20, continuityFailureBaseline: 15 },
@@ -202,6 +209,8 @@ export const App: React.FC = () => {
         return <OrgTreeUxHardeningRoleBasedNavigationClarity nodes={mockOrgTreeNodes} signalsEndpoint="/api/org-tree/risk-signals" />;
       case 'evergreen-cycle':
         return <EvergreenImprovementCycleBoard insights={mockEvergreenInsights} proposals={mockEvergreenProposals} />;
+      case 'error-telemetry-unification':
+        return <DashboardErrorTelemetryUnificationPanel localModules={mockErrorTelemetryModules} />;
       case 'sourcing-radar':
         return <CandidateSourcingVelocityRadar data={mockSourcingData} />;
       case 'journey-friction-heatmap':
