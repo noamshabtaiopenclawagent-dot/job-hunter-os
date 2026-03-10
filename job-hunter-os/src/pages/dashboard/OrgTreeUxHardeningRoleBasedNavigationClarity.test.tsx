@@ -4,8 +4,8 @@ import { OrgTreeUxHardeningRoleBasedNavigationClarity } from './OrgTreeUxHardeni
 
 describe('OrgTreeUxHardeningRoleBasedNavigationClarity', () => {
   const nodes = [
-    { id: '1', name: 'Lead', role: 'lead' as const, parentId: null, active: true, workload: 70 },
-    { id: '2', name: 'Recruiter', role: 'recruiter' as const, parentId: '1', active: true, workload: 80 },
+    { id: '1', name: 'Lead', role: 'lead' as const, parentId: null, active: true, workload: 70, approvalsPending: 2, slaRisk: 35 },
+    { id: '2', name: 'Recruiter', role: 'recruiter' as const, parentId: '1', active: true, workload: 80, approvalsPending: 4, slaRisk: 61 },
   ];
 
   it('renders empty state', () => {
@@ -17,6 +17,8 @@ describe('OrgTreeUxHardeningRoleBasedNavigationClarity', () => {
     render(<OrgTreeUxHardeningRoleBasedNavigationClarity nodes={nodes} />);
     expect(screen.getByText('Hierarchy')).toBeInTheDocument();
     expect(screen.getByText(/Suggested modules/)).toBeInTheDocument();
+    expect(screen.getByText(/approvals pending/)).toBeInTheDocument();
+    expect(screen.getByText(/SLA risk/)).toBeInTheDocument();
   });
 
   it('supports role filtering', () => {

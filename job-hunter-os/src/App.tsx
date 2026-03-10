@@ -111,10 +111,10 @@ const mockDashboardDecisionActions = [
 ];
 
 const mockOrgTreeNodes = [
-  { id: 'org1', name: 'OPI', role: 'lead' as const, parentId: null, active: true, workload: 72 },
-  { id: 'org2', name: 'BOB', role: 'recruiter' as const, parentId: 'org1', active: true, workload: 84 },
-  { id: 'org3', name: 'MAYA', role: 'analyst' as const, parentId: 'org1', active: true, workload: 61 },
-  { id: 'org4', name: 'NOA', role: 'coordinator' as const, parentId: 'org1', active: false, workload: 32 },
+  { id: 'org1', name: 'OPI', role: 'lead' as const, parentId: null, active: true, workload: 72, approvalsPending: 3, slaRisk: 44 },
+  { id: 'org2', name: 'BOB', role: 'recruiter' as const, parentId: 'org1', active: true, workload: 84, approvalsPending: 2, slaRisk: 61 },
+  { id: 'org3', name: 'MAYA', role: 'analyst' as const, parentId: 'org1', active: true, workload: 61, approvalsPending: 1, slaRisk: 33 },
+  { id: 'org4', name: 'NOA', role: 'coordinator' as const, parentId: 'org1', active: false, workload: 32, approvalsPending: 5, slaRisk: 72 },
 ];
 
 const mockEvergreenInsights = [

@@ -9,6 +9,8 @@ type OrgNode = {
   parentId: string | null;
   active: boolean;
   workload: number;
+  approvalsPending?: number;
+  slaRisk?: number;
 };
 
 type Props = {
@@ -107,9 +109,15 @@ export const OrgTreeUxHardeningRoleBasedNavigationClarity: React.FC<Props> = ({ 
               <ul style={{ margin: '4px 0 0 16px' }}>
                 {roleNav[selected.role].map((item) => <li key={item}>{item}</li>)}
               </ul>
-              <div style={{ marginTop: 8 }}>
+              <div style={{ marginTop: 8, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                 <span style={{ background: selected.active ? '#dcfce7' : '#fee2e2', color: selected.active ? '#166534' : '#991b1b', borderRadius: 999, padding: '2px 8px', fontSize: 11 }}>
                   {selected.active ? 'active node' : 'inactive node'}
+                </span>
+                <span style={{ background: '#dbeafe', color: '#1e3a8a', borderRadius: 999, padding: '2px 8px', fontSize: 11 }}>
+                  approvals pending: {selected.approvalsPending ?? 0}
+                </span>
+                <span style={{ background: '#fef3c7', color: '#92400e', borderRadius: 999, padding: '2px 8px', fontSize: 11 }}>
+                  SLA risk: {selected.slaRisk ?? 0}%
                 </span>
               </div>
             </div>
