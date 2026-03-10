@@ -214,16 +214,16 @@ export const App: React.FC = () => {
         return <DashboardErrorTelemetryUnificationPanel localModules={mockErrorTelemetryModules} />;
       case 'qa-fail-opi-triage':
         return <QaFailOpiDecisionTriagePanel taskId="4a29a71f-8541-4692-835b-22b83bb46b2d" qaTaskId="a61ed948-cf39-4807-aa54-26ed9e31232f" issueTitle="[JHOS-DEV] Scanner source diagnostics modal" checksRequired={10} risk="medium" checks={[
-          { id: 'C1', behavior: 'Failure metadata list renders', expectedEvidence: 'Metadata rows assertion' },
-          { id: 'C2', behavior: 'Latency sparkline renders', expectedEvidence: 'Sparkline container/points assertion' },
-          { id: 'C3', behavior: 'Retry action triggers', expectedEvidence: 'Retry handler invocation assertion' },
-          { id: 'C4', behavior: 'Pause action triggers', expectedEvidence: 'Pause handler invocation assertion' },
-          { id: 'C5', behavior: 'Report action triggers', expectedEvidence: 'Report handler invocation assertion' },
-          { id: 'C6', behavior: 'Loading state shown', expectedEvidence: 'Loading UI assertion' },
-          { id: 'C7', behavior: 'Empty state shown', expectedEvidence: 'Empty UI assertion' },
-          { id: 'C8', behavior: 'Error state shown', expectedEvidence: 'Error UI assertion' },
-          { id: 'C9', behavior: 'Escape closes modal', expectedEvidence: 'Escape key interaction assertion' },
-          { id: 'C10', behavior: 'Tab focus trap enforced', expectedEvidence: 'Keyboard focus cycle assertion + test log' },
+          { id: 'C1', behavior: 'Failure metadata list renders', expectedEvidence: 'Metadata rows assertion', kpi: 'diagnostic completeness' },
+          { id: 'C2', behavior: 'Latency sparkline renders', expectedEvidence: 'Sparkline container/points assertion', kpi: 'latency observability' },
+          { id: 'C3', behavior: 'Retry action triggers', expectedEvidence: 'Retry handler invocation assertion', kpi: 'recovery activation rate' },
+          { id: 'C4', behavior: 'Pause action triggers', expectedEvidence: 'Pause handler invocation assertion', kpi: 'safe-halt control reliability' },
+          { id: 'C5', behavior: 'Report action triggers', expectedEvidence: 'Report handler invocation assertion', kpi: 'incident escalation latency' },
+          { id: 'C6', behavior: 'Loading state shown', expectedEvidence: 'Loading UI assertion', kpi: 'state transition clarity' },
+          { id: 'C7', behavior: 'Empty state shown', expectedEvidence: 'Empty UI assertion', kpi: 'zero-data UX clarity' },
+          { id: 'C8', behavior: 'Error state shown', expectedEvidence: 'Error UI assertion', kpi: 'error visibility' },
+          { id: 'C9', behavior: 'Escape closes modal', expectedEvidence: 'Escape key interaction assertion', kpi: 'keyboard exit compliance' },
+          { id: 'C10', behavior: 'Tab focus trap enforced', expectedEvidence: 'Keyboard focus cycle assertion + test log', kpi: 'a11y focus integrity' },
         ]} />;
       case 'sourcing-radar':
         return <CandidateSourcingVelocityRadar data={mockSourcingData} />;
