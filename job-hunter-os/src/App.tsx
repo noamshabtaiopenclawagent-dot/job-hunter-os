@@ -6,6 +6,7 @@ import { CandidateSourcingVelocityRadar } from './pages/dashboard/CandidateSourc
 import { RoadmapShippedArtifactsMappingBoard } from './pages/dashboard/RoadmapShippedArtifactsMappingBoard';
 import { ReviewBacklogCleanupEvidenceConsole } from './pages/dashboard/ReviewBacklogCleanupEvidenceConsole';
 import { IsraelFirstSourceConnectorsHardeningQualityGate } from './pages/dashboard/IsraelFirstSourceConnectorsHardeningQualityGate';
+import { CvJdExplainableMatchCalibrationThresholdTuning } from './pages/dashboard/CvJdExplainableMatchCalibrationThresholdTuning';
 import { RecruiterWorkloadHeatmap } from './pages/workload/RecruiterWorkloadHeatmap';
 import { OfferStabilityTuner } from './pages/offer/OfferStabilityTuner';
 import { RecruiterPriorityInboxSmartTriageWorkspace } from './pages/triage/RecruiterPriorityInboxSmartTriageWorkspace';
@@ -93,6 +94,13 @@ const mockIsraelSourceHardeningData = [
   { id: 'is4', source: 'Global Agency Feed', region: 'global' as const, status: 'down' as const, latencyMs: 2200, successRate: 40, parsedJobs: 85, uniqueJobs: 42, qualityScore: 51, lastError: 'Auth token expired' },
 ];
 
+const mockCvJdCalibrationData = [
+  { id: 'm1', candidate: 'Yael Ben-David', role: 'Data Analyst', skillsFit: 84, domainFit: 72, seniorityFit: 78, locationFit: 95, historicalOutcome: 'advanced' as const },
+  { id: 'm2', candidate: 'Omer Levi', role: 'Product Analyst', skillsFit: 69, domainFit: 80, seniorityFit: 66, locationFit: 88, historicalOutcome: 'rejected' as const },
+  { id: 'm3', candidate: 'Noga Cohen', role: 'Business Analyst', skillsFit: 91, domainFit: 85, seniorityFit: 82, locationFit: 75, historicalOutcome: 'offer' as const },
+  { id: 'm4', candidate: 'Roi Azulai', role: 'Data Engineer', skillsFit: 58, domainFit: 62, seniorityFit: 70, locationFit: 81, historicalOutcome: 'rejected' as const, partial: true },
+];
+
 const mockWorkloadData = [
   { id: '1', recruiter: 'Alice Smith', department: 'Engineering', complexity: 'high' as const, activeReqs: 12, candidatesInProcess: 85, workloadDensityScore: 92, burnoutRiskBaseline: 88, slaDegradationBaseline: 65, continuityFailureBaseline: 45 },
   { id: '2', recruiter: 'Bob Jones', department: 'Sales', complexity: 'medium' as const, activeReqs: 8, candidatesInProcess: 40, workloadDensityScore: 65, burnoutRiskBaseline: 45, slaDegradationBaseline: 20, continuityFailureBaseline: 15 },
@@ -160,6 +168,8 @@ export const App: React.FC = () => {
         return <RoadmapShippedArtifactsMappingBoard items={mockRoadmapMappings} />;
       case 'israel-source-hardening':
         return <IsraelFirstSourceConnectorsHardeningQualityGate data={mockIsraelSourceHardeningData} />;
+      case 'cv-jd-calibration':
+        return <CvJdExplainableMatchCalibrationThresholdTuning data={mockCvJdCalibrationData} />;
       case 'sourcing-radar':
         return <CandidateSourcingVelocityRadar data={mockSourcingData} />;
       case 'journey-friction-heatmap':
