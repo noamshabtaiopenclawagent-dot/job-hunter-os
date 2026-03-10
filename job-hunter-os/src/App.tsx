@@ -5,6 +5,7 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import { CandidateSourcingVelocityRadar } from './pages/dashboard/CandidateSourcingVelocityRadar';
 import { RecruiterWorkloadHeatmap } from './pages/workload/RecruiterWorkloadHeatmap';
 import { OfferStabilityTuner } from './pages/offer/OfferStabilityTuner';
+import { RecruiterPriorityInboxSmartTriageWorkspace } from './pages/triage/RecruiterPriorityInboxSmartTriageWorkspace';
 
 // Extended mock data for the sourcing radar until backend wiring is complete
 const mockSourcingData = [
@@ -24,6 +25,13 @@ const mockWorkloadData = [
 const mockOfferData = [
   { id: 'c1', name: 'Jane Doe', role: 'Staff Engineer', department: 'Engineering', compExpectationMin: 180000, compExpectationMax: 220000, compPushed: true, marketRatePercentile: 90, competingOffers: 2, timeInProcessDays: 32, interviewScoreAvg: 8.5, flightRiskFlags: ['Another offer expiring soon'] },
   { id: 'c2', name: 'John Smith', role: 'Product Manager', department: 'Product', compExpectationMin: 140000, compExpectationMax: 160000, compPushed: false, marketRatePercentile: 75, competingOffers: 0, timeInProcessDays: 45, interviewScoreAvg: 7.2, flightRiskFlags: ['Process fatigue'] },
+];
+
+const mockTriageData = [
+  { id: 't1', candidateName: 'Lena Cohen', role: 'Senior Data Analyst', recruiter: 'Alice Smith', stage: 'interview' as const, slaHoursRemaining: 4, stageUrgency: 82, expectedConversionLift: 71, slaRisk: 79, owner: 'alice', blockedBy: 'Pending debrief summary' },
+  { id: 't2', candidateName: 'Noa Levi', role: 'Product Analyst', recruiter: 'Bob Jones', stage: 'offer' as const, slaHoursRemaining: -6, stageUrgency: 95, expectedConversionLift: 86, slaRisk: 92, owner: 'bob', blockedBy: 'Compensation approval chain' },
+  { id: 't3', candidateName: 'Idan Bar', role: 'Business Analyst', recruiter: 'Alice Smith', stage: 'screen' as const, slaHoursRemaining: 18, stageUrgency: 54, expectedConversionLift: 48, slaRisk: 51, owner: 'alice', partial: true },
+  { id: 't4', candidateName: 'Maya Azulay', role: 'Data Engineer', recruiter: 'Diana Prince', stage: 'closing' as const, slaHoursRemaining: 2, stageUrgency: 88, expectedConversionLift: 90, slaRisk: 84, owner: 'diana' },
 ];
 
 export const App: React.FC = () => {
@@ -46,6 +54,8 @@ export const App: React.FC = () => {
         return <RecruiterWorkloadHeatmap data={mockWorkloadData} />;
       case 'offer-stability':
         return <OfferStabilityTuner data={mockOfferData} />;
+      case 'priority-inbox-triage':
+        return <RecruiterPriorityInboxSmartTriageWorkspace data={mockTriageData} />;
       case 'sla-anticipation':
         return <div>SLA Anticipation Module Integration Pending...</div>;
       case 'interview-reliability':

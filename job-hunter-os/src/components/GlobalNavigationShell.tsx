@@ -11,6 +11,7 @@ const defaultNavItems: NavItem[] = [
   { id: 'dashboard', label: 'Dashboard', icon: '📊' },
   { id: 'sourcing-radar', label: 'Sourcing Velocity Radar', icon: '📡' },
   { id: 'workload-heatmap', label: 'Recruiter Workload Heatmap', icon: '🔥' },
+  { id: 'priority-inbox-triage', label: 'Priority Inbox Smart Triage', icon: '📥' },
   { id: 'sla-anticipation', label: 'SLA Breach Anticipation', icon: '⏱️' },
   { id: 'offer-stability', label: 'Offer Negotiation Stability', icon: '🤝' },
   { id: 'interview-reliability', label: 'Interview Panel Reliability', icon: '📝' },
