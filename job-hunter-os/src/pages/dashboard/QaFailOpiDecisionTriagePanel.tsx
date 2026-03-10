@@ -13,11 +13,12 @@ type Props = {
   qaTaskId: string;
   issueTitle: string;
   checksRequired: number;
+  risk?: 'low' | 'medium' | 'high';
   checks?: VerificationCheck[];
   onDecision?: (decision: Exclude<DecisionState, 'pending'>) => Promise<void> | void;
 };
 
-export const QaFailOpiDecisionTriagePanel: React.FC<Props> = ({ taskId, qaTaskId, issueTitle, checksRequired, checks = [], onDecision }) => {
+export const QaFailOpiDecisionTriagePanel: React.FC<Props> = ({ taskId, qaTaskId, issueTitle, checksRequired, risk = 'medium', checks = [], onDecision }) => {
   const [decision, setDecision] = useState<DecisionState>('pending');
   const [note, setNote] = useState('Waiting for OPI decision before execution.');
 
@@ -34,6 +35,7 @@ export const QaFailOpiDecisionTriagePanel: React.FC<Props> = ({ taskId, qaTaskId
       <div style={{ fontSize: 12, color: '#374151', display: 'grid', gap: 4, marginBottom: 10 }}>
         <div><strong>Task:</strong> {taskId}</div>
         <div><strong>QA Source:</strong> {qaTaskId}</div>
+        <div><strong>Risk:</strong> {risk}</div>
         <div><strong>Evidence gap:</strong> Missing reproducible mapping for {checksRequired}/{checksRequired} claimed checks</div>
       </div>
       <div style={{ border: '1px solid #e5e7eb', borderRadius: 8, padding: 8, marginBottom: 10, background: '#f9fafb' }}>

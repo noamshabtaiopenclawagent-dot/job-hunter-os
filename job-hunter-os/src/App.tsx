@@ -213,15 +213,13 @@ export const App: React.FC = () => {
       case 'error-telemetry-unification':
         return <DashboardErrorTelemetryUnificationPanel localModules={mockErrorTelemetryModules} />;
       case 'qa-fail-opi-triage':
-        return <QaFailOpiDecisionTriagePanel taskId="49ab9853-d091-422e-a82a-57d5e6a754a5" qaTaskId="4436869d-43a6-4e9b-932e-d9ffddfb326d" issueTitle="[JHOS-DEV] Match explainability drawer" checksRequired={8} checks={[
-          { id: 'C1', behavior: 'Drawer opens from trigger', expectedEvidence: 'Open-state DOM assertion' },
-          { id: 'C2', behavior: 'Drawer closes via close control', expectedEvidence: 'Close-state DOM assertion' },
-          { id: 'C3', behavior: 'Four weighted criteria render', expectedEvidence: 'Criteria count assertion = 4' },
-          { id: 'C4', behavior: 'Weighted overall score displayed', expectedEvidence: 'Score value assertion' },
-          { id: 'C5', behavior: 'Per-criterion visual bars shown', expectedEvidence: 'Bar element presence assertions' },
-          { id: 'C6', behavior: 'Per-criterion reason text shown', expectedEvidence: 'Reason content assertions' },
-          { id: 'C7', behavior: 'Weights affect aggregate score', expectedEvidence: 'Deterministic score-calculation test' },
-          { id: 'C8', behavior: '8/8 checks mapped to evidence', expectedEvidence: 'Test/log artifact linked per check' },
+        return <QaFailOpiDecisionTriagePanel taskId="8ebe4f50-c8ae-4337-a0dd-22510371b3cc" qaTaskId="c198f617-cc07-4fec-8bcb-09393291a0bd" issueTitle="[JHOS-DEV] Application timeline panel" checksRequired={6} risk="medium" checks={[
+          { id: 'C1', behavior: 'Stage badges render', expectedEvidence: 'Badge DOM assertions per timeline item' },
+          { id: 'C2', behavior: 'Stage dropdown filter works', expectedEvidence: 'Filter state narrows visible rows by stage' },
+          { id: 'C3', behavior: 'Text query filter works', expectedEvidence: 'Query input filters timeline entries' },
+          { id: 'C4', behavior: 'Descending time sort holds', expectedEvidence: 'Timestamp ordering assertion descending' },
+          { id: 'C5', behavior: 'Empty-filter state appears', expectedEvidence: 'No-results state assertion after restrictive filter' },
+          { id: 'C6', behavior: '6/6 checks mapped to proof', expectedEvidence: 'Test/log artifact links for each check' },
         ]} />;
       case 'sourcing-radar':
         return <CandidateSourcingVelocityRadar data={mockSourcingData} />;

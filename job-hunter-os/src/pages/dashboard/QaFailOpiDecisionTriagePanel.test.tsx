@@ -4,9 +4,10 @@ import { QaFailOpiDecisionTriagePanel } from './QaFailOpiDecisionTriagePanel';
 
 describe('QaFailOpiDecisionTriagePanel', () => {
   it('shows pending then approved note', () => {
-    render(<QaFailOpiDecisionTriagePanel taskId="t1" qaTaskId="q1" issueTitle="Issue" checksRequired={6} />);
+    render(<QaFailOpiDecisionTriagePanel taskId="t1" qaTaskId="q1" issueTitle="Issue" checksRequired={6} risk="medium" />);
     fireEvent.click(screen.getByText('Approve fix execution'));
     expect(screen.getByText(/approved remediation/)).toBeInTheDocument();
+    expect(screen.getByText(/Risk:/)).toBeInTheDocument();
   });
 
   it('renders required check mapping table', () => {
