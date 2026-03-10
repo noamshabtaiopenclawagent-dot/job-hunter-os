@@ -200,7 +200,7 @@ export const App: React.FC = () => {
       case 'roadmap-mapping':
         return <RoadmapShippedArtifactsMappingBoard items={mockRoadmapMappings} />;
       case 'israel-source-hardening':
-        return <IsraelFirstSourceConnectorsHardeningQualityGate data={mockIsraelSourceHardeningData} />;
+        return <IsraelFirstSourceConnectorsHardeningQualityGate data={mockIsraelSourceHardeningData} onManualRefresh={async () => { await new Promise((resolve) => setTimeout(resolve, 120)); }} />;
       case 'cv-jd-calibration':
         return <CvJdExplainableMatchCalibrationThresholdTuning data={mockCvJdCalibrationData} />;
       case 'dashboard-actionability':
