@@ -30,6 +30,7 @@ import { CandidateMatchDriftIndicatorCards } from './pages/dashboard/CandidateMa
 import { PipelineConversionFunnel } from './pages/dashboard/PipelineConversionFunnel';
 import { PipelineHandoffReadinessChecklistDrawer } from './pages/dashboard/PipelineHandoffReadinessChecklistDrawer';
 import { ScannerSourceSlaBreachHeatmap } from './pages/dashboard/ScannerSourceSlaBreachHeatmap';
+import { ScannerIncidentImpactSummaryBanner } from './pages/dashboard/ScannerIncidentImpactSummaryBanner';
 import { RecruiterWorkloadHeatmap } from './pages/workload/RecruiterWorkloadHeatmap';
 import { OfferStabilityTuner } from './pages/offer/OfferStabilityTuner';
 import { RecruiterPriorityInboxSmartTriageWorkspace } from './pages/triage/RecruiterPriorityInboxSmartTriageWorkspace';
@@ -243,15 +244,15 @@ export const App: React.FC = () => {
       case 'error-telemetry-unification':
         return <DashboardErrorTelemetryUnificationPanel localModules={mockErrorTelemetryModules} />;
       case 'qa-fail-opi-triage':
-        return <QaFailOpiDecisionTriagePanel taskId="2fc130df-14b4-4379-8b48-2d0326f731a1" qaTaskId="90c889f2-15a6-47ae-8e00-f5639b0570fb" issueTitle="[JHOS-DEV] Scanner source SLA breach heatmap" checksRequired={8} risk="medium" checks={[
-          { id: 'C1', behavior: 'Hourly per-source heatmap cells render', expectedEvidence: 'Cell label/time assertions', kpi: 'visibility' },
-          { id: 'C2', behavior: 'Severity color scale applied', expectedEvidence: 'High severity style assertion', kpi: 'risk salience' },
-          { id: 'C3', behavior: 'Role filter works', expectedEvidence: 'Role filter interaction + narrowed result', kpi: 'filter precision' },
-          { id: 'C4', behavior: 'Source filter works', expectedEvidence: 'Source filter interaction + narrowed result', kpi: 'filter precision' },
-          { id: 'C5', behavior: 'Hover titles include context', expectedEvidence: 'title attribute assertion', kpi: 'explainability' },
-          { id: 'C6', behavior: 'Cell click opens incident drilldown', expectedEvidence: 'status message assertion after click', kpi: 'drilldown speed' },
-          { id: 'C7', behavior: 'Compact mode supports rendering', expectedEvidence: 'compact render assertion', kpi: 'density flexibility' },
-          { id: 'C8', behavior: 'Loading/empty/error states handled', expectedEvidence: 'state fallback assertions', kpi: 'state reliability' },
+        return <QaFailOpiDecisionTriagePanel taskId="4b067240-1d79-445a-86bf-c00f12259ff3" qaTaskId="321da4df-ca01-4f6e-94bc-2ae1770c0edb" issueTitle="[JHOS-DEV] Scanner incident impact summary banner" checksRequired={8} risk="low" checks={[
+          { id: 'C1', behavior: 'Severity aggregation shown', expectedEvidence: 'Highest severity render assertion', kpi: 'severity clarity' },
+          { id: 'C2', behavior: 'Affected-role totals shown', expectedEvidence: 'Affected roles numeric assertion', kpi: 'impact visibility' },
+          { id: 'C3', behavior: 'Candidate impact totals shown', expectedEvidence: 'Impacted candidates numeric assertion', kpi: 'impact visibility' },
+          { id: 'C4', behavior: 'Diagnostics action pending state', expectedEvidence: 'Button label transition assertion', kpi: 'action feedback' },
+          { id: 'C5', behavior: 'Recovery action pending state', expectedEvidence: 'Button label transition assertion', kpi: 'action feedback' },
+          { id: 'C6', behavior: 'Dismiss control hides banner', expectedEvidence: 'Dismiss interaction assertion', kpi: 'operator control' },
+          { id: 'C7', behavior: 'Snooze control state message', expectedEvidence: 'Snooze interaction assertion', kpi: 'operator control' },
+          { id: 'C8', behavior: 'Loading/empty/error states handled', expectedEvidence: 'Fallback state assertions', kpi: 'state reliability' },
         ]} />;
       case 'scanner-diagnostics-modal':
         return <ScannerSourceDiagnosticsModal open source={mockScannerDiagnosticsSource} />;
@@ -289,6 +290,8 @@ export const App: React.FC = () => {
         return <PipelineHandoffReadinessChecklistDrawer />;
       case 'scanner-source-sla-breach-heatmap':
         return <ScannerSourceSlaBreachHeatmap />;
+      case 'scanner-incident-impact-summary-banner':
+        return <ScannerIncidentImpactSummaryBanner />;
       case 'sourcing-radar':
         return <CandidateSourcingVelocityRadar data={mockSourcingData} />;
       case 'journey-friction-heatmap':
