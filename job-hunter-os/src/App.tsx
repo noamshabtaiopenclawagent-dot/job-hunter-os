@@ -31,6 +31,7 @@ import { PipelineConversionFunnel } from './pages/dashboard/PipelineConversionFu
 import { PipelineHandoffReadinessChecklistDrawer } from './pages/dashboard/PipelineHandoffReadinessChecklistDrawer';
 import { ScannerSourceSlaBreachHeatmap } from './pages/dashboard/ScannerSourceSlaBreachHeatmap';
 import { ScannerIncidentImpactSummaryBanner } from './pages/dashboard/ScannerIncidentImpactSummaryBanner';
+import { CandidateDecisionConfidenceTimeline } from './pages/dashboard/CandidateDecisionConfidenceTimeline';
 import { RecruiterWorkloadHeatmap } from './pages/workload/RecruiterWorkloadHeatmap';
 import { OfferStabilityTuner } from './pages/offer/OfferStabilityTuner';
 import { RecruiterPriorityInboxSmartTriageWorkspace } from './pages/triage/RecruiterPriorityInboxSmartTriageWorkspace';
@@ -244,15 +245,15 @@ export const App: React.FC = () => {
       case 'error-telemetry-unification':
         return <DashboardErrorTelemetryUnificationPanel localModules={mockErrorTelemetryModules} />;
       case 'qa-fail-opi-triage':
-        return <QaFailOpiDecisionTriagePanel taskId="4b067240-1d79-445a-86bf-c00f12259ff3" qaTaskId="321da4df-ca01-4f6e-94bc-2ae1770c0edb" issueTitle="[JHOS-DEV] Scanner incident impact summary banner" checksRequired={8} risk="low" checks={[
-          { id: 'C1', behavior: 'Severity aggregation shown', expectedEvidence: 'Highest severity render assertion', kpi: 'severity clarity' },
-          { id: 'C2', behavior: 'Affected-role totals shown', expectedEvidence: 'Affected roles numeric assertion', kpi: 'impact visibility' },
-          { id: 'C3', behavior: 'Candidate impact totals shown', expectedEvidence: 'Impacted candidates numeric assertion', kpi: 'impact visibility' },
-          { id: 'C4', behavior: 'Diagnostics action pending state', expectedEvidence: 'Button label transition assertion', kpi: 'action feedback' },
-          { id: 'C5', behavior: 'Recovery action pending state', expectedEvidence: 'Button label transition assertion', kpi: 'action feedback' },
-          { id: 'C6', behavior: 'Dismiss control hides banner', expectedEvidence: 'Dismiss interaction assertion', kpi: 'operator control' },
-          { id: 'C7', behavior: 'Snooze control state message', expectedEvidence: 'Snooze interaction assertion', kpi: 'operator control' },
-          { id: 'C8', behavior: 'Loading/empty/error states handled', expectedEvidence: 'Fallback state assertions', kpi: 'state reliability' },
+        return <QaFailOpiDecisionTriagePanel taskId="b18c8a8e-532b-4ec4-8461-a99b161fc128" qaTaskId="756d8ac6-89ae-41e9-873b-78807c7c0d67" issueTitle="[JHOS-DEV] Candidate decision confidence timeline" checksRequired={8} risk="medium" checks={[
+          { id: 'C1', behavior: 'Timeline entries render', expectedEvidence: 'Candidate/stage list assertions', kpi: 'decision visibility' },
+          { id: 'C2', behavior: 'Confidence % shown per event', expectedEvidence: 'confidence label assertion', kpi: 'signal clarity' },
+          { id: 'C3', behavior: 'Timestamp shown per event', expectedEvidence: 'timestamp assertions', kpi: 'auditability' },
+          { id: 'C4', behavior: 'Rationale shown as text/title', expectedEvidence: 'rationale + title assertions', kpi: 'explainability' },
+          { id: 'C5', behavior: 'Candidate filter narrows timeline', expectedEvidence: 'filter interaction assertions', kpi: 'focus control' },
+          { id: 'C6', behavior: 'Loading state handled', expectedEvidence: 'loading fallback assertion', kpi: 'state reliability' },
+          { id: 'C7', behavior: 'Empty state handled', expectedEvidence: 'empty fallback assertion', kpi: 'state reliability' },
+          { id: 'C8', behavior: 'Error state handled', expectedEvidence: 'error fallback assertion', kpi: 'state reliability' },
         ]} />;
       case 'scanner-diagnostics-modal':
         return <ScannerSourceDiagnosticsModal open source={mockScannerDiagnosticsSource} />;
@@ -292,6 +293,8 @@ export const App: React.FC = () => {
         return <ScannerSourceSlaBreachHeatmap />;
       case 'scanner-incident-impact-summary-banner':
         return <ScannerIncidentImpactSummaryBanner />;
+      case 'candidate-decision-confidence-timeline':
+        return <CandidateDecisionConfidenceTimeline />;
       case 'sourcing-radar':
         return <CandidateSourcingVelocityRadar data={mockSourcingData} />;
       case 'journey-friction-heatmap':

@@ -1,0 +1,17 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90m/Users/opiagent/.openclaw/workspace/openclaw-mission-control/job-hunter-os[39m
+
+ [32m✓[39m src/pages/dashboard/CandidateDecisionConfidenceTimeline.test.tsx[2m > [22mCandidateDecisionConfidenceTimeline[2m > [22mC1 renders timeline entries[32m 112[2mms[22m[39m
+ [32m✓[39m src/pages/dashboard/CandidateDecisionConfidenceTimeline.test.tsx[2m > [22mCandidateDecisionConfidenceTimeline[2m > [22mC2 shows confidence percentages[32m 5[2mms[22m[39m
+ [32m✓[39m src/pages/dashboard/CandidateDecisionConfidenceTimeline.test.tsx[2m > [22mCandidateDecisionConfidenceTimeline[2m > [22mC3 shows timestamps[32m 4[2mms[22m[39m
+ [32m✓[39m src/pages/dashboard/CandidateDecisionConfidenceTimeline.test.tsx[2m > [22mCandidateDecisionConfidenceTimeline[2m > [22mC4 includes rationale titles[32m 3[2mms[22m[39m
+ [32m✓[39m src/pages/dashboard/CandidateDecisionConfidenceTimeline.test.tsx[2m > [22mCandidateDecisionConfidenceTimeline[2m > [22mC5 candidate filter narrows timeline[32m 26[2mms[22m[39m
+ [32m✓[39m src/pages/dashboard/CandidateDecisionConfidenceTimeline.test.tsx[2m > [22mCandidateDecisionConfidenceTimeline[2m > [22mC6 handles loading state[32m 1[2mms[22m[39m
+ [32m✓[39m src/pages/dashboard/CandidateDecisionConfidenceTimeline.test.tsx[2m > [22mCandidateDecisionConfidenceTimeline[2m > [22mC7 handles empty state[32m 0[2mms[22m[39m
+ [32m✓[39m src/pages/dashboard/CandidateDecisionConfidenceTimeline.test.tsx[2m > [22mCandidateDecisionConfidenceTimeline[2m > [22mC8 handles error state[32m 1[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 18:33:05
+[2m   Duration [22m 611ms[2m (transform 27ms, setup 36ms, import 49ms, tests 152ms, environment 263ms)[22m
+
