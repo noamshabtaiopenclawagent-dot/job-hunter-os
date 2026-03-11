@@ -38,6 +38,7 @@ const defaultNavItems: NavItem[] = [
   { id: 'scanner-source-sla-breach-heatmap', label: 'Scanner Source SLA Breach Heatmap', icon: '🟥' },
   { id: 'scanner-incident-impact-summary-banner', label: 'Scanner Incident Impact Summary Banner', icon: '📢' },
   { id: 'candidate-decision-confidence-timeline', label: 'Candidate Decision Confidence Timeline', icon: '🧠' },
+  { id: 'stage-transition-approval-checkpoint-modal', label: 'Stage Transition Approval Checkpoint Modal', icon: '🛂' },
   { id: 'sourcing-radar', label: 'Sourcing Velocity Radar', icon: '📡' },
   { id: 'journey-friction-heatmap', label: 'Journey Friction Heatmap', icon: '🧭' },
   { id: 'workload-heatmap', label: 'Recruiter Workload Heatmap', icon: '🔥' },

@@ -32,6 +32,7 @@ import { PipelineHandoffReadinessChecklistDrawer } from './pages/dashboard/Pipel
 import { ScannerSourceSlaBreachHeatmap } from './pages/dashboard/ScannerSourceSlaBreachHeatmap';
 import { ScannerIncidentImpactSummaryBanner } from './pages/dashboard/ScannerIncidentImpactSummaryBanner';
 import { CandidateDecisionConfidenceTimeline } from './pages/dashboard/CandidateDecisionConfidenceTimeline';
+import { StageTransitionApprovalCheckpointModal } from './pages/dashboard/StageTransitionApprovalCheckpointModal';
 import { RecruiterWorkloadHeatmap } from './pages/workload/RecruiterWorkloadHeatmap';
 import { OfferStabilityTuner } from './pages/offer/OfferStabilityTuner';
 import { RecruiterPriorityInboxSmartTriageWorkspace } from './pages/triage/RecruiterPriorityInboxSmartTriageWorkspace';
@@ -245,15 +246,15 @@ export const App: React.FC = () => {
       case 'error-telemetry-unification':
         return <DashboardErrorTelemetryUnificationPanel localModules={mockErrorTelemetryModules} />;
       case 'qa-fail-opi-triage':
-        return <QaFailOpiDecisionTriagePanel taskId="b18c8a8e-532b-4ec4-8461-a99b161fc128" qaTaskId="756d8ac6-89ae-41e9-873b-78807c7c0d67" issueTitle="[JHOS-DEV] Candidate decision confidence timeline" checksRequired={8} risk="medium" checks={[
-          { id: 'C1', behavior: 'Timeline entries render', expectedEvidence: 'Candidate/stage list assertions', kpi: 'decision visibility' },
-          { id: 'C2', behavior: 'Confidence % shown per event', expectedEvidence: 'confidence label assertion', kpi: 'signal clarity' },
-          { id: 'C3', behavior: 'Timestamp shown per event', expectedEvidence: 'timestamp assertions', kpi: 'auditability' },
-          { id: 'C4', behavior: 'Rationale shown as text/title', expectedEvidence: 'rationale + title assertions', kpi: 'explainability' },
-          { id: 'C5', behavior: 'Candidate filter narrows timeline', expectedEvidence: 'filter interaction assertions', kpi: 'focus control' },
-          { id: 'C6', behavior: 'Loading state handled', expectedEvidence: 'loading fallback assertion', kpi: 'state reliability' },
-          { id: 'C7', behavior: 'Empty state handled', expectedEvidence: 'empty fallback assertion', kpi: 'state reliability' },
-          { id: 'C8', behavior: 'Error state handled', expectedEvidence: 'error fallback assertion', kpi: 'state reliability' },
+        return <QaFailOpiDecisionTriagePanel taskId="5ddc317a-2fe2-47fd-bb6f-1966d61ff28d" qaTaskId="54c041a2-f098-4c2a-a62f-94b40db705b3" issueTitle="[JHOS-DEV] Stage transition approval checkpoint modal" checksRequired={8} risk="low" checks={[
+          { id: 'C1', behavior: 'Approver selection required', expectedEvidence: 'validation assertion', kpi: 'approval safety' },
+          { id: 'C2', behavior: 'Rationale validation >=12 chars', expectedEvidence: 'validation assertion', kpi: 'decision quality' },
+          { id: 'C3', behavior: 'Blocker checklist required', expectedEvidence: 'checkbox + validation assertion', kpi: 'handoff safety' },
+          { id: 'C4', behavior: 'Cmd/Ctrl+Enter submit shortcut', expectedEvidence: 'keyboard submit assertion', kpi: 'power-user speed' },
+          { id: 'C5', behavior: 'Mobile-friendly flex/grid layout', expectedEvidence: 'responsive layout implementation', kpi: 'usability' },
+          { id: 'C6', behavior: 'Pending state visible', expectedEvidence: 'pending label assertion', kpi: 'state clarity' },
+          { id: 'C7', behavior: 'Success state visible', expectedEvidence: 'success label assertion', kpi: 'state clarity' },
+          { id: 'C8', behavior: 'Error state visible', expectedEvidence: 'error label assertion', kpi: 'state reliability' },
         ]} />;
       case 'scanner-diagnostics-modal':
         return <ScannerSourceDiagnosticsModal open source={mockScannerDiagnosticsSource} />;
@@ -295,6 +296,8 @@ export const App: React.FC = () => {
         return <ScannerIncidentImpactSummaryBanner />;
       case 'candidate-decision-confidence-timeline':
         return <CandidateDecisionConfidenceTimeline />;
+      case 'stage-transition-approval-checkpoint-modal':
+        return <StageTransitionApprovalCheckpointModal />;
       case 'sourcing-radar':
         return <CandidateSourcingVelocityRadar data={mockSourcingData} />;
       case 'journey-friction-heatmap':
