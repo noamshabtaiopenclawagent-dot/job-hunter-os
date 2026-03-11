@@ -35,6 +35,7 @@ const defaultNavItems: NavItem[] = [
   { id: 'scanner-action-audit-trail-panel', label: 'Scanner Action Audit Trail Panel', icon: '📜' },
   { id: 'candidate-match-drift-indicator-cards', label: 'Candidate Match Drift Indicator Cards', icon: '🎛️' },
   { id: 'pipeline-handoff-readiness-checklist-drawer', label: 'Pipeline Handoff Readiness Checklist Drawer', icon: '📋' },
+  { id: 'scanner-source-sla-breach-heatmap', label: 'Scanner Source SLA Breach Heatmap', icon: '🟥' },
   { id: 'sourcing-radar', label: 'Sourcing Velocity Radar', icon: '📡' },
   { id: 'journey-friction-heatmap', label: 'Journey Friction Heatmap', icon: '🧭' },
   { id: 'workload-heatmap', label: 'Recruiter Workload Heatmap', icon: '🔥' },

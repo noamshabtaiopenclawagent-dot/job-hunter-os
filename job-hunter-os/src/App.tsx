@@ -29,6 +29,7 @@ import { ScannerActionAuditTrailPanel } from './pages/dashboard/ScannerActionAud
 import { CandidateMatchDriftIndicatorCards } from './pages/dashboard/CandidateMatchDriftIndicatorCards';
 import { PipelineConversionFunnel } from './pages/dashboard/PipelineConversionFunnel';
 import { PipelineHandoffReadinessChecklistDrawer } from './pages/dashboard/PipelineHandoffReadinessChecklistDrawer';
+import { ScannerSourceSlaBreachHeatmap } from './pages/dashboard/ScannerSourceSlaBreachHeatmap';
 import { RecruiterWorkloadHeatmap } from './pages/workload/RecruiterWorkloadHeatmap';
 import { OfferStabilityTuner } from './pages/offer/OfferStabilityTuner';
 import { RecruiterPriorityInboxSmartTriageWorkspace } from './pages/triage/RecruiterPriorityInboxSmartTriageWorkspace';
@@ -242,15 +243,15 @@ export const App: React.FC = () => {
       case 'error-telemetry-unification':
         return <DashboardErrorTelemetryUnificationPanel localModules={mockErrorTelemetryModules} />;
       case 'qa-fail-opi-triage':
-        return <QaFailOpiDecisionTriagePanel taskId="7e555fea-de2c-4547-817d-1a4ff86b7c52" qaTaskId="8a6685ec-c012-46c2-b9ad-86a80952d64f" issueTitle="[JHOS-DEV] Pipeline handoff readiness checklist drawer" checksRequired={8} risk="medium" checks={[
-          { id: 'C1', behavior: 'Required-field gate blocks invalid submit', expectedEvidence: 'Submit without checklist completion shows validation', kpi: 'submission safety' },
-          { id: 'C2', behavior: 'Checklist checkbox toggles update state', expectedEvidence: 'Checked-state assertions for all checklist gates', kpi: 'interaction reliability' },
-          { id: 'C3', behavior: 'Esc closes drawer', expectedEvidence: 'Escape key event hides dialog', kpi: 'keyboard accessibility' },
-          { id: 'C4', behavior: 'Cmd/Ctrl+Enter submits ready checklist', expectedEvidence: 'Modifier+Enter triggers submit path', kpi: 'power-user flow' },
-          { id: 'C5', behavior: 'Pending submit state renders', expectedEvidence: 'Submitting message appears after submit action', kpi: 'state feedback' },
-          { id: 'C6', behavior: 'Success submit state renders', expectedEvidence: 'Success message after valid submit', kpi: 'completion confidence' },
-          { id: 'C7', behavior: 'Error submit state renders', expectedEvidence: 'Failure message when simulateError=true', kpi: 'failure handling' },
-          { id: 'C8', behavior: 'Drawer can reopen after close', expectedEvidence: 'Close then Open flow re-renders dialog', kpi: 'recoverability' },
+        return <QaFailOpiDecisionTriagePanel taskId="2fc130df-14b4-4379-8b48-2d0326f731a1" qaTaskId="90c889f2-15a6-47ae-8e00-f5639b0570fb" issueTitle="[JHOS-DEV] Scanner source SLA breach heatmap" checksRequired={8} risk="medium" checks={[
+          { id: 'C1', behavior: 'Hourly per-source heatmap cells render', expectedEvidence: 'Cell label/time assertions', kpi: 'visibility' },
+          { id: 'C2', behavior: 'Severity color scale applied', expectedEvidence: 'High severity style assertion', kpi: 'risk salience' },
+          { id: 'C3', behavior: 'Role filter works', expectedEvidence: 'Role filter interaction + narrowed result', kpi: 'filter precision' },
+          { id: 'C4', behavior: 'Source filter works', expectedEvidence: 'Source filter interaction + narrowed result', kpi: 'filter precision' },
+          { id: 'C5', behavior: 'Hover titles include context', expectedEvidence: 'title attribute assertion', kpi: 'explainability' },
+          { id: 'C6', behavior: 'Cell click opens incident drilldown', expectedEvidence: 'status message assertion after click', kpi: 'drilldown speed' },
+          { id: 'C7', behavior: 'Compact mode supports rendering', expectedEvidence: 'compact render assertion', kpi: 'density flexibility' },
+          { id: 'C8', behavior: 'Loading/empty/error states handled', expectedEvidence: 'state fallback assertions', kpi: 'state reliability' },
         ]} />;
       case 'scanner-diagnostics-modal':
         return <ScannerSourceDiagnosticsModal open source={mockScannerDiagnosticsSource} />;
@@ -286,6 +287,8 @@ export const App: React.FC = () => {
         return <PipelineConversionFunnel />;
       case 'pipeline-handoff-readiness-checklist-drawer':
         return <PipelineHandoffReadinessChecklistDrawer />;
+      case 'scanner-source-sla-breach-heatmap':
+        return <ScannerSourceSlaBreachHeatmap />;
       case 'sourcing-radar':
         return <CandidateSourcingVelocityRadar data={mockSourcingData} />;
       case 'journey-friction-heatmap':
