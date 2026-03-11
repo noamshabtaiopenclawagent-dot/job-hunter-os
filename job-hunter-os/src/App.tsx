@@ -13,6 +13,20 @@ import { EvergreenImprovementCycleBoard } from './pages/dashboard/EvergreenImpro
 import { DashboardErrorTelemetryUnificationPanel } from './pages/dashboard/DashboardErrorTelemetryUnificationPanel';
 import { QaFailOpiDecisionTriagePanel } from './pages/dashboard/QaFailOpiDecisionTriagePanel';
 import { ScannerSourceDiagnosticsModal } from './pages/dashboard/ScannerSourceDiagnosticsModal';
+import { ScannerOutageIncidentBanner } from './pages/dashboard/ScannerOutageIncidentBanner';
+import { CandidateStageSlaClockBadges } from './pages/dashboard/CandidateStageSlaClockBadges';
+import { RoleFunnelDeltaExplorerChart } from './pages/dashboard/RoleFunnelDeltaExplorerChart';
+import { ScannerIncidentHistoryTimelineDrawer } from './pages/dashboard/ScannerIncidentHistoryTimelineDrawer';
+import { MatchShortlistActionRail } from './pages/dashboard/MatchShortlistActionRail';
+import { SourceLevelDedupeImpactDashboardCard } from './pages/dashboard/SourceLevelDedupeImpactDashboardCard';
+import { ScannerRecoveryActionsCommandPalette } from './pages/dashboard/ScannerRecoveryActionsCommandPalette';
+import { CrossRoleStageThroughputComparisonBoard } from './pages/dashboard/CrossRoleStageThroughputComparisonBoard';
+import { CandidateTimelineEventComposer } from './pages/dashboard/CandidateTimelineEventComposer';
+import { ScannerSourcePauseResumeStatusRibbon } from './pages/dashboard/ScannerSourcePauseResumeStatusRibbon';
+import { CandidateShortlistConflictResolverModal } from './pages/dashboard/CandidateShortlistConflictResolverModal';
+import { FunnelStageAnomalyAlertStrip } from './pages/dashboard/FunnelStageAnomalyAlertStrip';
+import { ScannerActionAuditTrailPanel } from './pages/dashboard/ScannerActionAuditTrailPanel';
+import { CandidateMatchDriftIndicatorCards } from './pages/dashboard/CandidateMatchDriftIndicatorCards';
 import { PipelineConversionFunnel } from './pages/dashboard/PipelineConversionFunnel';
 import { RecruiterWorkloadHeatmap } from './pages/workload/RecruiterWorkloadHeatmap';
 import { OfferStabilityTuner } from './pages/offer/OfferStabilityTuner';
@@ -227,19 +241,47 @@ export const App: React.FC = () => {
       case 'error-telemetry-unification':
         return <DashboardErrorTelemetryUnificationPanel localModules={mockErrorTelemetryModules} />;
       case 'qa-fail-opi-triage':
-        return <QaFailOpiDecisionTriagePanel taskId="6541f3e9-5859-4e37-ba5a-d7432aeca322" qaTaskId="4bfd8be8-28d6-486a-b46f-0dfb9f53c06f" issueTitle="[JHOS-DEV] Pipeline conversion funnel with stage drilldown" checksRequired={9} risk="medium" checks={[
-          { id: 'C1', behavior: 'Role filter updates funnel', expectedEvidence: 'Role filter interaction + render assertion', kpi: 'filter precision' },
-          { id: 'C2', behavior: 'Stage conversion metrics display', expectedEvidence: 'Conversion % DOM assertion', kpi: 'metric observability' },
-          { id: 'C3', behavior: 'Drop-off metrics display', expectedEvidence: 'Drop-off count DOM assertion', kpi: 'metric observability' },
-          { id: 'C4', behavior: 'Clickable stage drilldown list', expectedEvidence: 'Stage click -> drilldown list render', kpi: 'drilldown depth' },
-          { id: 'C5', behavior: 'Responsive grid layout', expectedEvidence: 'Grid class assertion', kpi: 'UI responsiveness' },
-          { id: 'C6', behavior: 'Transition-safe styling', expectedEvidence: 'Animation/transition class assertion', kpi: 'UX smoothness' },
-          { id: 'C7', behavior: 'Manual refresh feedback', expectedEvidence: 'Refresh button click -> loading state', kpi: 'sync clarity' },
-          { id: 'C8', behavior: 'Empty state handling', expectedEvidence: 'Empty data -> empty message render', kpi: 'state handling' },
-          { id: 'C9', behavior: 'Error state handling', expectedEvidence: 'Error data -> error message render', kpi: 'state handling' },
+        return <QaFailOpiDecisionTriagePanel taskId="45a7cd5c-e1ec-4e9e-abb4-f89814b513e1" qaTaskId="7eb12ec4-ce0f-480e-972c-40c6c94b7361" issueTitle="[JHOS-DEV] Candidate match drift indicator cards" checksRequired={9} risk="medium" checks={[
+          { id: 'C1', behavior: 'Criteria-level delta chips render', expectedEvidence: 'DOM assertions for skills/domain/seniority/location chips', kpi: 'drift visibility' },
+          { id: 'C2', behavior: 'Tooltip rationales are exposed', expectedEvidence: 'title-based assertions for rationale text', kpi: 'explainability' },
+          { id: 'C3', behavior: 'Role filter narrows card list', expectedEvidence: 'Filter interaction + candidate visibility assertions', kpi: 'filter precision' },
+          { id: 'C4', behavior: 'Sort order toggles by drift value', expectedEvidence: 'Sort interaction + first-card ordering assertion', kpi: 'ranking clarity' },
+          { id: 'C5', behavior: 'Sortable control options are visible', expectedEvidence: 'Sort control/options DOM assertions', kpi: 'interaction discoverability' },
+          { id: 'C6', behavior: 'Loading fallback renders', expectedEvidence: 'loading=true state assertion', kpi: 'state reliability' },
+          { id: 'C7', behavior: 'Empty fallback renders', expectedEvidence: 'data=[] state assertion', kpi: 'state reliability' },
+          { id: 'C8', behavior: 'Error fallback renders', expectedEvidence: 'error prop state assertion', kpi: 'state reliability' },
+          { id: 'C9', behavior: 'Positive deltas include + sign', expectedEvidence: 'DOM assertions for +2 chip labels', kpi: 'signal clarity' },
         ]} />;
       case 'scanner-diagnostics-modal':
         return <ScannerSourceDiagnosticsModal open source={mockScannerDiagnosticsSource} />;
+      case 'scanner-outage-banner':
+        return <ScannerOutageIncidentBanner onOpenDiagnostics={() => setActiveView('scanner-diagnostics-modal')} />;
+      case 'candidate-stage-sla-clock-badges':
+        return <CandidateStageSlaClockBadges />;
+      case 'role-funnel-delta-explorer-chart':
+        return <RoleFunnelDeltaExplorerChart />;
+      case 'scanner-incident-history-timeline-drawer':
+        return <ScannerIncidentHistoryTimelineDrawer />;
+      case 'match-shortlist-action-rail':
+        return <MatchShortlistActionRail />;
+      case 'source-level-dedupe-impact-dashboard-card':
+        return <SourceLevelDedupeImpactDashboardCard />;
+      case 'scanner-recovery-actions-command-palette':
+        return <ScannerRecoveryActionsCommandPalette />;
+      case 'cross-role-stage-throughput-comparison-board':
+        return <CrossRoleStageThroughputComparisonBoard />;
+      case 'candidate-timeline-event-composer':
+        return <CandidateTimelineEventComposer />;
+      case 'scanner-source-pause-resume-status-ribbon':
+        return <ScannerSourcePauseResumeStatusRibbon />;
+      case 'candidate-shortlist-conflict-resolver-modal':
+        return <CandidateShortlistConflictResolverModal />;
+      case 'funnel-stage-anomaly-alert-strip':
+        return <FunnelStageAnomalyAlertStrip />;
+      case 'scanner-action-audit-trail-panel':
+        return <ScannerActionAuditTrailPanel />;
+      case 'candidate-match-drift-indicator-cards':
+        return <CandidateMatchDriftIndicatorCards />;
       case 'sourcing-radar':
         return <CandidateSourcingVelocityRadar data={mockSourcingData} />;
       case 'journey-friction-heatmap':
