@@ -39,6 +39,8 @@ const defaultNavItems: NavItem[] = [
   { id: 'scanner-incident-impact-summary-banner', label: 'Scanner Incident Impact Summary Banner', icon: '📢' },
   { id: 'candidate-decision-confidence-timeline', label: 'Candidate Decision Confidence Timeline', icon: '🧠' },
   { id: 'stage-transition-approval-checkpoint-modal', label: 'Stage Transition Approval Checkpoint Modal', icon: '🛂' },
+  { id: 'scanner-incident-correlation-explorer-panel', label: 'Scanner Incident Correlation Explorer Panel', icon: '🧬' },
+  { id: 'candidate-handoff-risk-timeline-strip', label: 'Candidate Handoff Risk Timeline Strip', icon: '🧵' },
   { id: 'sourcing-radar', label: 'Sourcing Velocity Radar', icon: '📡' },
   { id: 'journey-friction-heatmap', label: 'Journey Friction Heatmap', icon: '🧭' },
   { id: 'workload-heatmap', label: 'Recruiter Workload Heatmap', icon: '🔥' },

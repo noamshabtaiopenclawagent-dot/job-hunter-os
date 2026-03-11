@@ -1,0 +1,17 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90m/Users/opiagent/.openclaw/workspace/openclaw-mission-control/job-hunter-os[39m
+
+ [32m✓[39m src/pages/dashboard/CandidateHandoffRiskTimelineStrip.test.tsx[2m > [22mCandidateHandoffRiskTimelineStrip[2m > [22mC1 renders risk timeline events[32m 38[2mms[22m[39m
+ [32m✓[39m src/pages/dashboard/CandidateHandoffRiskTimelineStrip.test.tsx[2m > [22mCandidateHandoffRiskTimelineStrip[2m > [22mC2 applies risk severity colors[32m 64[2mms[22m[39m
+ [32m✓[39m src/pages/dashboard/CandidateHandoffRiskTimelineStrip.test.tsx[2m > [22mCandidateHandoffRiskTimelineStrip[2m > [22mC3 candidate filter narrows strip[32m 9[2mms[22m[39m
+ [32m✓[39m src/pages/dashboard/CandidateHandoffRiskTimelineStrip.test.tsx[2m > [22mCandidateHandoffRiskTimelineStrip[2m > [22mC4 hover title includes timeline context[32m 4[2mms[22m[39m
+ [32m✓[39m src/pages/dashboard/CandidateHandoffRiskTimelineStrip.test.tsx[2m > [22mCandidateHandoffRiskTimelineStrip[2m > [22mC5 click opens risk detail[32m 6[2mms[22m[39m
+ [32m✓[39m src/pages/dashboard/CandidateHandoffRiskTimelineStrip.test.tsx[2m > [22mCandidateHandoffRiskTimelineStrip[2m > [22mC6 handles loading state[32m 1[2mms[22m[39m
+ [32m✓[39m src/pages/dashboard/CandidateHandoffRiskTimelineStrip.test.tsx[2m > [22mCandidateHandoffRiskTimelineStrip[2m > [22mC7 handles empty state[32m 0[2mms[22m[39m
+ [32m✓[39m src/pages/dashboard/CandidateHandoffRiskTimelineStrip.test.tsx[2m > [22mCandidateHandoffRiskTimelineStrip[2m > [22mC8 handles error state[32m 1[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 18:50:41
+[2m   Duration [22m 838ms[2m (transform 35ms, setup 72ms, import 65ms, tests 124ms, environment 456ms)[22m
+
