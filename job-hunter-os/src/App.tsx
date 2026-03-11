@@ -28,6 +28,7 @@ import { FunnelStageAnomalyAlertStrip } from './pages/dashboard/FunnelStageAnoma
 import { ScannerActionAuditTrailPanel } from './pages/dashboard/ScannerActionAuditTrailPanel';
 import { CandidateMatchDriftIndicatorCards } from './pages/dashboard/CandidateMatchDriftIndicatorCards';
 import { PipelineConversionFunnel } from './pages/dashboard/PipelineConversionFunnel';
+import { PipelineHandoffReadinessChecklistDrawer } from './pages/dashboard/PipelineHandoffReadinessChecklistDrawer';
 import { RecruiterWorkloadHeatmap } from './pages/workload/RecruiterWorkloadHeatmap';
 import { OfferStabilityTuner } from './pages/offer/OfferStabilityTuner';
 import { RecruiterPriorityInboxSmartTriageWorkspace } from './pages/triage/RecruiterPriorityInboxSmartTriageWorkspace';
@@ -241,16 +242,15 @@ export const App: React.FC = () => {
       case 'error-telemetry-unification':
         return <DashboardErrorTelemetryUnificationPanel localModules={mockErrorTelemetryModules} />;
       case 'qa-fail-opi-triage':
-        return <QaFailOpiDecisionTriagePanel taskId="45a7cd5c-e1ec-4e9e-abb4-f89814b513e1" qaTaskId="7eb12ec4-ce0f-480e-972c-40c6c94b7361" issueTitle="[JHOS-DEV] Candidate match drift indicator cards" checksRequired={9} risk="medium" checks={[
-          { id: 'C1', behavior: 'Criteria-level delta chips render', expectedEvidence: 'DOM assertions for skills/domain/seniority/location chips', kpi: 'drift visibility' },
-          { id: 'C2', behavior: 'Tooltip rationales are exposed', expectedEvidence: 'title-based assertions for rationale text', kpi: 'explainability' },
-          { id: 'C3', behavior: 'Role filter narrows card list', expectedEvidence: 'Filter interaction + candidate visibility assertions', kpi: 'filter precision' },
-          { id: 'C4', behavior: 'Sort order toggles by drift value', expectedEvidence: 'Sort interaction + first-card ordering assertion', kpi: 'ranking clarity' },
-          { id: 'C5', behavior: 'Sortable control options are visible', expectedEvidence: 'Sort control/options DOM assertions', kpi: 'interaction discoverability' },
-          { id: 'C6', behavior: 'Loading fallback renders', expectedEvidence: 'loading=true state assertion', kpi: 'state reliability' },
-          { id: 'C7', behavior: 'Empty fallback renders', expectedEvidence: 'data=[] state assertion', kpi: 'state reliability' },
-          { id: 'C8', behavior: 'Error fallback renders', expectedEvidence: 'error prop state assertion', kpi: 'state reliability' },
-          { id: 'C9', behavior: 'Positive deltas include + sign', expectedEvidence: 'DOM assertions for +2 chip labels', kpi: 'signal clarity' },
+        return <QaFailOpiDecisionTriagePanel taskId="7e555fea-de2c-4547-817d-1a4ff86b7c52" qaTaskId="8a6685ec-c012-46c2-b9ad-86a80952d64f" issueTitle="[JHOS-DEV] Pipeline handoff readiness checklist drawer" checksRequired={8} risk="medium" checks={[
+          { id: 'C1', behavior: 'Required-field gate blocks invalid submit', expectedEvidence: 'Submit without checklist completion shows validation', kpi: 'submission safety' },
+          { id: 'C2', behavior: 'Checklist checkbox toggles update state', expectedEvidence: 'Checked-state assertions for all checklist gates', kpi: 'interaction reliability' },
+          { id: 'C3', behavior: 'Esc closes drawer', expectedEvidence: 'Escape key event hides dialog', kpi: 'keyboard accessibility' },
+          { id: 'C4', behavior: 'Cmd/Ctrl+Enter submits ready checklist', expectedEvidence: 'Modifier+Enter triggers submit path', kpi: 'power-user flow' },
+          { id: 'C5', behavior: 'Pending submit state renders', expectedEvidence: 'Submitting message appears after submit action', kpi: 'state feedback' },
+          { id: 'C6', behavior: 'Success submit state renders', expectedEvidence: 'Success message after valid submit', kpi: 'completion confidence' },
+          { id: 'C7', behavior: 'Error submit state renders', expectedEvidence: 'Failure message when simulateError=true', kpi: 'failure handling' },
+          { id: 'C8', behavior: 'Drawer can reopen after close', expectedEvidence: 'Close then Open flow re-renders dialog', kpi: 'recoverability' },
         ]} />;
       case 'scanner-diagnostics-modal':
         return <ScannerSourceDiagnosticsModal open source={mockScannerDiagnosticsSource} />;
@@ -282,6 +282,10 @@ export const App: React.FC = () => {
         return <ScannerActionAuditTrailPanel />;
       case 'candidate-match-drift-indicator-cards':
         return <CandidateMatchDriftIndicatorCards />;
+      case 'pipeline-funnel':
+        return <PipelineConversionFunnel />;
+      case 'pipeline-handoff-readiness-checklist-drawer':
+        return <PipelineHandoffReadinessChecklistDrawer />;
       case 'sourcing-radar':
         return <CandidateSourcingVelocityRadar data={mockSourcingData} />;
       case 'journey-friction-heatmap':

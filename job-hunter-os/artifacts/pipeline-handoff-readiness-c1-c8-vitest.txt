@@ -1,0 +1,17 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90m/Users/opiagent/.openclaw/workspace/openclaw-mission-control/job-hunter-os[39m
+
+ [32m✓[39m src/pages/dashboard/PipelineHandoffReadinessChecklistDrawer.test.tsx[2m > [22mPipelineHandoffReadinessChecklistDrawer[2m > [22mC1: blocks submit when required-field gate is incomplete[32m 39[2mms[22m[39m
+ [32m✓[39m src/pages/dashboard/PipelineHandoffReadinessChecklistDrawer.test.tsx[2m > [22mPipelineHandoffReadinessChecklistDrawer[2m > [22mC2: checkbox toggles work for all checklist gates[32m 6[2mms[22m[39m
+ [32m✓[39m src/pages/dashboard/PipelineHandoffReadinessChecklistDrawer.test.tsx[2m > [22mPipelineHandoffReadinessChecklistDrawer[2m > [22mC3: Esc closes drawer[32m 57[2mms[22m[39m
+ [32m✓[39m src/pages/dashboard/PipelineHandoffReadinessChecklistDrawer.test.tsx[2m > [22mPipelineHandoffReadinessChecklistDrawer[2m > [22mC4: Cmd/Ctrl + Enter submits when checklist is ready[32m 237[2mms[22m[39m
+ [32m✓[39m src/pages/dashboard/PipelineHandoffReadinessChecklistDrawer.test.tsx[2m > [22mPipelineHandoffReadinessChecklistDrawer[2m > [22mC5: pending state is shown while submitting[32m 20[2mms[22m[39m
+ [32m✓[39m src/pages/dashboard/PipelineHandoffReadinessChecklistDrawer.test.tsx[2m > [22mPipelineHandoffReadinessChecklistDrawer[2m > [22mC6: success state appears after valid submit[32m 225[2mms[22m[39m
+ [32m✓[39m src/pages/dashboard/PipelineHandoffReadinessChecklistDrawer.test.tsx[2m > [22mPipelineHandoffReadinessChecklistDrawer[2m > [22mC7: error state appears when submit fails[32m 234[2mms[22m[39m
+ [32m✓[39m src/pages/dashboard/PipelineHandoffReadinessChecklistDrawer.test.tsx[2m > [22mPipelineHandoffReadinessChecklistDrawer[2m > [22mC8: can reopen drawer after close action[32m 50[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 18:17:25
+[2m   Duration [22m 1.33s[2m (transform 31ms, setup 36ms, import 53ms, tests 868ms, environment 263ms)[22m
+
