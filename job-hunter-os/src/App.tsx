@@ -13,6 +13,7 @@ import { EvergreenImprovementCycleBoard } from './pages/dashboard/EvergreenImpro
 import { DashboardErrorTelemetryUnificationPanel } from './pages/dashboard/DashboardErrorTelemetryUnificationPanel';
 import { QaFailOpiDecisionTriagePanel } from './pages/dashboard/QaFailOpiDecisionTriagePanel';
 import { ScannerSourceDiagnosticsModal } from './pages/dashboard/ScannerSourceDiagnosticsModal';
+import { PipelineConversionFunnel } from './pages/dashboard/PipelineConversionFunnel';
 import { RecruiterWorkloadHeatmap } from './pages/workload/RecruiterWorkloadHeatmap';
 import { OfferStabilityTuner } from './pages/offer/OfferStabilityTuner';
 import { RecruiterPriorityInboxSmartTriageWorkspace } from './pages/triage/RecruiterPriorityInboxSmartTriageWorkspace';
