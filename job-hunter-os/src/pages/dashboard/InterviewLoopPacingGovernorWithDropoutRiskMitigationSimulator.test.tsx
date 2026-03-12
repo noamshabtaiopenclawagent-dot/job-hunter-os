@@ -10,6 +10,6 @@ describe('InterviewLoopPacingGovernorWithDropoutRiskMitigationSimulator', () => 
 
   it('renders the description', () => {
     render(<InterviewLoopPacingGovernorWithDropoutRiskMitigationSimulator />);
-    expect(screen.getByText('Mitigate dropout risks with pacing simulation.')).toBeInTheDocument();
+    expect(screen.getByText('Manage pacing and simulate dropout risk mitigation.')).toBeInTheDocument();
   });
 });
