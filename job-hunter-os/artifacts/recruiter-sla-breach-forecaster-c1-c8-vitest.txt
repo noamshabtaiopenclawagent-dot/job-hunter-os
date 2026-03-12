@@ -1,0 +1,10 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90m/Users/opiagent/.openclaw/workspace/openclaw-mission-control/job-hunter-os[39m
+
+ [32m✓[39m src/pages/dashboard/RecruiterSlaBreachForecasterWithInterventionConfidenceStacking.test.tsx[2m > [22mRecruiterSlaBreachForecasterWithInterventionConfidenceStacking[2m > [22mrenders baseline plus loading/error/empty states[32m 39[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m   Start at [22m 01:05:33
+[2m   Duration [22m 932ms[2m (transform 38ms, setup 82ms, import 84ms, tests 39ms, environment 584ms)[22m
+

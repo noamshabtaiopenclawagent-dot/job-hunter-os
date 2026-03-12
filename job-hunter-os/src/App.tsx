@@ -35,6 +35,27 @@ import { CandidateDecisionConfidenceTimeline } from './pages/dashboard/Candidate
 import { StageTransitionApprovalCheckpointModal } from './pages/dashboard/StageTransitionApprovalCheckpointModal';
 import { ScannerIncidentCorrelationExplorerPanel } from './pages/dashboard/ScannerIncidentCorrelationExplorerPanel';
 import { CandidateHandoffRiskTimelineStrip } from './pages/dashboard/CandidateHandoffRiskTimelineStrip';
+import { FollowUpQueueSlaBreachNotifierToastCenter } from './pages/dashboard/FollowUpQueueSlaBreachNotifierToastCenter';
+import { CandidateMomentumDecayAlertRail } from './pages/dashboard/CandidateMomentumDecayAlertRail';
+import { ApprovalSlaBreachRemediationDrawer } from './pages/dashboard/ApprovalSlaBreachRemediationDrawer';
+import { OfferNegotiationRiskGuardrailPanelWithConcessionStopLossAlert } from './pages/dashboard/OfferNegotiationRiskGuardrailPanelWithConcessionStopLossAlert';
+import { InterviewThroughputPressureMapWithDynamicBottleneckRedistribution } from './pages/dashboard/InterviewThroughputPressureMapWithDynamicBottleneckRedistribution';
+import { RecruiterPipelineInterventionMemoryBoardWithTacticEffectiveness } from './pages/dashboard/RecruiterPipelineInterventionMemoryBoardWithTacticEffectiveness';
+import { OfferAcceptancePathwaySequencerWithRiskAdjustedStepOptimization } from './pages/dashboard/OfferAcceptancePathwaySequencerWithRiskAdjustedStepOptimization';
+import { InterviewCalibrationVarianceHeatgridWithCorrectiveAssignmentQueue } from './pages/dashboard/InterviewCalibrationVarianceHeatgridWithCorrectiveAssignmentQueue';
+import { RecruiterSlaBreachForecasterWithInterventionConfidenceStacking } from './pages/dashboard/RecruiterSlaBreachForecasterWithInterventionConfidenceStacking';
+import { CandidateReEngagementSequencingStudioWithAttritionRiskGating } from './pages/dashboard/CandidateReEngagementSequencingStudioWithAttritionRiskGating';
+import { InterviewPanelFairnessBalancerWithBiasDriftInterventionPlanner } from './pages/dashboard/InterviewPanelFairnessBalancerWithBiasDriftInterventionPlanner';
+import { OfferApprovalLatencyCommandCenterWithDependencyCriticalPathSurfacing } from './pages/dashboard/OfferApprovalLatencyCommandCenterWithDependencyCriticalPathSurfacing';
+import { CandidateStageHandoffReliabilityMonitorWithBreakageRootCauseAttribution } from './pages/dashboard/CandidateStageHandoffReliabilityMonitorWithBreakageRootCauseAttribution';
+import { RecruiterCapacityAllocationSandboxWithQueueAgingMitigationOptions } from './pages/dashboard/RecruiterCapacityAllocationSandboxWithQueueAgingMitigationOptions';
+import { CandidateInterviewSignalCoherenceAnalyzerWithContradictionResolution } from './pages/dashboard/CandidateInterviewSignalCoherenceAnalyzerWithContradictionResolution';
+import { OfferDeclinePreventionCockpitWithObjectionPatternRecoverySimulation } from './pages/dashboard/OfferDeclinePreventionCockpitWithObjectionPatternRecoverySimulation';
+import { RecruiterFollowUpCadenceOptimizerWithResponseFatigueGuardrails } from './pages/dashboard/RecruiterFollowUpCadenceOptimizerWithResponseFatigueGuardrails';
+import { PanelSchedulingConflictResolutionBoardWithSlaPreservingSwapEngine } from './pages/dashboard/PanelSchedulingConflictResolutionBoardWithSlaPreservingSwapEngine';
+import { CandidateIntentVolatilityTrackerWithInterventionTimingPredictor } from './pages/dashboard/CandidateIntentVolatilityTrackerWithInterventionTimingPredictor';
+import { InterviewDebriefConsensusStabilizerWithDissentResolutionPathway } from './pages/dashboard/InterviewDebriefConsensusStabilizerWithDissentResolutionPathway';
+import { InterviewDebriefConsensusStabilizerWithDissentResolutionPathway } from './pages/dashboard/InterviewDebriefConsensusStabilizerWithDissentResolutionPathway';
 import { RecruiterWorkloadHeatmap } from './pages/workload/RecruiterWorkloadHeatmap';
 import { OfferStabilityTuner } from './pages/offer/OfferStabilityTuner';
 import { RecruiterPriorityInboxSmartTriageWorkspace } from './pages/triage/RecruiterPriorityInboxSmartTriageWorkspace';
@@ -248,15 +269,15 @@ export const App: React.FC = () => {
       case 'error-telemetry-unification':
         return <DashboardErrorTelemetryUnificationPanel localModules={mockErrorTelemetryModules} />;
       case 'qa-fail-opi-triage':
-        return <QaFailOpiDecisionTriagePanel taskId="32b2cd46-2608-4b90-b56a-1bfc962296fb" qaTaskId="0dce62f5-4695-4c08-a940-f5d1db033322" issueTitle="[JHOS-DEV] Candidate handoff risk timeline strip" checksRequired={8} risk="medium" checks={[
-          { id: 'C1', behavior: 'Risk timeline strip renders', expectedEvidence: 'timeline item assertions', kpi: 'risk visibility' },
-          { id: 'C2', behavior: 'Risk severity color coding', expectedEvidence: 'style assertions', kpi: 'risk salience' },
-          { id: 'C3', behavior: 'Candidate filter narrows strip', expectedEvidence: 'filter interaction assertions', kpi: 'focus control' },
-          { id: 'C4', behavior: 'Hover titles provide context', expectedEvidence: 'title assertions', kpi: 'explainability' },
-          { id: 'C5', behavior: 'Click opens risk detail', expectedEvidence: 'click + detail assertion', kpi: 'drilldown speed' },
-          { id: 'C6', behavior: 'Loading state handled', expectedEvidence: 'loading fallback assertion', kpi: 'state reliability' },
-          { id: 'C7', behavior: 'Empty state handled', expectedEvidence: 'empty fallback assertion', kpi: 'state reliability' },
-          { id: 'C8', behavior: 'Error state handled', expectedEvidence: 'error fallback assertion', kpi: 'state reliability' },
+        return <QaFailOpiDecisionTriagePanel taskId="0a080448-d549-4c80-8f97-ad2f5baa6b97" qaTaskId="97a2c8c2-ae13-4328-a874-78ba8fda5066" issueTitle="[JHOS-DEV] Interview debrief consensus stabilizer with dissent-resolution pathway" checksRequired={8} risk="medium" checks={[
+          { id: 'C1', behavior: 'Debrief items render', expectedEvidence: 'card assertions', kpi: 'debrief visibility' },
+          { id: 'C2', behavior: 'Consensus scores shown', expectedEvidence: 'consensus metric assertions', kpi: 'consensus clarity' },
+          { id: 'C3', behavior: 'Dissenting reviewers shown', expectedEvidence: 'dissenter assertions', kpi: 'dissent visibility' },
+          { id: 'C4', behavior: 'Resolution pathway plan shown', expectedEvidence: 'resolution plan assertions', kpi: 'actionability' },
+          { id: 'C5', behavior: 'Hover context for dissent reasons', expectedEvidence: 'title attribute assertions', kpi: 'explainability' },
+          { id: 'C6', behavior: 'Loading state explicit', expectedEvidence: 'loading fallback assertion', kpi: 'state reliability' },
+          { id: 'C7', behavior: 'Error state explicit', expectedEvidence: 'error fallback assertion', kpi: 'state reliability' },
+          { id: 'C8', behavior: 'Empty state explicit', expectedEvidence: 'empty fallback assertion', kpi: 'state reliability' },
         ]} />;
       case 'scanner-diagnostics-modal':
         return <ScannerSourceDiagnosticsModal open source={mockScannerDiagnosticsSource} />;
@@ -304,6 +325,46 @@ export const App: React.FC = () => {
         return <ScannerIncidentCorrelationExplorerPanel />;
       case 'candidate-handoff-risk-timeline-strip':
         return <CandidateHandoffRiskTimelineStrip />;
+      case 'follow-up-queue-sla-breach-notifier-toast-center':
+        return <FollowUpQueueSlaBreachNotifierToastCenter />;
+      case 'candidate-momentum-decay-alert-rail':
+        return <CandidateMomentumDecayAlertRail />;
+      case 'approval-sla-breach-remediation-drawer':
+        return <ApprovalSlaBreachRemediationDrawer />;
+      case 'offer-negotiation-risk-guardrail-panel-with-concession-stop-loss-alert':
+        return <OfferNegotiationRiskGuardrailPanelWithConcessionStopLossAlert />;
+      case 'interview-throughput-pressure-map-with-dynamic-bottleneck-redistribution':
+        return <InterviewThroughputPressureMapWithDynamicBottleneckRedistribution />;
+      case 'recruiter-pipeline-intervention-memory-board-with-tactic-effectiveness':
+        return <RecruiterPipelineInterventionMemoryBoardWithTacticEffectiveness />;
+      case 'offer-acceptance-pathway-sequencer-with-risk-adjusted-step-optimization':
+        return <OfferAcceptancePathwaySequencerWithRiskAdjustedStepOptimization />;
+      case 'interview-calibration-variance-heatgrid-with-corrective-assignment-queue':
+        return <InterviewCalibrationVarianceHeatgridWithCorrectiveAssignmentQueue />;
+      case 'recruiter-sla-breach-forecaster-with-intervention-confidence-stacking':
+        return <RecruiterSlaBreachForecasterWithInterventionConfidenceStacking />;
+      case 'candidate-re-engagement-sequencing-studio-with-attrition-risk-gating':
+        return <CandidateReEngagementSequencingStudioWithAttritionRiskGating />;
+      case 'interview-panel-fairness-balancer-with-bias-drift-intervention-planner':
+        return <InterviewPanelFairnessBalancerWithBiasDriftInterventionPlanner />;
+      case 'offer-approval-latency-command-center-with-dependency-critical-path-surfacing':
+        return <OfferApprovalLatencyCommandCenterWithDependencyCriticalPathSurfacing />;
+      case 'candidate-stage-handoff-reliability-monitor-with-breakage-root-cause-attribution':
+        return <CandidateStageHandoffReliabilityMonitorWithBreakageRootCauseAttribution />;
+      case 'recruiter-capacity-allocation-sandbox-with-queue-aging-mitigation-options':
+        return <RecruiterCapacityAllocationSandboxWithQueueAgingMitigationOptions />;
+      case 'candidate-interview-signal-coherence-analyzer-with-contradiction-resolution':
+        return <CandidateInterviewSignalCoherenceAnalyzerWithContradictionResolution />;
+      case 'offer-decline-prevention-cockpit-with-objection-pattern-recovery-simulation':
+        return <OfferDeclinePreventionCockpitWithObjectionPatternRecoverySimulation />;
+      case 'recruiter-follow-up-cadence-optimizer-with-response-fatigue-guardrails':
+        return <RecruiterFollowUpCadenceOptimizerWithResponseFatigueGuardrails />;
+      case 'panel-scheduling-conflict-resolution-board-with-sla-preserving-swap-engine':
+        return <PanelSchedulingConflictResolutionBoardWithSlaPreservingSwapEngine />;
+      case 'candidate-intent-volatility-tracker-with-intervention-timing-predictor':
+        return <CandidateIntentVolatilityTrackerWithInterventionTimingPredictor />;
+      case 'interview-debrief-consensus-stabilizer-with-dissent-resolution-pathway':
+        return <InterviewDebriefConsensusStabilizerWithDissentResolutionPathway />;
       case 'sourcing-radar':
         return <CandidateSourcingVelocityRadar data={mockSourcingData} />;
       case 'journey-friction-heatmap':
@@ -340,3 +401,4 @@ export const App: React.FC = () => {
 
 export default App;
 
+// modified

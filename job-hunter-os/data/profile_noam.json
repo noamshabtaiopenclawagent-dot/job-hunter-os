@@ -1,0 +1,97 @@
+{
+  "full_name": "Noam Shabtai",
+  "email": "noam.shabtai66@gmail.com",
+  "phone": "0509225033",
+  "current_role": "Data & Business Analyst, SolarEdge",
+  "years_experience_estimate": 3,
+  "target_roles": [
+    "Data Analyst",
+    "Business Analyst",
+    "Product Analyst",
+    "BI Analyst",
+    "FinOps Analyst"
+  ],
+  "core_skills": {
+    "technical": [
+      "SQL",
+      "Python",
+      "Power BI",
+      "Qlik Sense",
+      "Tableau",
+      "ETL",
+      "Data Warehousing",
+      "SSIS",
+      "MongoDB",
+      "MySQL",
+      "SSMS",
+      "Excel"
+    ],
+    "business": [
+      "KPI design",
+      "Budget management",
+      "Cost optimization",
+      "Cross-functional analysis",
+      "Operational performance improvement",
+      "Forecasting"
+    ]
+  },
+  "achievements": [
+    {
+      "title": "IT Budget optimization",
+      "impact": "~$1M savings",
+      "details": "Built Power BI dashboards comparing actual vs planned spend and supported planning with multiple teams"
+    },
+    {
+      "title": "FinOps cloud dashboard",
+      "impact": "Cost reductions",
+      "details": "Delivered on-demand analysis dashboard with API integrations"
+    },
+    {
+      "title": "Global asset visibility",
+      "impact": "Faster informed decisions",
+      "details": "Implemented centralized Power BI dashboard for IT assets"
+    }
+  ],
+  "education": [
+    {
+      "institution": "The Open University",
+      "program": "Economics & Management Degree",
+      "status": "In Progress"
+    },
+    {
+      "institution": "HackerU",
+      "program": "Data Analyst",
+      "status": "Completed"
+    }
+  ],
+  "languages": [
+    "Hebrew (Fluent)",
+    "English (Fluent)"
+  ],
+  "keywords_for_matching": [
+    "SQL",
+    "Python",
+    "Power BI",
+    "Qlik Sense",
+    "Tableau",
+    "ETL",
+    "Data Warehouse",
+    "FinOps",
+    "KPI",
+    "Budget",
+    "Business Analyst",
+    "Data Analyst"
+  ],
+  "blocked_roles_seniority": [
+    "Senior Director",
+    "Principal Architect",
+    "VP"
+  ],
+  "preferred_locations": [
+    "Israel"
+  ],
+  "location_policy": "israel_only",
+  "experience_years": 4,
+  "target_experience_range_years": [2,5],
+  "profile_summary": "Data & Business Analyst with hands-on SQL/Python/BI execution, strong KPI and cost optimization delivery, and proven budget impact (~$1M savings). Experienced in ETL, dashboards, and operational analytics across enterprise environments."
+}
