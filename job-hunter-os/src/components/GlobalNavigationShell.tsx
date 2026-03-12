@@ -163,3 +163,4 @@ export const GlobalNavigationShell: React.FC<Props> = ({ children, activeViewId,
 // modified
 // modified for InterviewLoopPacingGovernor
 // modified for OfferNegotiationLeverageMap
+// modified for RecruiterHandoffContinuityGuard

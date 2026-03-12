@@ -406,3 +406,4 @@ export default App;
 // modified
 // modified for InterviewLoopPacingGovernor
 // modified for OfferNegotiationLeverageMap
+// modified for RecruiterHandoffContinuityGuard

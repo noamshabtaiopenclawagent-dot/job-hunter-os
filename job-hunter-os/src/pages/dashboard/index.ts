@@ -9,3 +9,4 @@ export * from './OfferPackageCompetitivenessRadarWithConcessionEfficiencyOptimiz
 export * from './InterviewLoopPacingGovernorWithDropoutRiskMitigationSimulator';
 export * from './InterviewLoopPacingGovernorWithDropoutRiskMitigationSimulator';
 export * from './OfferNegotiationLeverageMapWithConcessionTimingSensitivitySimulator';
+export * from './RecruiterHandoffContinuityGuardWithOwnershipGapRecoveryPlanner';

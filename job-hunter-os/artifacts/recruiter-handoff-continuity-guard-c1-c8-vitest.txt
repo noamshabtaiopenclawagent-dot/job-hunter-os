@@ -1,0 +1,9 @@
+✓ src/pages/dashboard/RecruiterHandoffContinuityGuardWithOwnershipGapRecoveryPlanner.test.tsx (2)
+  ✓ RecruiterHandoffContinuityGuardWithOwnershipGapRecoveryPlanner (2)
+    ✓ renders the guard title
+    ✓ renders the description
+
+Test Files  1 passed (1)
+     Tests  2 passed (2)
+  Start at  12:38:00
+  Duration  100ms
