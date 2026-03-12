@@ -1,0 +1,9 @@
+✓ src/pages/dashboard/OfferNegotiationLeverageMapWithConcessionTimingSensitivitySimulator.test.tsx (2)
+  ✓ OfferNegotiationLeverageMapWithConcessionTimingSensitivitySimulator (2)
+    ✓ renders the map title
+    ✓ renders the description
+
+Test Files  1 passed (1)
+     Tests  2 passed (2)
+  Start at  11:20:00
+  Duration  100ms
