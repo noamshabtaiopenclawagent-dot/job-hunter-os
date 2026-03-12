@@ -1,13 +1,24 @@
 "use client";
 
 import Link from "next/link";
+import { useMemo } from "react";
 
 import {
   SignInButton,
   SignedIn,
   SignedOut,
   isClerkEnabled,
+  useAuth,
 } from "@/auth/clerk";
+import { ApiError } from "@/api/mutator";
+import {
+  type listBoardsApiV1BoardsGetResponse,
+  useListBoardsApiV1BoardsGet,
+} from "@/api/generated/boards/boards";
+import {
+  type listAgentsApiV1AgentsGetResponse,
+  useListAgentsApiV1AgentsGet,
+} from "@/api/generated/agents/agents";
 
 const ArrowIcon = () => (
   <svg
@@ -29,6 +40,46 @@ const ArrowIcon = () => (
 
 export function LandingHero() {
   const clerkEnabled = isClerkEnabled();
+  const { isSignedIn } = useAuth();
+
+  const boardsQuery = useListBoardsApiV1BoardsGet<
+    listBoardsApiV1BoardsGetResponse,
+    ApiError
+  >(undefined, {
+    query: {
+      enabled: Boolean(isSignedIn),
+      refetchInterval: 30_000,
+      refetchOnMount: "always",
+    },
+  });
+
+  const agentsQuery = useListAgentsApiV1AgentsGet<
+    listAgentsApiV1AgentsGetResponse,
+    ApiError
+  >(undefined, {
+    query: {
+      enabled: Boolean(isSignedIn),
+      refetchInterval: 30_000,
+      refetchOnMount: "always",
+    },
+  });
+
+  const liveCounts = useMemo(() => {
+    const boards =
+      boardsQuery.data?.status === 200
+        ? (boardsQuery.data.data.items?.length ?? 0)
+        : null;
+    const agents =
+      agentsQuery.data?.status === 200
+        ? (agentsQuery.data.data.items?.length ?? 0)
+        : null;
+
+    return {
+      boards,
+      agents,
+      tasks: null as number | null,
+    };
+  }, [boardsQuery.data, agentsQuery.data]);
 
   return (
     <>
@@ -119,9 +170,20 @@ export function LandingHero() {
           </div>
           <div className="metrics-row">
             {[
-              { label: "Boards", value: "12" },
-              { label: "Agents", value: "08" },
-              { label: "Tasks", value: "46" },
+              {
+                label: "Boards",
+                value:
+                  liveCounts.boards === null ? "--" : String(liveCounts.boards),
+              },
+              {
+                label: "Agents",
+                value:
+                  liveCounts.agents === null ? "--" : String(liveCounts.agents),
+              },
+              {
+                label: "Tasks",
+                value: liveCounts.tasks === null ? "--" : String(liveCounts.tasks),
+              },
             ].map((item) => (
               <div key={item.label} className="metric">
                 <div className="metric-value">{item.value}</div>
