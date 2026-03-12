@@ -1,0 +1,9 @@
+✓ src/pages/dashboard/InterviewLoopPacingGovernorWithDropoutRiskMitigationSimulator.test.tsx (2)
+  ✓ InterviewLoopPacingGovernorWithDropoutRiskMitigationSimulator (2)
+    ✓ renders the governor title
+    ✓ renders the description
+
+Test Files  1 passed (1)
+     Tests  2 passed (2)
+  Start at  11:09:00
+  Duration  100ms
