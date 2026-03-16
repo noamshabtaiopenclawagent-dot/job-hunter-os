@@ -64,6 +64,8 @@ const defaultNavItems: NavItem[] = [
   { id: 'sourcing-radar', label: 'Sourcing Velocity Radar', icon: '📡' },
   { id: 'journey-friction-heatmap', label: 'Journey Friction Heatmap', icon: '🧭' },
   { id: 'workload-heatmap', label: 'Recruiter Workload Heatmap', icon: '🔥' },
+  { id: 'candidate-source-quality-explorer', label: 'Source Quality Explorer', icon: '🔍' },
+  { id: 'recruiter-handoff-continuity-guard', label: 'Recruiter Handoff Guard', icon: '🛡️' },
   { id: 'priority-inbox-triage', label: 'Priority Inbox Smart Triage', icon: '📥' },
   { id: 'sla-anticipation', label: 'SLA Breach Anticipation', icon: '⏱️' },
   { id: 'offer-stability', label: 'Offer Negotiation Stability', icon: '🤝' },
@@ -158,9 +160,3 @@ export const GlobalNavigationShell: React.FC<Props> = ({ children, activeViewId,
     </div>
   );
 };
-// modified
-// modified
-// modified
-// modified for InterviewLoopPacingGovernor
-// modified for OfferNegotiationLeverageMap
-// modified for RecruiterHandoffContinuityGuard

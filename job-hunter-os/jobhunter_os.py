@@ -40,6 +40,7 @@ DEFAULT_PROFILE = {
 @dataclass
 class JobLead:
     source: str
+    source_origin: str
     title: str
     company: str
     location: str
@@ -55,6 +56,7 @@ class ScoredLead:
     location: str
     url: str
     source: str
+    source_origin: str
     score: int
     must_hits: List[str]
     nice_hits: List[str]
@@ -80,6 +82,7 @@ def scanner_remotive(query: str, limit: int) -> List[JobLead]:
         leads.append(
             JobLead(
                 source="remotive",
+                source_origin=url,
                 title=j.get("title", ""),
                 company=j.get("company_name", ""),
                 location=j.get("candidate_required_location", ""),
@@ -110,6 +113,7 @@ def scanner_linkedin(query: str, limit: int) -> List[JobLead]:
             leads.append(
                 JobLead(
                     source="linkedin",
+                    source_origin=url,
                     title=titles[i].strip(),
                     company=comp.strip(),
                     location=locations[i].strip() if i < len(locations) else "Israel",
@@ -135,6 +139,7 @@ def scanner_remoteok(query: str, limit: int) -> List[JobLead]:
         leads.append(
             JobLead(
                 source="remoteok",
+                source_origin="https://remoteok.com/api",
                 title=j.get("position", ""),
                 company=j.get("company", ""),
                 location=(j.get("location") or "Remote"),
@@ -191,6 +196,7 @@ def score_lead(lead: JobLead, profile: Dict[str, Any]) -> ScoredLead:
         location=lead.location,
         url=lead.url,
         source=lead.source,
+        source_origin=lead.source_origin,
         score=score,
         must_hits=must_hits,
         nice_hits=nice_hits,
@@ -233,6 +239,38 @@ def load_profile(profile_path: str | None) -> Dict[str, Any]:
     }
 
 
+import sqlite3
+
+def init_db(db_path: str):
+    conn = sqlite3.connect(db_path)
+    cur = conn.cursor()
+    cur.execute('''
+        CREATE TABLE IF NOT EXISTS jobs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT,
+            company TEXT,
+            location TEXT,
+            url TEXT,
+            source TEXT,
+            source_origin TEXT,
+            score INTEGER,
+            stage TEXT,
+            ts TEXT
+        )
+    ''')
+    conn.commit()
+    return conn
+
+def save_to_db(conn, scored_leads: List[ScoredLead], ts: str):
+    cur = conn.cursor()
+    for s in scored_leads:
+        cur.execute('''
+            INSERT INTO jobs (title, company, location, url, source, source_origin, score, stage, ts)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (s.title, s.company, s.location, s.url, s.source, s.source_origin, s.score, s.stage, ts))
+    conn.commit()
+
+
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--query", default="data analyst")
@@ -262,6 +300,11 @@ def main() -> None:
     raw_path = os.path.join(DATA_DIR, "raw_jobs.json")
     shortlist_path = os.path.join(DATA_DIR, "shortlist.json")
     drafts_path = os.path.join(DATA_DIR, "application_drafts.json")
+    db_path = os.path.join(ROOT, "nexus_index.sqlite")
+
+    conn = init_db(db_path)
+    save_to_db(conn, scored, now)
+    conn.close()
 
     with open(raw_path, "w", encoding="utf-8") as f:
         json.dump({"ts": now, "query": args.query, "count": len(leads), "items": [asdict(x) for x in leads]}, f, ensure_ascii=False, indent=2)

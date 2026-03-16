@@ -4,6 +4,7 @@ type FailureMeta = { key: string; value: string };
 type DiagnosticSource = {
   id: string;
   source: string;
+  source_origin?: string;
   latencySeries: number[];
   failureMeta: FailureMeta[];
   status: 'loading' | 'ready' | 'empty' | 'error';
@@ -54,6 +55,7 @@ export const ScannerSourceDiagnosticsModal: React.FC<Props> = ({ open = false, s
       {source?.status === 'ready' && (
         <>
           <div style={{ marginBottom: 8 }}><strong>Source:</strong> {source.source}</div>
+          {source.source_origin && <div style={{ marginBottom: 8 }}><strong>Origin URL/API:</strong> {source.source_origin}</div>}
           <div style={{ marginBottom: 8 }}>
             <strong>Failure metadata</strong>
             <ul style={{ margin: '4px 0 0 16px' }}>

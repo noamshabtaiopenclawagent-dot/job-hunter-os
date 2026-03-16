@@ -1,15 +1,36 @@
-import { render, screen } from '@testing-library/react';
+import React from 'react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import RecruiterHandoffContinuityGuardWithOwnershipGapRecoveryPlanner from './RecruiterHandoffContinuityGuardWithOwnershipGapRecoveryPlanner';
+import { RecruiterHandoffContinuityGuardWithOwnershipGapRecoveryPlanner } from './RecruiterHandoffContinuityGuardWithOwnershipGapRecoveryPlanner';
 
 describe('RecruiterHandoffContinuityGuardWithOwnershipGapRecoveryPlanner', () => {
-  it('renders the guard title', () => {
+  it('renders loading state initially and then shows gaps', async () => {
     render(<RecruiterHandoffContinuityGuardWithOwnershipGapRecoveryPlanner />);
-    expect(screen.getByText('Recruiter Handoff Continuity Guard')).toBeInTheDocument();
+    
+    // Check loading state
+    expect(screen.getByRole('status')).toBeDefined();
+    
+    // Wait for data to load
+    await waitFor(() => {
+      expect(screen.getByText(/Critical Handoff Gaps/)).toBeDefined();
+    });
+    
+    // Check list
+    expect(screen.getByText(/Candidate H/)).toBeDefined();
   });
 
-  it('renders the description', () => {
+  it('removes gap on recovery action', async () => {
     render(<RecruiterHandoffContinuityGuardWithOwnershipGapRecoveryPlanner />);
-    expect(screen.getByText('Monitor handoff continuity and plan ownership gap recovery.')).toBeInTheDocument();
+    
+    await waitFor(() => {
+      expect(screen.getByText(/Candidate H/)).toBeDefined();
+    });
+    
+    const recoverButtons = screen.getAllByText('Recover Ownership');
+    fireEvent.click(recoverButtons[0]);
+    
+    await waitFor(() => {
+      expect(screen.queryByText(/Candidate H/)).toBeNull();
+    });
   });
 });

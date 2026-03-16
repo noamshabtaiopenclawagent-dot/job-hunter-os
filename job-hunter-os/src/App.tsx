@@ -55,8 +55,9 @@ import { RecruiterFollowUpCadenceOptimizerWithResponseFatigueGuardrails } from '
 import { PanelSchedulingConflictResolutionBoardWithSlaPreservingSwapEngine } from './pages/dashboard/PanelSchedulingConflictResolutionBoardWithSlaPreservingSwapEngine';
 import { CandidateIntentVolatilityTrackerWithInterventionTimingPredictor } from './pages/dashboard/CandidateIntentVolatilityTrackerWithInterventionTimingPredictor';
 import { InterviewDebriefConsensusStabilizerWithDissentResolutionPathway } from './pages/dashboard/InterviewDebriefConsensusStabilizerWithDissentResolutionPathway';
-import { InterviewDebriefConsensusStabilizerWithDissentResolutionPathway } from './pages/dashboard/InterviewDebriefConsensusStabilizerWithDissentResolutionPathway';
 import { RecruiterWorkloadHeatmap } from './pages/workload/RecruiterWorkloadHeatmap';
+import { RecruiterHandoffContinuityGuardWithOwnershipGapRecoveryPlanner } from './pages/dashboard/RecruiterHandoffContinuityGuardWithOwnershipGapRecoveryPlanner';
+import { CandidateSourceQualityExplorer } from './pages/dashboard/CandidateSourceQualityExplorer';
 import { OfferStabilityTuner } from './pages/offer/OfferStabilityTuner';
 import { RecruiterPriorityInboxSmartTriageWorkspace } from './pages/triage/RecruiterPriorityInboxSmartTriageWorkspace';
 import { CandidateJourneyFrictionHeatmapWithInterventionDesigner } from './pages/dashboard/CandidateJourneyFrictionHeatmapWithInterventionDesigner';
@@ -239,7 +240,7 @@ const mockOfferConsensusBlockers = [
 ];
 
 export const App: React.FC = () => {
-  const [activeView, setActiveView] = useState('offer-stability');
+  const [activeView, setActiveView] = useState('candidate-source-quality-explorer');
 
   const renderContent = () => {
     switch (activeView) {
@@ -375,6 +376,10 @@ export const App: React.FC = () => {
         return <OfferStabilityTuner data={mockOfferData} />;
       case 'offer-decision-canvas':
         return <OfferDecisionCollaborationCanvasWithConsensusSignals signals={mockOfferConsensusSignals} comments={mockOfferConsensusComments} blockers={mockOfferConsensusBlockers} />;
+      case 'candidate-source-quality-explorer':
+        return <CandidateSourceQualityExplorer />;
+      case 'recruiter-handoff-continuity-guard':
+        return <RecruiterHandoffContinuityGuardWithOwnershipGapRecoveryPlanner />;
       case 'priority-inbox-triage':
         return <RecruiterPriorityInboxSmartTriageWorkspace data={mockTriageData} />;
       case 'sla-anticipation':
@@ -400,10 +405,3 @@ export const App: React.FC = () => {
 };
 
 export default App;
-
-// modified
-// modified
-// modified
-// modified for InterviewLoopPacingGovernor
-// modified for OfferNegotiationLeverageMap
-// modified for RecruiterHandoffContinuityGuard

@@ -1,5 +1,13 @@
 {
-  "ts": "2026-03-08T17:01:13.188375+00:00",
-  "count": 0,
-  "items": []
+  "ts": "2026-03-15T13:11:47.938199+00:00",
+  "count": 1,
+  "items": [
+    {
+      "company": "Marketing Architects",
+      "role": "Data Analyst",
+      "url": "https://remoteOK.com/remote-jobs/remote-data-analyst-marketing-architects-1130731",
+      "status": "draft_ready",
+      "cover_letter_stub": "Hi Marketing Architects team, I'm applying to Data Analyst. I bring strong SQL/Python analytics execution and business impact focus."
+    }
+  ]
 }
