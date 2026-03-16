@@ -16,6 +16,7 @@ import {
   Settings,
   Store,
   Tags,
+  Timer,
 } from "lucide-react";
 
 import { useAuth } from "@/auth/clerk";
@@ -127,18 +128,6 @@ export function DashboardSidebar() {
                 Boards
               </Link>
               <Link
-                href="/tags"
-                className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-slate-700 transition",
-                  pathname.startsWith("/tags")
-                    ? "bg-blue-100 text-blue-800 font-medium"
-                    : "hover:bg-slate-100",
-                )}
-              >
-                <Tags className="h-4 w-4" />
-                Tags
-              </Link>
-              <Link
                 href="/approvals"
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2.5 text-slate-700 transition",
@@ -150,59 +139,10 @@ export function DashboardSidebar() {
                 <CheckCircle2 className="h-4 w-4" />
                 Approvals
               </Link>
-              {isAdmin ? (
-                <Link
-                  href="/custom-fields"
-                  className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-2.5 text-slate-700 transition",
-                    pathname.startsWith("/custom-fields")
-                      ? "bg-blue-100 text-blue-800 font-medium"
-                      : "hover:bg-slate-100",
-                  )}
-                >
-                  <Settings className="h-4 w-4" />
-                  Custom fields
-                </Link>
-              ) : null}
             </div>
           </div>
 
-          <div>
-            {isAdmin ? (
-              <>
-                <p className="px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-                  Skills
-                </p>
-                <div className="mt-1 space-y-1">
-                  <Link
-                    href="/skills/marketplace"
-                    className={cn(
-                      "flex items-center gap-3 rounded-lg px-3 py-2.5 text-slate-700 transition",
-                      pathname === "/skills" ||
-                        pathname.startsWith("/skills/marketplace")
-                        ? "bg-blue-100 text-blue-800 font-medium"
-                        : "hover:bg-slate-100",
-                    )}
-                  >
-                    <Store className="h-4 w-4" />
-                    Marketplace
-                  </Link>
-                  <Link
-                    href="/skills/packs"
-                    className={cn(
-                      "flex items-center gap-3 rounded-lg px-3 py-2.5 text-slate-700 transition",
-                      pathname.startsWith("/skills/packs")
-                        ? "bg-blue-100 text-blue-800 font-medium"
-                        : "hover:bg-slate-100",
-                    )}
-                  >
-                    <Boxes className="h-4 w-4" />
-                    Packs
-                  </Link>
-                </div>
-              </>
-            ) : null}
-          </div>
+
 
           <div>
             <p className="px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
@@ -232,6 +172,30 @@ export function DashboardSidebar() {
               >
                 <GitBranch className="h-4 w-4" />
                 Org Tree
+              </Link>
+              <Link
+                href="/virtual-office"
+                className={cn(
+                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-slate-700 transition",
+                  pathname.startsWith("/virtual-office")
+                    ? "bg-violet-100 text-violet-800 font-medium"
+                    : "hover:bg-slate-100",
+                )}
+              >
+                <Building2 className="h-4 w-4" />
+                Virtual Office
+              </Link>
+              <Link
+                href="/scheduled"
+                className={cn(
+                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-slate-700 transition",
+                  pathname.startsWith("/scheduled")
+                    ? "bg-blue-100 text-blue-800 font-medium"
+                    : "hover:bg-slate-100",
+                )}
+              >
+                <Timer className="h-4 w-4" />
+                Scheduled
               </Link>
               {isAdmin ? (
                 <Link

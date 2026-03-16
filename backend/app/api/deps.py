@@ -130,14 +130,18 @@ async def get_board_for_actor_read(
     session: AsyncSession = SESSION_DEP,
     actor: ActorContext = ACTOR_DEP,
 ) -> Board:
-    """Load a board and enforce actor read access."""
+    """Load a board and enforce actor read access.
+    
+    Agents have global read access to all boards in the workspace to support
+    Swarm Delegation and cross-agent collaboration.
+    """
     board = await Board.objects.by_id(board_id).first(session)
     if board is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    
     if actor.actor_type == "agent":
-        if actor.agent and actor.agent.board_id and actor.agent.board_id != board.id:
-            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
         return board
+        
     if actor.user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
     await require_board_access(session, user=actor.user, board=board, write=False)
@@ -149,14 +153,18 @@ async def get_board_for_actor_write(
     session: AsyncSession = SESSION_DEP,
     actor: ActorContext = ACTOR_DEP,
 ) -> Board:
-    """Load a board and enforce actor write access."""
+    """Load a board and enforce actor write access.
+    
+    Agents have global write access to all boards in the workspace to support
+    Swarm Delegation (creating cross-board review tasks).
+    """
     board = await Board.objects.by_id(board_id).first(session)
     if board is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+        
     if actor.actor_type == "agent":
-        if actor.agent and actor.agent.board_id and actor.agent.board_id != board.id:
-            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
         return board
+        
     if actor.user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
     await require_board_access(session, user=actor.user, board=board, write=True)

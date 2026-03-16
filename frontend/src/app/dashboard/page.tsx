@@ -20,6 +20,7 @@ import {
 
 import { DashboardSidebar } from "@/components/organisms/DashboardSidebar";
 import { DashboardShell } from "@/components/templates/DashboardShell";
+import { SystemHealthStrip } from "@/components/organisms/SystemHealthStrip";
 import { Markdown } from "@/components/atoms/Markdown";
 import { SignedOutPanel } from "@/components/auth/SignedOutPanel";
 import { ApiError } from "@/api/mutator";
@@ -528,6 +529,18 @@ export default function DashboardPage() {
     },
   );
 
+  const systemErrorsQuery = useQuery({
+    queryKey: ["dashboard", "system-errors"],
+    enabled: Boolean(isSignedIn),
+    refetchInterval: 15_000,
+    queryFn: async () => {
+      const res = await fetch("http://localhost:8000/api/v1/metrics/system-errors");
+      if (!res.ok) throw new Error("Failed to fetch system errors");
+      return res.json() as Promise<{items: {timestamp: string, source: string, message: string, severity: string}[]}>;
+    }
+  });
+
+
   const boards = useMemo(
     () =>
       boardsQuery.data?.status === 200
@@ -899,6 +912,11 @@ export default function DashboardPage() {
       <SignedIn>
         <DashboardSidebar />
         <main className="flex-1 overflow-y-auto bg-slate-50">
+          <SystemHealthStrip
+            gatewayConnected={
+              hasConfiguredGateways && gatewayConnectedCount > 0
+            }
+          />
           <div className="p-8">
             {metricsQuery.error ? (
               <div className="mb-4 rounded-lg border border-rose-300 bg-rose-50 p-3 text-sm text-rose-700">
@@ -906,37 +924,32 @@ export default function DashboardPage() {
               </div>
             ) : null}
 
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-              <TopMetricCard
-                title="Online Agents"
-                value={formatCount(activeAgentsMetric)}
-                secondary={`${formatCount(agents.length)} total`}
-                icon={<Bot className="h-4 w-4" />}
-                accent="blue"
-              />
-              <TopMetricCard
-                title="Tasks In Progress"
-                value={formatCount(tasksInProgressMetric)}
-                secondary={`${formatCount(tasksTotal)} total`}
-                icon={<LayoutGrid className="h-4 w-4" />}
-                accent="green"
-              />
-              <TopMetricCard
-                title="Error Rate"
-                value={formatPercent(errorRateMetric)}
-                secondary={`${formatCount(Number(latestThroughputPoint?.value ?? 0))} completed (latest)`}
-                icon={<Activity className="h-4 w-4" />}
-                accent="violet"
-              />
-              <TopMetricCard
-                title="Completion Speed"
-                value={formatPerDay(throughputTotal, DASHBOARD_RANGE_DAYS)}
-                secondary={`${formatCount(throughputTotal)} completed`}
-                infoText={`Based on ${DASHBOARD_RANGE_LABEL}`}
-                icon={<Timer className="h-4 w-4" />}
-                accent="emerald"
-              />
-            </div>
+            <Link
+              href="/org-tree"
+              className="flex items-center justify-between rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-slate-300 hover:shadow-md"
+            >
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                  <Bot className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-slate-900">Agent Organization</h3>
+                  <p className="text-xs text-slate-500">
+                    {formatCount(onlineAgents)} online · {formatCount(agents.length)} total agents
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                  </span>
+                  Live
+                </span>
+                <ArrowUpRight className="h-4 w-4 text-slate-400" />
+              </div>
+            </Link>
 
             <div className="mt-4 grid grid-cols-1 gap-4 xl:grid-cols-3">
               <InfoBlock
@@ -959,6 +972,35 @@ export default function DashboardPage() {
             </div>
 
             <section className="mt-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div className="mb-3 flex items-center gap-2">
+                <Shield className="h-5 w-5 text-rose-500" />
+                <h3 className="text-lg font-semibold text-slate-900">Active Alerts & Errors</h3>
+              </div>
+              {systemErrorsQuery.isLoading ? (
+                <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-500">Loading alerts...</div>
+              ) : systemErrorsQuery.error ? (
+                <div className="rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-800">Failed to load system errors</div>
+              ) : systemErrorsQuery.data && systemErrorsQuery.data.items.length > 0 ? (
+                <div className="max-h-[250px] overflow-y-auto space-y-2 pr-1">
+                  {systemErrorsQuery.data.items.map((item, idx) => (
+                    <div key={idx} className={`p-3 rounded-md border ${
+                      item.severity === 'high' ? 'bg-rose-50 border-rose-200 text-rose-900' : 'bg-amber-50 border-amber-200 text-amber-900'
+                    }`}>
+                      <div className="flex justify-between items-start mb-1">
+                        <span className="font-semibold text-sm">{item.source}</span>
+                        <span className="text-xs opacity-70">{formatRelativeTimestamp(item.timestamp)}</span>
+                      </div>
+                      <p className="text-sm opacity-90">{item.message}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">All systems green. No active errors or blocked reports.</div>
+              )}
+            </section>
+
+            <section className="mt-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+
               <div className="mb-3 flex items-center justify-between gap-3">
                 <h3 className="text-lg font-semibold text-slate-900">Pending Approvals</h3>
                 <Link

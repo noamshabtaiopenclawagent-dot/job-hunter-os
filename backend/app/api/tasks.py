@@ -1449,7 +1449,7 @@ async def create_task(
     payload: TaskCreate,
     board: Board = BOARD_WRITE_DEP,
     session: AsyncSession = SESSION_DEP,
-    auth: AuthContext = ADMIN_AUTH_DEP,
+    actor: ActorContext = ACTOR_DEP,
 ) -> TaskRead:
     """Create a task and initialize dependency rows."""
     data = payload.model_dump(exclude={"depends_on_task_ids", "tag_ids", "custom_field_values"})
@@ -1459,8 +1459,15 @@ async def create_task(
 
     task = Task.model_validate(data)
     task.board_id = board.id
-    if task.created_by_user_id is None and auth.user is not None:
-        task.created_by_user_id = auth.user.id
+    
+    # Track creation origin cleanly
+    if actor.actor_type == "user" and actor.user is not None:
+        if task.created_by_user_id is None:
+            task.created_by_user_id = actor.user.id
+    elif actor.actor_type == "agent" and actor.agent is not None:
+        if not task.auto_created:
+            task.auto_created = True
+            task.auto_reason = f"cross_board_delegation:{actor.agent.id}"
 
     normalized_deps = await validate_dependency_update(
         session,
@@ -2615,6 +2622,44 @@ async def _finalize_updated_task(
     update.task.updated_at = utcnow()
 
     status_raw = update.updates.get("status")
+
+    # --- ANTI-THEATER VALUE GATE ---
+    # Block transitions to 'done' if there is no proof of work.
+    if status_raw == "done" and update.previous_status != "done":
+        comment_text = (update.comment or "").strip()
+        # Look for proof in the current comment payload (URL or diff)
+        has_proof = bool(
+            "http://" in comment_text or 
+            "https://" in comment_text or 
+            "```diff" in comment_text or 
+            "github.com" in comment_text or
+            "Merge request" in comment_text
+        )
+        # If no proof in the payload, quickly check the last few comments of the task
+        if not has_proof:
+            recent_comments = await session.exec(
+                select(col(ActivityEvent.message))
+                .where(col(ActivityEvent.task_id) == update.task.id)
+                .where(col(ActivityEvent.event_type) == "task.comment")
+                .order_by(desc(col(ActivityEvent.created_at)))
+                .limit(3)
+            )
+            for msg in recent_comments:
+                msg_str = str(msg).lower()
+                if "http" in msg_str or "```diff" in msg_str or "pr " in msg_str:
+                    has_proof = True
+                    break
+        
+        if not has_proof:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+                detail=(
+                    "Value Gate Blocked: Cannot mark task as 'done' without proof of work. "
+                    "You must include a URL, a PR link, or a code diff in your comment."
+                ),
+            )
+    # --- END VALUE GATE ---
+
     # Entering review can require a new comment or valid recent context when
     # the board-level rule is enabled.
     if status_raw == "review" and await _require_comment_for_review_when_enabled(
