@@ -4,7 +4,7 @@ import { GlobalNavigationShell } from './components/GlobalNavigationShell';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { CandidateSourcingVelocityRadar } from './pages/dashboard/CandidateSourcingVelocityRadar';
 import { RoadmapShippedArtifactsMappingBoard } from './pages/dashboard/RoadmapShippedArtifactsMappingBoard';
-import { ReviewBacklogCleanupEvidenceConsole } from './pages/dashboard/ReviewBacklogCleanupEvidenceConsole';
+import { ReviewBacklogCleanupEvidenceConsoleWithTriage } from './pages/dashboard/ReviewBacklogCleanupEvidenceConsoleWithTriage';
 import { IsraelFirstSourceConnectorsHardeningQualityGate } from './pages/dashboard/IsraelFirstSourceConnectorsHardeningQualityGate';
 import { CvJdExplainableMatchCalibrationThresholdTuning } from './pages/dashboard/CvJdExplainableMatchCalibrationThresholdTuning';
 import { DashboardActionabilityUpgradeDecisionActions } from './pages/dashboard/DashboardActionabilityUpgradeDecisionActions';
@@ -254,7 +254,7 @@ export const App: React.FC = () => {
           </div>
         );
       case 'review-backlog-cleanup':
-        return <ReviewBacklogCleanupEvidenceConsole tasks={mockReviewCleanupTasks} />;
+        return <ReviewBacklogCleanupEvidenceConsoleWithTriage tasks={mockReviewCleanupTasks} hasQaFail={true} />;
       case 'roadmap-mapping':
         return <RoadmapShippedArtifactsMappingBoard items={mockRoadmapMappings} />;
       case 'israel-source-hardening':
