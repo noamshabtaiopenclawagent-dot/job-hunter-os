@@ -270,16 +270,10 @@ export const App: React.FC = () => {
       case 'error-telemetry-unification':
         return <DashboardErrorTelemetryUnificationPanel localModules={mockErrorTelemetryModules} />;
       case 'qa-fail-opi-triage':
-        return <QaFailOpiDecisionTriagePanel taskId="0a080448-d549-4c80-8f97-ad2f5baa6b97" qaTaskId="97a2c8c2-ae13-4328-a874-78ba8fda5066" issueTitle="[JHOS-DEV] Interview debrief consensus stabilizer with dissent-resolution pathway" checksRequired={8} risk="medium" checks={[
-          { id: 'C1', behavior: 'Debrief items render', expectedEvidence: 'card assertions', kpi: 'debrief visibility' },
-          { id: 'C2', behavior: 'Consensus scores shown', expectedEvidence: 'consensus metric assertions', kpi: 'consensus clarity' },
-          { id: 'C3', behavior: 'Dissenting reviewers shown', expectedEvidence: 'dissenter assertions', kpi: 'dissent visibility' },
-          { id: 'C4', behavior: 'Resolution pathway plan shown', expectedEvidence: 'resolution plan assertions', kpi: 'actionability' },
-          { id: 'C5', behavior: 'Hover context for dissent reasons', expectedEvidence: 'title attribute assertions', kpi: 'explainability' },
-          { id: 'C6', behavior: 'Loading state explicit', expectedEvidence: 'loading fallback assertion', kpi: 'state reliability' },
-          { id: 'C7', behavior: 'Error state explicit', expectedEvidence: 'error fallback assertion', kpi: 'state reliability' },
-          { id: 'C8', behavior: 'Empty state explicit', expectedEvidence: 'empty fallback assertion', kpi: 'state reliability' },
-        ]} />;
+        return <QaFailOpiDecisionTriagePanel taskId="1e6582b8-52d1-46df-8fcb-8b51a6ecd148" qaTaskId="2e607d36-c926-48fb-9da5-1718db62954d" issueTitle="[JHOS-P1] Review backlog cleanup: close verified review tasks with evidence" checksRequired={2} risk="medium" checks={[
+          { id: 'C1', behavior: 'Contract fields rendered', expectedEvidence: 'artifact, integration, kpi proof rendered', kpi: 'contract validation' },
+          { id: 'C2', behavior: 'Task close execution', expectedEvidence: 'successful api or state rollback on close', kpi: 'action reliability' },
+        ]} onDecision={async (decision) => console.log('Decision recorded:', decision)} />;
       case 'scanner-diagnostics-modal':
         return <ScannerSourceDiagnosticsModal open source={mockScannerDiagnosticsSource} />;
       case 'scanner-outage-banner':
