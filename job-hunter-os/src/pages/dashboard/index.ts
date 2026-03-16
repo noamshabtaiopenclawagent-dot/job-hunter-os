@@ -11,3 +11,4 @@ export * from './InterviewLoopPacingGovernorWithDropoutRiskMitigationSimulator';
 export * from './OfferNegotiationLeverageMapWithConcessionTimingSensitivitySimulator';
 export * from './RecruiterHandoffContinuityGuardWithOwnershipGapRecoveryPlanner';
 export * from './CandidateSourceQualityExplorer';
+export * from './ReviewBacklogCleanupEvidenceConsoleWithTriage';
