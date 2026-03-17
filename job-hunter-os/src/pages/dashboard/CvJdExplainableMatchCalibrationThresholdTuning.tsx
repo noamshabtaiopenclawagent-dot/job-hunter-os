@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { QaFailOpiDecisionTriagePanel } from './QaFailOpiDecisionTriagePanel';
 
 type MatchRecord = {
   id: string;
@@ -17,13 +18,15 @@ type Props = {
   loading?: boolean;
   error?: string | null;
   onRetry?: () => void;
+  hasQaFail?: boolean;
 };
 
 const clamp = (n: number) => Math.max(0, Math.min(100, n));
 
-export const CvJdExplainableMatchCalibrationThresholdTuning: React.FC<Props> = ({ data = [], loading = false, error = null, onRetry }) => {
+export const CvJdExplainableMatchCalibrationThresholdTuning: React.FC<Props> = ({ data = [], loading = false, error = null, onRetry, hasQaFail = false }) => {
   const [weights, setWeights] = useState({ skills: 40, domain: 25, seniority: 20, location: 15 });
   const [threshold, setThreshold] = useState(72);
+  const [triageResolved, setTriageResolved] = useState(!hasQaFail);
 
   const scored = useMemo(() => {
     return data.map((r) => {
@@ -49,7 +52,7 @@ export const CvJdExplainableMatchCalibrationThresholdTuning: React.FC<Props> = (
   if (error) return <section role='alert' style={{ border: '1px solid #fecaca', background: '#fef2f2', borderRadius: 12, padding: 16 }}><h3 style={{ margin: 0, color: '#991b1b' }}>Calibration unavailable</h3><p style={{ color: '#7f1d1d' }}>{error}</p><button onClick={onRetry}>Retry</button></section>;
   if (!data.length) return <section style={{ border: '1px solid #e5e7eb', borderRadius: 12, padding: 16, background: '#fff' }}><h3 style={{ margin: 0 }}>CV-JD Calibration</h3><p style={{ color: '#6b7280' }}>No match records available.</p></section>;
 
-  return (
+  const content = (
     <section style={{ border: '1px solid #e5e7eb', borderRadius: 12, background: '#fff', padding: 20 }}>
       <header style={{ marginBottom: 12 }}>
         <h2 style={{ margin: 0, fontSize: 18 }}>CV-JD Explainable Match Calibration</h2>
@@ -90,4 +93,38 @@ export const CvJdExplainableMatchCalibrationThresholdTuning: React.FC<Props> = (
       </div>
     </section>
   );
+
+  if (!triageResolved) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+        <div style={{ border: '2px solid #ef4444', borderRadius: 12, padding: 16, background: '#fef2f2' }}>
+          <h3 style={{ margin: '0 0 12px 0', color: '#991b1b', display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span>🛑</span> Execution Blocked by QA Failure
+          </h3>
+          <QaFailOpiDecisionTriagePanel 
+            taskId="e1df8da3-05f1-4374-90d1-5eaf724459e8" 
+            qaTaskId="066687d5-5a13-4dff-9c0a-3b4fe4672b3d" 
+            issueTitle="[JHOS-P2] CV-JD explainable match scoring calibration + threshold tuning" 
+            checksRequired={3} 
+            risk="medium" 
+            checks={[
+              { id: 'C1', behavior: 'Render weights controls', expectedEvidence: 'weight sliders modify state without crashing', kpi: 'tuning flexibility' },
+              { id: 'C2', behavior: 'Compute calibration scores', expectedEvidence: 'overall calibration percentage is calculated', kpi: 'explainability' },
+              { id: 'C3', behavior: 'Render threshold results', expectedEvidence: 'candidate match outcome adjusts dynamically', kpi: 'threshold precision' }
+            ]} 
+            onDecision={async (decision) => {
+              if (decision === 'approved') {
+                setTriageResolved(true);
+              }
+            }} 
+          />
+        </div>
+        <div style={{ opacity: 0.5, pointerEvents: 'none' }}>
+          {content}
+        </div>
+      </div>
+    );
+  }
+
+  return content;
 };

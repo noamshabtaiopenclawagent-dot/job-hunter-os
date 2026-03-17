@@ -260,7 +260,7 @@ export const App: React.FC = () => {
       case 'israel-source-hardening':
         return <IsraelFirstSourceConnectorsHardeningQualityGate data={mockIsraelSourceHardeningData} onManualRefresh={async () => { await new Promise((resolve) => setTimeout(resolve, 120)); }} hasQaFail={true} />;
       case 'cv-jd-calibration':
-        return <CvJdExplainableMatchCalibrationThresholdTuning data={mockCvJdCalibrationData} />;
+        return <CvJdExplainableMatchCalibrationThresholdTuning data={mockCvJdCalibrationData} hasQaFail={true} />;
       case 'dashboard-actionability':
         return <DashboardActionabilityUpgradeDecisionActions actions={mockDashboardDecisionActions} />;
       case 'org-tree-ux-hardening':

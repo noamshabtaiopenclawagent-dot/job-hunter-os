@@ -1,6 +1,9 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { describe, it, expect, afterEach } from 'vitest';
+import { fireEvent, render, screen, cleanup } from '@testing-library/react';
 import { CvJdExplainableMatchCalibrationThresholdTuning } from './CvJdExplainableMatchCalibrationThresholdTuning';
+
+afterEach(cleanup);
 
 describe('CvJdExplainableMatchCalibrationThresholdTuning', () => {
   const data = [
@@ -15,8 +18,8 @@ describe('CvJdExplainableMatchCalibrationThresholdTuning', () => {
 
   it('renders KPI chips', () => {
     render(<CvJdExplainableMatchCalibrationThresholdTuning data={data} />);
-    expect(screen.getByText(/Precision/)).toBeInTheDocument();
-    expect(screen.getByText(/Calibration/)).toBeInTheDocument();
+    expect(screen.getAllByText(/Precision/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Calibration/).length).toBeGreaterThan(0);
   });
 
   it('updates threshold slider', () => {
@@ -24,5 +27,15 @@ describe('CvJdExplainableMatchCalibrationThresholdTuning', () => {
     const sliders = screen.getAllByRole('slider');
     fireEvent.change(sliders[4], { target: { value: '65' } });
     expect(screen.getByText(/Pass rate/)).toBeInTheDocument();
+  });
+
+  it('renders QaFailOpiDecisionTriagePanel when hasQaFail is true and hides component until resolved', () => {
+    render(<CvJdExplainableMatchCalibrationThresholdTuning data={data} hasQaFail={true} />);
+    expect(screen.getByText(/Execution Blocked by QA Failure/i)).toBeTruthy();
+    expect(screen.getByText(/QA FAIL Triage \(OPI Decision Required\)/i)).toBeTruthy();
+    
+    // Attempt approval
+    fireEvent.click(screen.getByText('Approve fix execution'));
+    expect(screen.queryByText(/Execution Blocked by QA Failure/i)).toBeNull();
   });
 });
