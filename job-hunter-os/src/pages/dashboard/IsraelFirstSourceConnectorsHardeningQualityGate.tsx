@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { QaFailOpiDecisionTriagePanel } from './QaFailOpiDecisionTriagePanel';
 
 type SourceStatus = 'healthy' | 'degraded' | 'down';
 
@@ -30,6 +31,7 @@ type Props = {
   error?: string | null;
   onRetry?: () => void;
   onManualRefresh?: () => Promise<void> | void;
+  hasQaFail?: boolean;
 };
 
 const statusColor: Record<SourceStatus, string> = {
@@ -38,11 +40,12 @@ const statusColor: Record<SourceStatus, string> = {
   down: '#b91c1c',
 };
 
-export const IsraelFirstSourceConnectorsHardeningQualityGate: React.FC<Props> = ({ data = [], loading = false, error = null, onRetry, onManualRefresh }) => {
+export const IsraelFirstSourceConnectorsHardeningQualityGate: React.FC<Props> = ({ data = [], loading = false, error = null, onRetry, onManualRefresh, hasQaFail = false }) => {
   const [regionFilter, setRegionFilter] = useState<'all' | 'israel' | 'global'>('israel');
   const [qualityThreshold, setQualityThreshold] = useState(70);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [refreshState, setRefreshState] = useState<'idle' | 'fetching' | 'healthy' | 'error'>('idle');
+  const [triageResolved, setTriageResolved] = useState(!hasQaFail);
 
   const rows = useMemo(() => {
     return data
@@ -80,7 +83,7 @@ export const IsraelFirstSourceConnectorsHardeningQualityGate: React.FC<Props> = 
   if (error) return <section role='alert' style={{ border: '1px solid #fecaca', background: '#fef2f2', borderRadius: 12, padding: 16 }}><h3 style={{ margin: 0, color: '#991b1b' }}>Connector hardening unavailable</h3><p style={{ color: '#7f1d1d' }}>{error}</p><button onClick={onRetry}>Retry</button></section>;
   if (!data.length) return <section style={{ border: '1px solid #e5e7eb', borderRadius: 12, padding: 16, background: '#fff' }}><h3 style={{ margin: 0 }}>Israel-First Connectors Hardening</h3><p style={{ color: '#6b7280' }}>No connector data loaded.</p></section>;
 
-  return (
+  const content = (
     <section style={{ border: '1px solid #e5e7eb', borderRadius: 12, background: '#fff', padding: 20 }}>
       <header style={{ display: 'flex', justifyContent: 'space-between', gap: 12, marginBottom: 12 }}>
         <div>
@@ -162,4 +165,38 @@ export const IsraelFirstSourceConnectorsHardeningQualityGate: React.FC<Props> = 
       </section>
     </section>
   );
+
+  if (!triageResolved) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+        <div style={{ border: '2px solid #ef4444', borderRadius: 12, padding: 16, background: '#fef2f2' }}>
+          <h3 style={{ margin: '0 0 12px 0', color: '#991b1b', display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span>🛑</span> Execution Blocked by QA Failure
+          </h3>
+          <QaFailOpiDecisionTriagePanel 
+            taskId="a8cd703e-7df2-4de3-9b89-8bdee605b228" 
+            qaTaskId="dac67a5f-fc62-4b1b-8b03-f9b20a07750e" 
+            issueTitle="[JHOS-P2] Israel-first source connectors hardening + shortlist quality gate" 
+            checksRequired={3} 
+            risk="medium" 
+            checks={[
+              { id: 'C1', behavior: 'Render sources', expectedEvidence: 'sources list is rendered properly', kpi: 'visibility' },
+              { id: 'C2', behavior: 'Display quality score', expectedEvidence: 'quality score metrics are accurate', kpi: 'quality metrics' },
+              { id: 'C3', behavior: 'Handle manual refresh', expectedEvidence: 'refresh triggers without crashing', kpi: 'reliability' }
+            ]} 
+            onDecision={async (decision) => {
+              if (decision === 'approved') {
+                setTriageResolved(true);
+              }
+            }} 
+          />
+        </div>
+        <div style={{ opacity: 0.5, pointerEvents: 'none' }}>
+          {content}
+        </div>
+      </div>
+    );
+  }
+
+  return content;
 };

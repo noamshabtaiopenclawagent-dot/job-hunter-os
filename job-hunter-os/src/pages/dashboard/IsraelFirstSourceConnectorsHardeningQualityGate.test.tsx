@@ -58,4 +58,14 @@ describe('IsraelFirstSourceConnectorsHardeningQualityGate (8 checks)', () => {
     expect(screen.getAllByText(/Partial telemetry/).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/8\/8 verification checks with KPI linkage/).length).toBeGreaterThan(0);
   });
+
+  it('renders QaFailOpiDecisionTriagePanel when hasQaFail is true and hides component until resolved', () => {
+    render(<IsraelFirstSourceConnectorsHardeningQualityGate data={data} hasQaFail={true} />);
+    expect(screen.getByText(/Execution Blocked by QA Failure/i)).toBeTruthy();
+    expect(screen.getByText(/QA FAIL Triage \(OPI Decision Required\)/i)).toBeTruthy();
+    
+    // Attempt approval
+    fireEvent.click(screen.getByText('Approve fix execution'));
+    expect(screen.queryByText(/Execution Blocked by QA Failure/i)).toBeNull();
+  });
 });
