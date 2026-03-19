@@ -16,7 +16,7 @@ const ROUTES: Route[] = [
   { key: "s", href: "/scheduled" },
 ];
 
-export function useKeyboardNav({ onCmdK }: { onCmdK?: () => void } = {}) {
+export function useKeyboardNav({ onCmdK, onQuickTask }: { onCmdK?: () => void; onQuickTask?: () => void } = {}) {
   const router = useRouter();
 
   useEffect(() => {
@@ -30,11 +30,14 @@ export function useKeyboardNav({ onCmdK }: { onCmdK?: () => void } = {}) {
         onCmdK?.();
         return;
       }
+      
       // Ignore when typing in inputs
       if (
         e.target instanceof HTMLElement &&
-        ["INPUT", "TEXTAREA", "SELECT"].includes(e.target.tagName)
+        ["INPUT", "TEXTAREA", "SELECT"].includes(e.target.tagName) &&
+        !e.target.classList.contains("cmdk-input") // Except inside command palette maybe
       ) return;
+      
       if (e.metaKey || e.ctrlKey || e.altKey) return;
 
       const key = e.key.toLowerCase();
@@ -49,15 +52,31 @@ export function useKeyboardNav({ onCmdK }: { onCmdK?: () => void } = {}) {
       if (pendingG) {
         pendingG = false;
         if (timer) clearTimeout(timer);
+        
+        // G+I shortcut to inbox
+        if (key === "i") {
+          e.preventDefault();
+          router.push("/inbox");
+          return;
+        }
+        
         const route = ROUTES.find((r) => r.key === key);
         if (route) {
           e.preventDefault();
           router.push(route.href);
         }
+        return;
+      }
+
+      // Quick task shortcut
+      if (key === "n" && onQuickTask && !pendingG) {
+        e.preventDefault();
+        onQuickTask();
+        return;
       }
     };
 
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [router, onCmdK]);
+  }, [router, onCmdK, onQuickTask]);
 }

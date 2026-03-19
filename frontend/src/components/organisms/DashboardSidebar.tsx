@@ -132,6 +132,9 @@ export function DashboardSidebar() {
               <Link href="/sprint" className={cn(linkBase, pathname.startsWith("/sprint") ? linkActive : linkHover)}>
                 <Zap className="h-4 w-4" /> Sprint Board
               </Link>
+              <Link href="/workboard" className={cn(linkBase, pathname.startsWith("/workboard") ? linkActive : linkHover)}>
+                <Layers className="h-4 w-4" /> Workboard
+              </Link>
               <Link href="/board-groups" className={cn(linkBase, pathname.startsWith("/board-groups") ? linkActive : linkHover)}>
                 <Folder className="h-4 w-4" /> Board groups
               </Link>

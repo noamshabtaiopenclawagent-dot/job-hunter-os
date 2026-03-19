@@ -13,6 +13,7 @@ import { DashboardShell } from "@/components/templates/DashboardShell";
 import { DashboardSidebar } from "@/components/organisms/DashboardSidebar";
 import { SignedOutPanel } from "@/components/auth/SignedOutPanel";
 import { LogViewer } from "@/components/organisms/LogViewer";
+import { AgentMemoryEditor } from "@/components/organisms/AgentMemoryEditor";
 import { ApiError } from "@/api/mutator";
 import {
   type listAgentsApiV1AgentsGetResponse,
@@ -660,7 +661,7 @@ function AgentDetailPanel({
   const done  = tasks.filter(t => (t.status as string) === "done").length;
   const color = TIER_COLOR[node.tier] ?? "#6b7280";
 
-  const [activeTab, setActiveTab] = useState<"overview" | "logs">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "logs" | "memory">("overview");
 
   return (
     <div className="absolute right-6 top-24 bottom-6 w-[360px] z-50 animate-in slide-in-from-right duration-400">
@@ -693,6 +694,12 @@ function AgentDetailPanel({
               Overview
             </button>
             <button 
+              onClick={() => setActiveTab("memory")}
+              className={`pb-2 text-[10px] font-bold uppercase tracking-widest ${activeTab === "memory" ? "text-white border-b-2 border-blue-400" : "text-slate-500 hover:text-slate-300"}`}
+            >
+              Memory
+            </button>
+            <button 
               onClick={() => setActiveTab("logs")}
               className={`pb-2 text-[10px] font-bold uppercase tracking-widest ${activeTab === "logs" ? "text-white border-b-2 border-emerald-400" : "text-slate-500 hover:text-slate-300"}`}
             >
@@ -702,7 +709,7 @@ function AgentDetailPanel({
 
           {/* Body */}
           <div className="flex-1 overflow-hidden relative">
-            {activeTab === "overview" ? (
+            {activeTab === "overview" && (
               <div className="h-full overflow-y-auto p-6 space-y-6">
                 {/* Responsibility */}
                 <div>
@@ -759,7 +766,15 @@ function AgentDetailPanel({
                   </div>
                 )}
               </div>
-            ) : (
+            )}
+            
+            {activeTab === "memory" && (
+              <div className="h-full p-4">
+                <AgentMemoryEditor agentName={node.name} />
+              </div>
+            )}
+
+            {activeTab === "logs" && (
               <div className="h-full p-4">
                 <LogViewer agentName={node.name} agentId={node.id} />
               </div>

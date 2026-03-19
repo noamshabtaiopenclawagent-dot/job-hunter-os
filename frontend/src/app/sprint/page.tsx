@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useAuth } from "@/auth/clerk";
 import { ApiError } from "@/api/mutator";
 import { Bot, CheckCircle2, ChevronRight, Goal } from "lucide-react";
@@ -55,7 +55,7 @@ function BoardScanner({
     { query: { enabled: signedIn, staleTime: 60_000 } }
   );
 
-  useMemo(() => {
+  useEffect(() => {
     if (tasksQ.data?.status === 200) {
       const items = tasksQ.data.data.items ?? [];
       onTasksLoaded(items.map(task => ({ task, board })));

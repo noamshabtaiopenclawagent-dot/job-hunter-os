@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ActivityToast } from "@/components/atoms/ActivityToast";
 import { CommandPalette } from "@/components/organisms/CommandPalette";
+import { QuickTaskModal } from "@/components/organisms/QuickTaskModal";
 import { useKeyboardNav } from "@/hooks/useKeyboardNav";
 
 /**
@@ -11,16 +12,19 @@ import { useKeyboardNav } from "@/hooks/useKeyboardNav";
  */
 export function ClientShell() {
   const [paletteOpen, setPaletteOpen] = useState(false);
+  const [quickTaskOpen, setQuickTaskOpen] = useState(false);
 
-  // keyboard shortcuts (G+D, G+B, …) + Cmd+K
+  // keyboard shortcuts (G+D, G+B, …) + Cmd+K + N
   useKeyboardNav({
     onCmdK: () => setPaletteOpen(true),
+    onQuickTask: () => setQuickTaskOpen(true),
   });
 
   return (
     <>
       <ActivityToast />
       {paletteOpen && <CommandPalette onClose={() => setPaletteOpen(false)} />}
+      <QuickTaskModal isOpen={quickTaskOpen} onClose={() => setQuickTaskOpen(false)} />
     </>
   );
 }
