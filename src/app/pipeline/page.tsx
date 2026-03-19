@@ -1,77 +1,125 @@
 "use client";
-import { useState } from "react";
 
-const APPS = [
-  { id: 1, title: "Senior Software Engineer", company: "Wix", stage: "interview", daysAgo: 3, sla: 7, lastAction: "Completed technical interview", nextAction: "Await hiring decision" },
-  { id: 2, title: "Full Stack Developer", company: "Monday.com", stage: "assignment", daysAgo: 1, sla: 3, lastAction: "Submitted take-home project", nextAction: "Follow up if no response by Friday" },
-  { id: 3, title: "Frontend Engineer", company: "Check Point", stage: "screen", daysAgo: 0, sla: 5, lastAction: "Scheduled phone screen", nextAction: "Phone call at 3PM today" },
-  { id: 4, title: "Tech Lead", company: "IronSource", stage: "applied", daysAgo: 5, sla: 14, lastAction: "Applied via LinkedIn", nextAction: "Follow up next week if silent" },
-  { id: 5, title: "Backend Engineer", company: "Fiverr", stage: "rejected", daysAgo: 7, sla: 0, lastAction: "Rejected at CV screen", nextAction: "Review and improve CV based on feedback" },
-];
+import { useEffect, useState } from "react";
+import type { Application } from "@/app/api/pipeline/route";
 
-const STAGE_MAP: Record<string, { label: string; color: string; bg: string; order: number }> = {
-  applied:     { label: "Applied",     color: "#818cf8", bg: "rgba(129,140,248,0.1)", order: 1 },
-  screen:      { label: "Phone Screen", color: "#60a5fa", bg: "rgba(96,165,250,0.1)", order: 2 },
-  assignment:  { label: "Assignment",  color: "#f59e0b", bg: "rgba(245,158,11,0.1)", order: 3 },
-  interview:   { label: "Interview",   color: "#a78bfa", bg: "rgba(167,139,250,0.1)", order: 4 },
-  offer:       { label: "Offer",       color: "#10b981", bg: "rgba(16,185,129,0.1)", order: 5 },
-  rejected:    { label: "Rejected",    color: "#f87171", bg: "rgba(248,113,113,0.1)", order: 6 },
+const STAGE_MAP: Record<string, { label: string; color: string; bg: string }> = {
+  applied:     { label: "Applied",      color: "#818cf8", bg: "rgba(129,140,248,0.12)" },
+  screen:      { label: "Phone Screen", color: "#60a5fa", bg: "rgba(96,165,250,0.12)"  },
+  assignment:  { label: "Assignment",   color: "#f59e0b", bg: "rgba(245,158,11,0.12)"  },
+  interview:   { label: "Interview",    color: "#a78bfa", bg: "rgba(167,139,250,0.12)" },
+  offer:       { label: "Offer",        color: "#10b981", bg: "rgba(16,185,129,0.12)"  },
+  rejected:    { label: "Rejected",     color: "#f87171", bg: "rgba(248,113,113,0.12)" },
+  in_progress: { label: "In Progress",  color: "#f59e0b", bg: "rgba(245,158,11,0.12)"  },
+  review:      { label: "In Review",    color: "#a78bfa", bg: "rgba(167,139,250,0.12)" },
+  done:        { label: "Done",         color: "#10b981", bg: "rgba(16,185,129,0.12)"  },
+};
+
+type PipelineData = {
+  total: number;
+  counts: Record<string, number>;
+  applications: Application[];
 };
 
 export default function PipelinePage() {
+  const [data, setData] = useState<PipelineData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState("all");
-  const active = APPS.filter(a => filter === "all" || a.stage === filter);
+
+  const load = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/pipeline");
+      if (!res.ok) throw new Error(`API error ${res.status}`);
+      setData(await res.json());
+    } catch (e) {
+      setError(String(e));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { load(); }, []);
+
+  const apps = data?.applications ?? [];
+  const filtered = filter === "all" ? apps : apps.filter((a) => a.stage === filter);
 
   return (
     <div>
-      <div style={{ marginBottom: 24 }}>
-        <h1 style={{ margin: "0 0 6px", fontSize: 28, fontWeight: 800 }}>📋 Applications Pipeline</h1>
-        <p style={{ margin: 0, color: "#64748b", fontSize: 14 }}>Track every application from applied to offer — with SLA clock badges</p>
+      <div style={{ marginBottom: 20 }}>
+        <h1 style={{ margin: "0 0 4px", fontSize: 28, fontWeight: 800 }}>📋 Applications Pipeline</h1>
+        <p style={{ margin: 0, color: "#64748b", fontSize: 13 }}>
+          Live data from Mission Control — {data?.total ?? 0} active tasks
+        </p>
       </div>
-      {/* Stage filter pills */}
-      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 20 }}>
-        {["all", ...Object.keys(STAGE_MAP)].map(s => (
-          <button key={s} onClick={() => setFilter(s)} style={{
-            padding: "6px 14px", borderRadius: 20, fontSize: 12, fontWeight: 700, cursor: "pointer", border: "none",
-            background: filter === s ? "#6366f1" : "#1a1d2e", color: filter === s ? "white" : "#94a3b8",
-            transition: "all 0.15s",
-          }}>
-            {s === "all" ? "All" : STAGE_MAP[s].label}
-          </button>
-        ))}
-      </div>
-      {/* Applications */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        {active.map(app => {
-          const stage = STAGE_MAP[app.stage];
-          const slaOverdue = app.stage !== "rejected" && app.stage !== "offer" && app.daysAgo > app.sla;
-          return (
-            <div key={app.id} style={{ background: "#1a1d2e", border: `1px solid ${slaOverdue ? "rgba(248,113,113,0.4)" : "#2d3148"}`, borderRadius: 14, padding: "18px 20px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                <div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
-                    <span style={{ fontWeight: 700, fontSize: 16 }}>{app.title}</span>
-                    <span style={{ fontSize: 11, fontWeight: 700, background: stage.bg, color: stage.color, padding: "2px 10px", borderRadius: 20 }}>{stage.label}</span>
-                    {slaOverdue && <span style={{ fontSize: 11, fontWeight: 700, background: "rgba(248,113,113,0.15)", color: "#f87171", padding: "2px 10px", borderRadius: 20 }}>⚠️ SLA Overdue</span>}
+
+      {/* KPI counts */}
+      {data && (
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 20 }}>
+          {Object.entries(data.counts).filter(([, v]) => v > 0).map(([k, v]) => {
+            const s = STAGE_MAP[k] ?? { label: k, color: "#94a3b8", bg: "rgba(148,163,184,0.1)" };
+            return (
+              <button key={k} onClick={() => setFilter(filter === k ? "all" : k)} style={{
+                padding: "6px 14px", borderRadius: 20, border: `1px solid ${filter === k ? s.color : "#2d3148"}`,
+                background: filter === k ? s.bg : "#1a1d2e", color: filter === k ? s.color : "#94a3b8",
+                fontSize: 12, fontWeight: 700, cursor: "pointer",
+              }}>
+                {s.label}: {v}
+              </button>
+            );
+          })}
+          {filter !== "all" && (
+            <button onClick={() => setFilter("all")} style={{ padding: "6px 14px", borderRadius: 20, background: "transparent", border: "1px solid #475569", color: "#64748b", fontSize: 12, cursor: "pointer" }}>
+              Clear filter
+            </button>
+          )}
+        </div>
+      )}
+
+      {loading && (
+        <div style={{ textAlign: "center", padding: "48px 0", color: "#475569" }}>
+          <div style={{ fontSize: 32, marginBottom: 10 }}>⏳</div>
+          <div>Loading pipeline from Mission Control…</div>
+        </div>
+      )}
+
+      {error && !loading && (
+        <div style={{ padding: "16px 20px", background: "rgba(248,113,113,0.08)", border: "1px solid rgba(248,113,113,0.25)", borderRadius: 12, color: "#f87171", fontSize: 13, marginBottom: 16 }}>
+          <strong>⚠️ Failed to load pipeline:</strong> {error}
+          <button onClick={load} style={{ marginLeft: 12, padding: "4px 12px", background: "#6366f1", border: "none", borderRadius: 8, color: "white", fontSize: 12, cursor: "pointer" }}>Retry</button>
+        </div>
+      )}
+
+      {!loading && !error && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          {filtered.length === 0 && <div style={{ textAlign: "center", padding: "40px 0", color: "#475569" }}>No tasks in this stage.</div>}
+          {filtered.map((app) => {
+            const s = STAGE_MAP[app.stage] ?? STAGE_MAP.in_progress;
+            const slaWarn = app.daysInStage > 7 && app.stage !== "done";
+            return (
+              <div key={app.id} style={{ background: "#1a1d2e", border: `1px solid ${slaWarn ? "rgba(248,113,113,0.35)" : "#2d3148"}`, borderRadius: 14, padding: "16px 20px", display: "flex", alignItems: "center", gap: 14 }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 5, flexWrap: "wrap" }}>
+                    <span style={{ fontWeight: 700, fontSize: 15, color: "#e2e8f0" }}>{app.title}</span>
+                    <span style={{ fontSize: 10, fontWeight: 700, background: s.bg, color: s.color, padding: "2px 9px", borderRadius: 20 }}>{s.label}</span>
+                    {slaWarn && <span style={{ fontSize: 10, fontWeight: 700, background: "rgba(248,113,113,0.12)", color: "#f87171", padding: "2px 9px", borderRadius: 20 }}>⚠️ {app.daysInStage}d stagnant</span>}
+                    {app.priority === "high" && <span style={{ fontSize: 10, fontWeight: 700, background: "rgba(245,158,11,0.1)", color: "#f59e0b", padding: "2px 9px", borderRadius: 20 }}>High Priority</span>}
                   </div>
-                  <div style={{ color: "#64748b", fontSize: 13, marginBottom: 12 }}>{app.company}</div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px 24px", fontSize: 12 }}>
-                    <span style={{ color: "#64748b" }}>Last: <span style={{ color: "#94a3b8" }}>{app.lastAction}</span></span>
-                    <span style={{ color: "#64748b" }}>Next: <span style={{ color: "#818cf8" }}>{app.nextAction}</span></span>
-                  </div>
+                  <div style={{ color: "#64748b", fontSize: 12 }}>{app.company} · Updated {new Date(app.updatedAt).toLocaleDateString("he-IL")}</div>
                 </div>
-                {/* SLA Clock Badge */}
                 <div style={{ flexShrink: 0, textAlign: "center" }}>
-                  <div style={{ width: 52, height: 52, borderRadius: "50%", border: `3px solid ${slaOverdue ? "#f87171" : "#2d3148"}`, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 16, color: slaOverdue ? "#f87171" : "#475569" }}>
-                    {app.daysAgo}d
+                  <div style={{ width: 46, height: 46, borderRadius: "50%", border: `2px solid ${slaWarn ? "#f87171" : "#2d3148"}`, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 13, color: slaWarn ? "#f87171" : "#475569" }}>
+                    {app.daysInStage}d
                   </div>
-                  <div style={{ fontSize: 10, color: "#475569", marginTop: 4 }}>elapsed</div>
+                  <div style={{ fontSize: 9, color: "#334155", marginTop: 3 }}>in stage</div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
