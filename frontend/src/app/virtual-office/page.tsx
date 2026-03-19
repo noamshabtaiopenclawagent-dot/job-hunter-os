@@ -611,10 +611,22 @@ function HydratedStationInner({
   );
   const task = q.data?.status === 200 ? (q.data.data.items?.[0] ?? null) : null;
 
+  // Staleness check: treat as offline if last ping > 2h ago, regardless of status field
+  const isReallyOnline = (() => {
+    if (!agent) return false;
+    const raw = (agent as unknown as { last_seen_at?: string }).last_seen_at;
+    if (!raw) return (agent.status ?? "").toLowerCase() === "online";
+    try {
+      const dt = new Date(raw.endsWith("Z") || raw.includes("+") ? raw : raw + "Z");
+      if (isNaN(dt.getTime())) return false;
+      return (Date.now() - dt.getTime()) < 2 * 3600000; // <2h
+    } catch { return false; }
+  })();
+
   const state: State =
-    !agent              ? "idle"      :
-    (agent.status ?? "").toLowerCase() !== "online" ? "offline" :
-    !task               ? "idle"      :
+    !agent          ? "idle"      :
+    !isReallyOnline ? "offline"   :
+    !task           ? "idle"      :
     (task.title ?? "").toLowerCase().includes("review") ? "reviewing" :
     "working";
 
