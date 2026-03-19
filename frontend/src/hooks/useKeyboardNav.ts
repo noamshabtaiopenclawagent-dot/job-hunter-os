@@ -7,6 +7,7 @@ type Route = { key: string; href: string };
 
 const ROUTES: Route[] = [
   { key: "d", href: "/dashboard" },
+  { key: "i", href: "/inbox" },
   { key: "b", href: "/boards" },
   { key: "a", href: "/activity" },
   { key: "p", href: "/projects" },
@@ -15,7 +16,7 @@ const ROUTES: Route[] = [
   { key: "s", href: "/scheduled" },
 ];
 
-export function useKeyboardNav() {
+export function useKeyboardNav({ onCmdK }: { onCmdK?: () => void } = {}) {
   const router = useRouter();
 
   useEffect(() => {
@@ -23,6 +24,12 @@ export function useKeyboardNav() {
     let timer: ReturnType<typeof setTimeout> | null = null;
 
     const handler = (e: KeyboardEvent) => {
+      // Cmd+K (Mac) or Ctrl+K (Win) → command palette
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        onCmdK?.();
+        return;
+      }
       // Ignore when typing in inputs
       if (
         e.target instanceof HTMLElement &&
@@ -52,5 +59,5 @@ export function useKeyboardNav() {
 
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [router]);
+  }, [router, onCmdK]);
 }

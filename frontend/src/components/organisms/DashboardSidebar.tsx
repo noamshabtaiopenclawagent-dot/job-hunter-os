@@ -12,6 +12,7 @@ import {
   FolderGit2,
   Building2,
   GitBranch,
+  Inbox,
   LayoutGrid,
   Moon,
   Sun,
@@ -74,6 +75,7 @@ export function DashboardSidebar() {
     : "flex items-center gap-3 rounded-lg px-3 py-2.5 text-slate-700 transition";
   const linkActive = D ? "bg-slate-700 text-white font-medium" : "bg-blue-100 text-blue-800 font-medium";
   const linkHover = D ? "hover:bg-slate-800" : "hover:bg-slate-100";
+  const inboxActive = D ? "bg-amber-900 text-amber-200 font-medium" : "bg-amber-100 text-amber-800 font-medium";
   const footerCls = D ? "border-t border-slate-700 p-4" : "border-t border-slate-200 p-4";
   const footerTextCls = D ? "flex items-center gap-2 text-xs text-slate-400" : "flex items-center gap-2 text-xs text-slate-500";
   const topLabelCls = D
@@ -108,6 +110,10 @@ export function DashboardSidebar() {
             <div className="mt-1 space-y-1">
               <Link href="/dashboard" className={cn(linkBase, pathname === "/dashboard" ? linkActive : linkHover)}>
                 <BarChart3 className="h-4 w-4" /> Dashboard
+              </Link>
+              <Link href="/inbox" className={cn(linkBase, pathname === "/inbox" ? inboxActive : linkHover)}>
+                <Inbox className="h-4 w-4" />
+                <span className="flex-1">Inbox</span>
               </Link>
               <Link href="/projects" className={cn(linkBase, pathname.startsWith("/projects") ? (D ? "bg-indigo-800 text-white font-medium" : "bg-indigo-100 text-indigo-800 font-medium") : linkHover)}>
                 <FolderGit2 className="h-4 w-4" /> Projects
