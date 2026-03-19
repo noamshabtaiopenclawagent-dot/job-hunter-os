@@ -23,6 +23,7 @@ import {
   Coins,
   PlaySquare,
   Zap,
+  ShieldCheck,
 } from "lucide-react";
 
 import { useAuth } from "@/auth/clerk";
@@ -142,12 +143,15 @@ export function DashboardSidebar() {
             </div>
           </div>
 
-          {/* Strategy */}
+          {/* Strategy & QA */}
           <div className="mt-8">
-            <p className={sectionLabelCls}>Strategy</p>
+            <p className={sectionLabelCls}>Strategy & QA</p>
             <div className="mt-1 space-y-1">
               <Link href="/goals" className={cn(linkBase, pathname.startsWith("/goals") ? linkActive : linkHover)}>
                 <Target className="h-4 w-4" /> Company OKRs
+              </Link>
+              <Link href="/qa-center" className={cn(linkBase, pathname.startsWith("/qa-center") ? linkActive : linkHover)}>
+                <ShieldCheck className="h-4 w-4" /> QA Center
               </Link>
               <Link href="/economics" className={cn(linkBase, pathname.startsWith("/economics") ? linkActive : linkHover)}>
                 <Coins className="h-4 w-4" /> Token economics
