@@ -55,13 +55,13 @@ function BoardScanner({
     { query: { enabled: signedIn, staleTime: 60_000 } }
   );
 
+  const items = tasksQ.data?.status === 200 ? (tasksQ.data.data.items ?? []) : [];
+  const itemsHash = JSON.stringify(items.map(t => t.id + t.status + t.updated_at));
+
   useEffect(() => {
-    if (tasksQ.data?.status === 200) {
-      const items = tasksQ.data.data.items ?? [];
-      onTasksLoaded(items.map(task => ({ task, board })));
-    }
+    onTasksLoaded(items.map(task => ({ task, board })));
   // eslint-disable-next-line
-  }, [tasksQ.data]);
+  }, [itemsHash]);
 
   return null;
 }

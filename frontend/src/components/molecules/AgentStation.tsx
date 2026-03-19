@@ -2,6 +2,8 @@
 
 import type { AgentRead, TaskRead } from "@/api/generated/model";
 import type { OrgTreeNode } from "@/lib/org-tree";
+import { Send } from "lucide-react";
+import { useState } from "react";
 
 export type AgentWorkState = "working" | "reviewing" | "idle" | "offline" | "blocked";
 
@@ -41,6 +43,20 @@ export function AgentStation({
     ? activeTask.title.replace(/^\[[\w-]+\]\s*/, "").slice(0, 45) +
       (activeTask.title.length > 45 ? "…" : "")
     : null;
+
+  const [steerCmd, setSteerCmd] = useState("");
+  const [injecting, setInjecting] = useState(false);
+
+  const handleInject = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!steerCmd.trim()) return;
+    setInjecting(true);
+    // Simulate API injection delay
+    setTimeout(() => {
+      setSteerCmd("");
+      setInjecting(false);
+    }, 800);
+  };
 
   return (
     <div className="flex flex-col items-center gap-2 group select-none">
@@ -147,10 +163,34 @@ export function AgentStation({
 
       {/* Speech bubble: current task */}
       {taskLabel && (
-        <div
-          className="max-w-[180px] rounded-xl rounded-bl-none border border-blue-200 bg-blue-50 px-2.5 py-1.5 text-[10px] text-blue-800 shadow-sm leading-snug"
-        >
-          {taskLabel}
+        <div className="flex flex-col gap-1 items-center w-full mt-1">
+          <div
+            className="max-w-[180px] rounded-xl rounded-bl-none border border-blue-200 bg-blue-50 px-2.5 py-1.5 text-[10px] text-blue-800 shadow-sm leading-snug text-center"
+          >
+            {taskLabel}
+          </div>
+          
+          {/* Thread Hijack / Steer Control */}
+          {isActive && (
+            <form onSubmit={handleInject} className="relative w-[160px] mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+               <input 
+                 type="text"
+                 value={steerCmd}
+                 onChange={e => setSteerCmd(e.target.value)}
+                 disabled={injecting}
+                 placeholder="Steer agent..."
+                 className="w-full bg-white border border-slate-300 rounded-full py-1 pl-3 pr-7 text-[10px] text-slate-700 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 shadow-sm disabled:opacity-50"
+               />
+               <button 
+                 type="submit" 
+                 disabled={injecting || !steerCmd.trim()}
+                 className="absolute right-1 top-[3px] p-1 text-slate-400 hover:text-indigo-600 disabled:opacity-50"
+                 title="Inject Prompt into active thread"
+               >
+                 <Send size={10} />
+               </button>
+            </form>
+          )}
         </div>
       )}
     </div>

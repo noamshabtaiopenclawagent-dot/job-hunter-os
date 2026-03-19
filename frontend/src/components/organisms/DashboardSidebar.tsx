@@ -24,6 +24,7 @@ import {
   PlaySquare,
   Zap,
   ShieldCheck,
+  History,
 } from "lucide-react";
 
 import { useAuth } from "@/auth/clerk";
@@ -202,6 +203,9 @@ export function DashboardSidebar() {
                   <Bot className="h-4 w-4" /> Agent directory
                 </Link>
               ) : null}
+              <Link href="/replay" className={cn(linkBase, pathname.startsWith("/replay") ? linkActive : linkHover)}>
+                <History className="h-4 w-4" /> Session replay
+              </Link>
               <Link href="/org-graph" className={cn(linkBase, pathname.startsWith("/org-graph") ? linkActive : linkHover)}>
                 <Network className="h-4 w-4" /> Swarm graph
               </Link>

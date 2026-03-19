@@ -138,26 +138,26 @@ function BoardScanner({
     { query: { enabled: signedIn, refetchInterval: 30_000 } }
   );
 
-  useEffect(() => {
-    if (tasksQ.data?.status === 200) {
-      const items = tasksQ.data.data.items ?? [];
-      const stuck = items.filter(t => {
-        if (t.status !== "in_progress") return false;
-        const age = ageMin(t.updated_at);
-        return age > 72 * 60; // >72h
-      });
-      onStuck(stuck.map(task => ({ task, board })));
-    }
-  // eslint-disable-next-line
-  }, [tasksQ.data]);
+  const items = tasksQ.data?.status === 200 ? (tasksQ.data.data.items ?? []) : [];
+  const itemsHash = JSON.stringify(items.map(t => t.id + t.status + t.updated_at));
 
   useEffect(() => {
-    if (approvalsQ.data?.status === 200) {
-      const items = approvalsQ.data.data.items ?? [];
-      onApprovals(items.map(approval => ({ approval, board })));
-    }
+    const stuck = items.filter(t => {
+      if (t.status !== "in_progress") return false;
+      const age = ageMin(t.updated_at);
+      return age > 72 * 60; // >72h
+    });
+    onStuck(stuck.map(task => ({ task, board })));
   // eslint-disable-next-line
-  }, [approvalsQ.data]);
+  }, [itemsHash]);
+
+  const apps = approvalsQ.data?.status === 200 ? (approvalsQ.data.data.items ?? []) : [];
+  const appsHash = JSON.stringify(apps.map(a => a.id));
+
+  useEffect(() => {
+    onApprovals(apps.map(approval => ({ approval, board })));
+  // eslint-disable-next-line
+  }, [appsHash]);
 
   return null;
 }

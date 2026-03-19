@@ -2,7 +2,7 @@
 
 export const dynamic = "force-dynamic";
 
-import { type KeyboardEvent, type MouseEvent, useMemo } from "react";
+import { type KeyboardEvent, type MouseEvent, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
@@ -16,6 +16,11 @@ import {
   LayoutGrid,
   Shield,
   Timer,
+  Settings2,
+  Lock,
+  ChevronUp,
+  ChevronDown,
+  GripHorizontal,
 } from "lucide-react";
 
 import { DashboardSidebar } from "@/components/organisms/DashboardSidebar";
@@ -481,6 +486,25 @@ function InfoBlock({
 export default function DashboardPage() {
   const router = useRouter();
   const { isSignedIn } = useAuth();
+  
+  const [isEditing, setIsEditing] = useState(false);
+  const [layout, setLayout] = useState(["hero", "kpi", "agents", "approvals", "logs"]);
+
+  const moveBlock = (index: number, direction: 'up' | 'down') => {
+    if (direction === 'up' && index > 0) {
+      setLayout(prev => {
+        const next = [...prev];
+        [next[index], next[index - 1]] = [next[index - 1], next[index]];
+        return next;
+      });
+    } else if (direction === 'down' && index < layout.length - 1) {
+      setLayout(prev => {
+        const next = [...prev];
+        [next[index], next[index + 1]] = [next[index + 1], next[index]];
+        return next;
+      });
+    }
+  };
 
   const boardsQuery = useListBoardsApiV1BoardsGet<listBoardsApiV1BoardsGetResponse, ApiError>(
     { limit: 200 },
@@ -911,252 +935,226 @@ export default function DashboardPage() {
           />
           <ProjectStatusPanel />
           <div className="p-8">
+            <div className="flex items-center justify-between mb-6">
+              <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Mission Control</h1>
+              <button 
+                onClick={() => setIsEditing(!isEditing)}
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-sm font-semibold transition-colors ${
+                  isEditing 
+                    ? "bg-indigo-50 border-indigo-200 text-indigo-700 hover:bg-indigo-100" 
+                    : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
+                }`}
+              >
+                {isEditing ? <><Lock size={16} /> Save Layout</> : <><Settings2 size={16} /> Customize</>}
+              </button>
+            </div>
+
             {metricsQuery.error ? (
               <div className="mb-4 rounded-lg border border-rose-300 bg-rose-50 p-3 text-sm text-rose-700">
                 {metricsQuery.error.message}
               </div>
             ) : null}
 
-            <Link
-              href="/org-tree"
-              className="flex items-center justify-between rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-slate-300 hover:shadow-md"
-            >
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                  <Bot className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-slate-900">Agent Organization</h3>
-                  <p className="text-xs text-slate-500">
-                    {formatCount(onlineAgents)} online · {formatCount(agents.length)} total agents
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-                  </span>
-                  Live
-                </span>
-                <ArrowUpRight className="h-4 w-4 text-slate-400" />
-              </div>
-            </Link>
-
-            <div className="mt-4 grid grid-cols-1 gap-4 xl:grid-cols-3">
-              <InfoBlock
-                title="Workload"
-                rows={workloadRows}
-              />
-              <InfoBlock
-                title="Throughput"
-                infoText={`All throughput values are calculated for ${DASHBOARD_RANGE_LABEL}`}
-                rows={throughputRows}
-              />
-              <InfoBlock
-                title="Gateway Health"
-                badge={{
-                  text: gatewayStatusLabel,
-                  tone: gatewayBadgeTone,
-                }}
-                rows={gatewayRows}
-              />
-            </div>
-
-            {/* Agent Status — live staleness view */}
-            <div className="mt-4">
-              <AgentStatusBar />
-            </div>
-
-            <section className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4 shadow-sm flex items-center gap-2">
-              <Shield className="h-4 w-4 text-emerald-600 shrink-0" />
-              <p className="text-sm text-emerald-700 font-medium">System Alerts — All systems green. No active errors detected.</p>
-            </section>
-
-            <section className="mt-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-
-              <div className="mb-3 flex items-center justify-between gap-3">
-                <h3 className="text-lg font-semibold text-slate-900">Pending Approvals</h3>
-                <Link
-                  href="/approvals"
-                  className="inline-flex items-center gap-1 text-xs text-slate-500 transition hover:text-slate-700"
-                >
-                  Open global approvals
-                  <ArrowUpRight className="h-3.5 w-3.5" />
-                </Link>
-              </div>
-
-              {!metrics && metricsQuery.isLoading ? (
-                <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-500">
-                  Loading pending approvals...
-                </div>
-              ) : !metrics && metricsQuery.error ? (
-                <div className="rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-800">
-                  Pending approvals are temporarily unavailable.
-                </div>
-              ) : hasPendingApprovals ? (
-                <div className="space-y-2">
-                  <div className="divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white">
-                    {pendingApprovalItems.map((item) => (
-                      <Link
-                        key={item.approval_id}
-                        href={`/boards/${item.board_id}/approvals`}
-                        className="flex items-center justify-between gap-3 px-3 py-2 transition hover:bg-slate-50"
-                      >
-                        <span className="min-w-0 text-sm text-slate-700">
-                          <span className="block truncate font-medium text-slate-800">
-                            {item.task_title || "Pending approval"}
-                          </span>
-                          <span className="block truncate text-xs text-slate-500">
-                            {item.board_name} · {item.confidence}% score
-                          </span>
-                        </span>
-                        <span className="shrink-0 text-xs text-slate-500">
-                          {formatRelativeTimestamp(item.created_at)}
-                        </span>
-                      </Link>
-                    ))}
-                  </div>
-                  {pendingApprovalsTotal > pendingApprovalItems.length ? (
-                    <p className="text-xs text-slate-500">
-                      Showing latest {formatCount(pendingApprovalItems.length)} of{" "}
-                      {formatCount(pendingApprovalsTotal)} pending approvals.
-                    </p>
-                  ) : null}
-                </div>
-              ) : (
-                <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">
-                  No pending approvals across your boards.
-                </div>
-              )}
-            </section>
-
-            <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
-              <section className="min-w-0 overflow-hidden rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-                <div className="mb-3 flex items-center justify-between gap-3">
-                  <h3 className="text-lg font-semibold text-slate-900">Sessions</h3>
-                  <span className="text-xs text-slate-500">{formatCount(activeSessions)}</span>
-                </div>
-                <div className="max-h-[310px] space-y-2 overflow-x-hidden overflow-y-auto pr-1">
-                  {!hasConfiguredGateways ? (
-                    <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-500">
-                      No gateways are configured for any board yet.
-                    </div>
-                  ) : gatewayStatusesQuery.isLoading ? (
-                    <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-500">
-                      Loading sessions...
-                    </div>
-                  ) : sessionSummaries.length > 0 ? (
-                    <>
-                      {gatewayUnavailableCount > 0 ? (
-                        <div className="rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-800">
-                          {formatCount(gatewayUnavailableCount)} gateway
-                          {gatewayUnavailableCount === 1 ? "" : "s"} unavailable; showing sessions
-                          from reachable gateways.
-                        </div>
-                      ) : null}
-                      {sessionSummaries.map((session) => (
-                        <div
-                          key={session.key}
-                          className="overflow-hidden rounded-lg border border-slate-200 bg-white px-3 py-2"
-                        >
-                          <div className="flex items-center justify-between gap-3">
-                            <div className="min-w-0 flex-1">
-                              <p className="truncate text-sm font-medium text-slate-900">
-                                <span
-                                  className={`mr-2 inline-block h-2 w-2 rounded-full ${
-                                    session.isMain ? "bg-emerald-500" : "bg-slate-400"
-                                  }`}
-                                />
-                                {session.title}
-                              </p>
-                              <p className="mt-0.5 truncate text-xs text-slate-500">{session.subtitle}</p>
-                            </div>
-                            <div className="min-w-0 max-w-[45%] text-right">
-                              <p className="truncate text-xs font-medium text-slate-700">
-                                {session.usage === DASH ? "Usage unavailable" : session.usage}
-                              </p>
-                              <p className="text-[11px] text-slate-500">
-                                {session.lastSeenAt
-                                  ? formatRelativeTimestamp(session.lastSeenAt)
-                                  : "Activity unavailable"}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </>
-                  ) : gatewayUnavailableCount === gatewayTargets.length ? (
-                    <div className="rounded-lg border border-rose-300 bg-rose-50 p-3 text-sm text-rose-700">
-                      Session data is unavailable for all configured gateways.
-                    </div>
-                  ) : (
-                    <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-500">
-                      No active sessions detected.
-                    </div>
-                  )}
-                </div>
-              </section>
-
-              <section className="min-w-0 overflow-hidden rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-                <div className="mb-3 flex items-center justify-between gap-3">
-                  <h3 className="text-lg font-semibold text-slate-900">Recent Activity</h3>
-                  <Link
-                    href={activityFeedHref}
-                    className="inline-flex items-center gap-1 text-xs text-slate-500 transition hover:text-slate-700"
-                  >
-                    Open feed
-                    <ArrowUpRight className="h-3.5 w-3.5" />
-                  </Link>
-                </div>
-                <div className="max-h-[310px] space-y-2 overflow-x-hidden overflow-y-auto pr-1">
-                  {recentLogs.length > 0 ? (
-                    recentLogs.map((event) => {
-                      const eventHref = buildActivityEventHref(event);
+            <div className="flex flex-col gap-4">
+              {layout.map((blockId, idx) => {
+                const renderBlockContent = () => {
+                  switch (blockId) {
+                    case "hero":
                       return (
-                        <div
-                          key={event.id}
-                          role="link"
-                          tabIndex={0}
-                        aria-label={`Open related context for ${event.event_type} activity`}
-                          onClick={(interactionEvent) =>
-                            handleLogRowClick(interactionEvent, eventHref)
-                          }
-                          onKeyDown={(interactionEvent) =>
-                            handleLogRowKeyDown(interactionEvent, eventHref)
-                          }
-                          className="cursor-pointer overflow-hidden rounded-lg border border-slate-200 bg-white px-3 py-2 transition hover:border-slate-300 focus-visible:border-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
+                        <Link
+                          href="/org-tree"
+                          className="flex items-center justify-between rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-slate-300 hover:shadow-md h-full w-full"
                         >
-                          <div className="flex items-start justify-between gap-3">
-                            <div className="min-w-0 flex-1 overflow-hidden">
-                              <div className="break-words text-sm font-medium text-slate-900 [&_ol]:mb-0 [&_p]:mb-0 [&_pre]:my-1 [&_pre]:max-w-full [&_pre]:overflow-x-auto [&_ul]:mb-0">
-                                <Markdown
-                                  content={event.message?.trim() || event.event_type}
-                                  variant="comment"
-                                />
-                              </div>
-                              <p className="mt-0.5 text-xs uppercase tracking-wider text-slate-500">
-                                {event.event_type}
+                          <div className="flex items-center gap-3">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                              <Bot className="h-5 w-5" />
+                            </div>
+                            <div>
+                              <h3 className="font-semibold text-slate-900">Agent Organization</h3>
+                              <p className="text-xs text-slate-500">
+                                {formatCount(onlineAgents)} online · {formatCount(agents.length)} total agents
                               </p>
                             </div>
-                            <div className="shrink-0 text-right text-[11px] text-slate-500">
-                              <p>{formatRelativeTimestamp(event.created_at)}</p>
-                              <p>{formatTimestamp(event.created_at)}</p>
-                            </div>
                           </div>
+                          <div className="flex items-center gap-2">
+                            <span className="flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700">
+                              <span className="relative flex h-2 w-2">
+                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                              </span>
+                              Live
+                            </span>
+                            <ArrowUpRight className="h-4 w-4 text-slate-400" />
+                          </div>
+                        </Link>
+                      );
+                    
+                    case "kpi":
+                      return (
+                        <div className="grid grid-cols-1 gap-4 xl:grid-cols-3 w-full">
+                          <InfoBlock title="Workload" rows={workloadRows} />
+                          <InfoBlock title="Throughput" infoText={`All throughput values are calculated for ${DASHBOARD_RANGE_LABEL}`} rows={throughputRows} />
+                          <InfoBlock title="Gateway Health" badge={{ text: gatewayStatusLabel, tone: gatewayBadgeTone }} rows={gatewayRows} />
                         </div>
                       );
-                    })
-                  ) : (
-                    <div className="flex h-[240px] flex-col items-center justify-center rounded-lg border border-slate-200 bg-white text-sm text-slate-500">
-                      <Shield className="mb-2 h-5 w-5 text-slate-400" />
-                      No activity yet
-                      <p className="mt-1 text-xs text-slate-500">Activity appears here when events are emitted.</p>
+
+                    case "agents":
+                      return (
+                        <div className="flex flex-col gap-4 w-full">
+                          <AgentStatusBar />
+                          <section className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 shadow-sm flex items-center gap-2">
+                            <Shield className="h-4 w-4 text-emerald-600 shrink-0" />
+                            <p className="text-sm text-emerald-700 font-medium">System Alerts — All systems green. No active errors detected.</p>
+                          </section>
+                        </div>
+                      );
+
+                    case "approvals":
+                      return (
+                        <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm w-full">
+                          <div className="mb-3 flex items-center justify-between gap-3">
+                            <h3 className="text-lg font-semibold text-slate-900">Pending Approvals</h3>
+                            <Link href="/approvals" className="inline-flex items-center gap-1 text-xs text-slate-500 transition hover:text-slate-700">
+                              Open global approvals <ArrowUpRight className="h-3.5 w-3.5" />
+                            </Link>
+                          </div>
+                          {!metrics && metricsQuery.isLoading ? (
+                            <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-500">Loading pending approvals...</div>
+                          ) : !metrics && metricsQuery.error ? (
+                            <div className="rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-800">Pending approvals are temporarily unavailable.</div>
+                          ) : hasPendingApprovals ? (
+                            <div className="space-y-2">
+                              <div className="divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white">
+                                {pendingApprovalItems.map((item) => (
+                                  <Link key={item.approval_id} href={`/boards/${item.board_id}/approvals`} className="flex items-center justify-between gap-3 px-3 py-2 transition hover:bg-slate-50">
+                                    <span className="min-w-0 text-sm text-slate-700">
+                                      <span className="block truncate font-medium text-slate-800">{item.task_title || "Pending approval"}</span>
+                                      <span className="block truncate text-xs text-slate-500">{item.board_name} · {item.confidence}% score</span>
+                                    </span>
+                                    <span className="shrink-0 text-xs text-slate-500">{formatRelativeTimestamp(item.created_at)}</span>
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">No pending approvals across your boards.</div>
+                          )}
+                        </section>
+                      );
+                    
+                    case "logs":
+                      return (
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 w-full">
+                          <section className="min-w-0 overflow-hidden rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+                            <div className="mb-3 flex items-center justify-between gap-3">
+                              <h3 className="text-lg font-semibold text-slate-900">Sessions</h3>
+                              <span className="text-xs text-slate-500">{formatCount(activeSessions)}</span>
+                            </div>
+                            <div className="max-h-[310px] space-y-2 overflow-x-hidden overflow-y-auto pr-1">
+                              {!hasConfiguredGateways ? (
+                                <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-500">No gateways are configured for any board yet.</div>
+                              ) : gatewayStatusesQuery.isLoading ? (
+                                <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-500">Loading sessions...</div>
+                              ) : sessionSummaries.length > 0 ? (
+                                <>
+                                  {gatewayUnavailableCount > 0 && (
+                                    <div className="rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-800">
+                                      {formatCount(gatewayUnavailableCount)} gateway(s) unavailable; showing sessions from reachable gateways.
+                                    </div>
+                                  )}
+                                  {sessionSummaries.map((session) => (
+                                    <div key={session.key} className="overflow-hidden rounded-lg border border-slate-200 bg-white px-3 py-2">
+                                      <div className="flex items-center justify-between gap-3">
+                                        <div className="min-w-0 flex-1">
+                                          <p className="truncate text-sm font-medium text-slate-900">
+                                            <span className={`mr-2 inline-block h-2 w-2 rounded-full ${session.isMain ? "bg-emerald-500" : "bg-slate-400"}`} />
+                                            {session.title}
+                                          </p>
+                                          <p className="mt-0.5 truncate text-xs text-slate-500">{session.subtitle}</p>
+                                        </div>
+                                        <div className="min-w-0 max-w-[45%] text-right">
+                                          <p className="truncate text-xs font-medium text-slate-700">{session.usage === DASH ? "Usage unavailable" : session.usage}</p>
+                                          <p className="text-[11px] text-slate-500">{session.lastSeenAt ? formatRelativeTimestamp(session.lastSeenAt) : "Activity unavailable"}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </>
+                              ) : (
+                                <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-500 text-center">No active sessions detected.</div>
+                              )}
+                            </div>
+                          </section>
+
+                          <section className="min-w-0 overflow-hidden rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+                            <div className="mb-3 flex items-center justify-between gap-3">
+                              <h3 className="text-lg font-semibold text-slate-900">Recent Activity</h3>
+                              <Link href={activityFeedHref} className="inline-flex items-center gap-1 text-xs text-slate-500 transition hover:text-slate-700">
+                                Open feed <ArrowUpRight className="h-3.5 w-3.5" />
+                              </Link>
+                            </div>
+                            <div className="max-h-[310px] space-y-2 overflow-x-hidden overflow-y-auto pr-1">
+                              {recentLogs.length > 0 ? (
+                                recentLogs.map((event) => {
+                                  const eventHref = buildActivityEventHref(event);
+                                  return (
+                                    <div
+                                      key={event.id}
+                                      role="link"
+                                      tabIndex={0}
+                                      onClick={(e) => handleLogRowClick(e, eventHref)}
+                                      onKeyDown={(e) => handleLogRowKeyDown(e, eventHref)}
+                                      className="cursor-pointer overflow-hidden rounded-lg border border-slate-200 bg-white px-3 py-2 transition hover:border-slate-300"
+                                    >
+                                      <div className="flex items-start justify-between gap-3">
+                                        <div className="min-w-0 flex-1 overflow-hidden">
+                                          <div className="break-words text-sm font-medium text-slate-900 [&_ol]:mb-0 [&_p]:mb-0 [&_pre]:my-1 [&_pre]:max-w-full [&_pre]:overflow-x-auto [&_ul]:mb-0">
+                                            <Markdown content={event.message?.trim() || event.event_type} variant="comment" />
+                                          </div>
+                                          <p className="mt-0.5 text-xs uppercase tracking-wider text-slate-500">{event.event_type}</p>
+                                        </div>
+                                        <div className="shrink-0 text-right text-[11px] text-slate-500">
+                                          <p>{formatRelativeTimestamp(event.created_at)}</p>
+                                          <p>{formatTimestamp(event.created_at)}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  );
+                                })
+                              ) : (
+                                <div className="flex h-[240px] flex-col items-center justify-center rounded-lg border border-slate-200 bg-white text-sm text-slate-500">
+                                  <Shield className="mb-2 h-5 w-5 text-slate-400" />
+                                  No activity yet
+                                  <p className="mt-1 text-xs text-slate-500">Activity appears here when events are emitted.</p>
+                                </div>
+                              )}
+                            </div>
+                          </section>
+                        </div>
+                      );
+                    
+                    default: return null;
+                  }
+                };
+
+                return (
+                  <div key={blockId} className="relative group">
+                    {/* Drag Handle & Controls Overlay */}
+                    {isEditing && (
+                      <div className="absolute -left-6 top-1/2 -translate-y-1/2 flex flex-col items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10 bg-slate-100 p-1 rounded-full shadow-sm border border-slate-200">
+                        <button onClick={() => moveBlock(idx, 'up')} disabled={idx === 0} className="p-0.5 text-slate-400 hover:text-indigo-600 disabled:opacity-30"><ChevronUp size={14}/></button>
+                        <GripHorizontal size={14} className="text-slate-300 cursor-grab" />
+                        <button onClick={() => moveBlock(idx, 'down')} disabled={idx === layout.length - 1} className="p-0.5 text-slate-400 hover:text-indigo-600 disabled:opacity-30"><ChevronDown size={14}/></button>
+                      </div>
+                    )}
+                    
+                    {/* Wrap Widget in Editing styling */}
+                    <div className={`transition-all duration-300 rounded-xl ${isEditing ? 'ring-2 ring-indigo-200 ring-offset-2 scale-[0.99] translate-x-2' : ''}`}>
+                      {renderBlockContent()}
                     </div>
-                  )}
-                </div>
-              </section>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </main>
