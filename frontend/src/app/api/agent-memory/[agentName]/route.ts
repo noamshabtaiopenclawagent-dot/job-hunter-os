@@ -6,10 +6,11 @@ const WORKSPACE_DIR = path.join(process.env.HOME || "", ".openclaw", "workspace"
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { agentName: string } }
+  { params }: { params: Promise<{ agentName: string }> }
 ) {
   try {
-    const name = params.agentName.toLowerCase().replace(/[^a-z0-9-]/g, "");
+    const resolvedParams = await params;
+    const name = resolvedParams.agentName.toLowerCase().replace(/[^a-z0-9-]/g, "");
     if (!name) return NextResponse.json({ error: "Invalid agent name" }, { status: 400 });
 
     const teamMemoryPath = path.join(WORKSPACE_DIR, "TEAM_MEMORY.md");
@@ -41,10 +42,11 @@ export async function GET(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { agentName: string } }
+  { params }: { params: Promise<{ agentName: string }> }
 ) {
   try {
-    const name = params.agentName.toLowerCase().replace(/[^a-z0-9-]/g, "");
+    const resolvedParams = await params;
+    const name = resolvedParams.agentName.toLowerCase().replace(/[^a-z0-9-]/g, "");
     if (!name) return NextResponse.json({ error: "Invalid agent name" }, { status: 400 });
 
     const body = await request.json();

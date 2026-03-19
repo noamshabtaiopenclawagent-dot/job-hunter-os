@@ -16,13 +16,13 @@ function deriveState(agent?: AgentRead | null, activeTask?: TaskRead | null): Ag
 
 const STATE_CONFIG: Record<
   AgentWorkState,
-  { screenGlow: string; badge: string; badgeText: string; icon: string; pulse: boolean }
+  { screenGlow: string; badge: string; badgeText: string; icon: string; pulse: boolean; stationRing: string }
 > = {
-  working:   { screenGlow: "shadow-blue-400/60",   badge: "bg-blue-500",    badgeText: "Working",   icon: "⌨️", pulse: true  },
-  reviewing: { screenGlow: "shadow-amber-400/60",  badge: "bg-amber-500",   badgeText: "Reviewing", icon: "🔍", pulse: true  },
-  idle:      { screenGlow: "shadow-slate-200/40",  badge: "bg-slate-400",   badgeText: "Idle",      icon: "💤", pulse: false },
-  offline:   { screenGlow: "shadow-slate-100/20",  badge: "bg-slate-300",   badgeText: "Offline",   icon: "⚫", pulse: false },
-  blocked:   { screenGlow: "shadow-red-400/50",    badge: "bg-red-500",     badgeText: "Blocked",   icon: "⚠️", pulse: true  },
+  working:   { screenGlow: "shadow-blue-400/60",   badge: "bg-blue-500",    badgeText: "Working",   icon: "⌨️", pulse: true,  stationRing: "ring-2 ring-emerald-400 shadow-[0_0_15px_rgba(52,211,153,0.5)]" },
+  reviewing: { screenGlow: "shadow-amber-400/60",  badge: "bg-amber-500",   badgeText: "Reviewing", icon: "🔍", pulse: true,  stationRing: "ring-2 ring-emerald-400 shadow-[0_0_15px_rgba(52,211,153,0.5)]" },
+  idle:      { screenGlow: "shadow-slate-200/40",  badge: "bg-slate-400",   badgeText: "Idle",      icon: "💤", pulse: false, stationRing: "ring-2 ring-emerald-200 animate-[pulse_3s_ease-in-out_infinite]" },
+  offline:   { screenGlow: "shadow-slate-100/20",  badge: "bg-slate-300",   badgeText: "Offline",   icon: "⚫", pulse: false, stationRing: "ring-2 ring-rose-500 animate-[pulse_1s_ease-in-out_infinite] shadow-[0_0_20px_rgba(244,63,94,0.6)]" },
+  blocked:   { screenGlow: "shadow-red-400/50",    badge: "bg-red-500",     badgeText: "Blocked",   icon: "⚠️", pulse: true,  stationRing: "ring-2 ring-amber-500 animate-[pulse_1.5s_ease-in-out_infinite] shadow-[0_0_20px_rgba(245,158,11,0.5)]" },
 };
 
 export function AgentStation({
@@ -46,9 +46,9 @@ export function AgentStation({
     <div className="flex flex-col items-center gap-2 group select-none">
       {/* Workstation */}
       <div
-        className={`relative rounded-2xl border-2 p-4 transition-all duration-500
-          ${isActive ? "border-slate-300 bg-white" : "border-slate-200 bg-slate-50"}
-          shadow-lg ${isActive ? cfg.screenGlow : ""}
+        className={`relative rounded-2xl p-4 transition-all duration-500 ${cfg.stationRing}
+          ${isActive ? "bg-white" : "bg-slate-50"}
+          shadow-lg flex-shrink-0
         `}
         style={{ width: 180, minHeight: 160 }}
       >

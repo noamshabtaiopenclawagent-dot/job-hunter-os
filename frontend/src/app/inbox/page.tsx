@@ -89,11 +89,11 @@ function InboxSection({
 }
 
 // ─── Row ──────────────────────────────────────────────────────────────────────
-function InboxRow({ label, sub, age, href, badge }: {
-  label: string; sub?: string; age?: string; href?: string; badge?: string;
+function InboxRow({ label, sub, age, href, badge, action }: {
+  label: string; sub?: string; age?: string; href?: string; badge?: string; action?: React.ReactNode;
 }) {
   const content = (
-    <div className="flex items-center gap-3 px-5 py-2.5 hover:bg-slate-50 transition-colors">
+    <div className="flex items-center gap-3 px-5 py-2.5 hover:bg-slate-50 transition-colors group">
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium text-slate-800 truncate">{label}</p>
         {sub && <p className="text-[11px] text-slate-400 truncate">{sub}</p>}
@@ -102,9 +102,16 @@ function InboxRow({ label, sub, age, href, badge }: {
         <span className="shrink-0 rounded px-1.5 py-0.5 text-[10px] font-bold bg-amber-100 text-amber-700">{badge}</span>
       )}
       {age && <span className="shrink-0 text-[11px] text-slate-400">{age}</span>}
+      {action && (
+        <div className="shrink-0 ml-2 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
+          {action}
+        </div>
+      )}
     </div>
   );
-  return href ? <Link href={href}>{content}</Link> : content;
+  return content; 
+  // We removed surrounding <Link> so actions can have onClick without navigating.
+  // Instead, the link should be inside the layout if needed, or we just rely on the actions.
 }
 
 // ─── Per-board tasks + approvals collector ────────────────────────────────────
@@ -277,8 +284,13 @@ export default function InboxPage() {
               label={a.name}
               sub={ip?.role ?? "Agent"}
               age={fmtAge(ageMin(raw))}
-              href="/virtual-office"
               badge="OFFLINE"
+              action={
+                <>
+                  <Link href="/virtual-office" className="px-2 py-1 text-xs font-semibold rounded bg-slate-100 text-slate-600 hover:bg-slate-200">View Desk</Link>
+                  <button onClick={() => alert(`Restarting ${a.name}...`)} className="px-2 py-1 text-xs font-semibold rounded bg-rose-100 text-rose-700 hover:bg-rose-200">Restart Agent</button>
+                </>
+              }
             />
           );
         })}
@@ -318,8 +330,13 @@ export default function InboxPage() {
               label={a.name}
               sub={ip?.role ?? "Agent"}
               age={fmtAge(ageMin(raw))}
-              href="/virtual-office"
               badge="STALE"
+              action={
+                <>
+                  <Link href="/virtual-office" className="px-2 py-1 text-xs font-semibold rounded bg-slate-100 text-slate-600 hover:bg-slate-200">View Desk</Link>
+                  <button onClick={() => alert(`Pinging ${a.name}...`)} className="px-2 py-1 text-xs font-semibold rounded border border-amber-200 text-amber-700 hover:bg-amber-50">Ping Agent</button>
+                </>
+              }
             />
           );
         })}
@@ -338,7 +355,12 @@ export default function InboxPage() {
             label={task.title ?? "Untitled task"}
             sub={`Board: ${board.name}`}
             age={fmtAge(ageMin(task.updated_at))}
-            href={`/boards/${board.id}?taskId=${task.id}`}
+            action={
+              <>
+                <Link href={`/boards/${board.id}?taskId=${task.id}`} className="px-2 py-1 text-xs font-semibold rounded bg-slate-100 text-slate-600 hover:bg-slate-200">Open Task</Link>
+                <button onClick={() => alert("Reassigning to Manager...")} className="px-2 py-1 text-xs font-semibold rounded border border-amber-300 bg-amber-50 text-amber-700 hover:bg-amber-100">Reassign</button>
+              </>
+            }
           />
         ))}
       </InboxSection>

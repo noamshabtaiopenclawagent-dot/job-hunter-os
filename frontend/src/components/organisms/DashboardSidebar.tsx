@@ -18,8 +18,11 @@ import {
   Moon,
   Sun,
   Timer,
-  Zap,
   Target,
+  Network,
+  Coins,
+  PlaySquare,
+  Zap,
 } from "lucide-react";
 
 import { useAuth } from "@/auth/clerk";
@@ -43,12 +46,24 @@ export function DashboardSidebar() {
   // ─── Dark mode toggle ──────────────────────────────────────────────────────
   const [dark, setDark] = useState(false);
   useEffect(() => {
-    try { setDark(localStorage.getItem("mc-sidebar-dark") === "1"); } catch {}
+    try { 
+      const isDark = document.documentElement.classList.contains("dark") || localStorage.getItem("theme") === "dark";
+      setDark(isDark);
+      if (isDark) document.documentElement.classList.add("dark");
+    } catch {}
   }, []);
   const toggleDark = useCallback(() => {
     setDark((d) => {
       const next = !d;
-      try { localStorage.setItem("mc-sidebar-dark", next ? "1" : "0"); } catch {}
+      try { 
+        if (next) {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("theme", "dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("theme", "light");
+        }
+      } catch {}
       return next;
     });
   }, []);
@@ -127,6 +142,22 @@ export function DashboardSidebar() {
             </div>
           </div>
 
+          {/* Strategy */}
+          <div className="mt-8">
+            <p className={sectionLabelCls}>Strategy</p>
+            <div className="mt-1 space-y-1">
+              <Link href="/goals" className={cn(linkBase, pathname.startsWith("/goals") ? linkActive : linkHover)}>
+                <Target className="h-4 w-4" /> Company OKRs
+              </Link>
+              <Link href="/economics" className={cn(linkBase, pathname.startsWith("/economics") ? linkActive : linkHover)}>
+                <Coins className="h-4 w-4" /> Token economics
+              </Link>
+              <Link href="/playbooks" className={cn(linkBase, pathname.startsWith("/playbooks") ? linkActive : linkHover)}>
+                <PlaySquare className="h-4 w-4" /> Sub-swarm playbooks
+              </Link>
+            </div>
+          </div>
+
           {/* Boards */}
           <div>
             <p className={sectionLabelCls}>Boards</p>
@@ -163,10 +194,13 @@ export function DashboardSidebar() {
                 <Timer className="h-4 w-4" /> Scheduled
               </Link>
               {isAdmin ? (
-                <Link href="/agents" className={cn(linkBase, pathname.startsWith("/agents") ? linkActive : linkHover)}>
-                  <Bot className="h-4 w-4" /> Agents
+                <Link href="/agents" className={cn(linkBase, pathname === "/agents" ? linkActive : linkHover)}>
+                  <Bot className="h-4 w-4" /> Agent directory
                 </Link>
               ) : null}
+              <Link href="/org-graph" className={cn(linkBase, pathname.startsWith("/org-graph") ? linkActive : linkHover)}>
+                <Network className="h-4 w-4" /> Swarm graph
+              </Link>
             </div>
           </div>
 
