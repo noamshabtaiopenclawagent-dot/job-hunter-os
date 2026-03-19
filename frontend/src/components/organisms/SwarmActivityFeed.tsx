@@ -1,75 +1,64 @@
 "use client";
 
 import { useMemo } from "react";
-import { ArrowRight, Zap } from "lucide-react";
-import { useListTasksApiV1BoardsBoardIdTasksGet } from "@/api/generated/tasks/tasks";
+import { Activity, Zap } from "lucide-react";
+import {
+  useListBoardsApiV1BoardsGet,
+  type listBoardsApiV1BoardsGetResponse,
+} from "@/api/generated/boards/boards";
+import {
+  useListActivityApiV1ActivityGet,
+  type listActivityApiV1ActivityGetResponse,
+} from "@/api/generated/activity/activity";
 import { formatRelativeTimestamp } from "@/lib/formatters";
-import type { TaskRead } from "@/api/generated/model";
 import { useAuth } from "@/auth/clerk";
+import { ApiError } from "@/api/mutator";
+import type { ActivityEventRead } from "@/api/generated/model";
 
-const BOARD_IDS = [
-  "278627d8-606a-4935-bd8f-9293ffcfabc7", // alex
-  "24a91d03-2211-4376-92d6-7e2f7251e51a",  // bob
-  "4ec8efd0-17c5-4c3d-91b8-dcff44ba021f",  // mc
-];
+const EVENT_STYLE: Record<string, { icon: string; color: string; border: string; label: string }> = {
+  "task.status_changed": { icon: "⚡", color: "text-violet-700 bg-violet-50", border: "border-violet-300", label: "Status Change" },
+  "task.created":        { icon: "📌", color: "text-blue-700 bg-blue-50",   border: "border-blue-300",   label: "Task Created" },
+  "task.updated":        { icon: "✏️", color: "text-slate-700 bg-slate-50", border: "border-slate-300",  label: "Updated" },
+  "agent.heartbeat":     { icon: "💓", color: "text-emerald-700 bg-emerald-50", border: "border-emerald-300", label: "Heartbeat" },
+  "agent.turn.start":    { icon: "🚀", color: "text-amber-700 bg-amber-50",  border: "border-amber-300",  label: "Agent Turn" },
+  "agent.turn.end":      { icon: "✅", color: "text-green-700 bg-green-50",  border: "border-green-300",  label: "Turn Done" },
+  "task.comment":        { icon: "💬", color: "text-indigo-700 bg-indigo-50", border: "border-indigo-300", label: "Comment" },
+};
 
-const SWARM_PREFIXES = ["[CODE-REVIEW]", "[SWARM-", "[DEBT-", "[REVIEW]"];
-
-function isSwarmEvent(task: TaskRead): boolean {
-  return SWARM_PREFIXES.some((p) => (task.title ?? "").startsWith(p));
-}
-
-function eventLabel(task: TaskRead): { from: string; to: string; title: string; color: string; icon: string } {
-  const title = task.title ?? "";
-  if (title.startsWith("[CODE-REVIEW]") || title.startsWith("[REVIEW]"))
-    return { from: "BOB", to: "ALEX", title: title.replace(/^\[[\w-]+\]\s*/, ""), color: "text-amber-700 bg-amber-50 border-amber-200", icon: "🔬" };
-  if (title.startsWith("[DEBT-"))
-    return { from: "GATE", to: "BOB", title: title.replace(/^\[[\w-]+\]\s*/, ""), color: "text-orange-700 bg-orange-50 border-orange-200", icon: "🔧" };
-  if (title.startsWith("[SWARM-"))
-    return { from: "OPI", to: "BOB", title: title.replace(/^\[[\w-]+\]\s*/, ""), color: "text-violet-700 bg-violet-50 border-violet-200", icon: "⚡" };
-  return { from: "OPI", to: "BOB", title, color: "text-blue-700 bg-blue-50 border-blue-200", icon: "📌" };
-}
-
-function BoardFeed({ boardId }: { boardId: string }) {
-  return useListTasksApiV1BoardsBoardIdTasksGet(
-    boardId,
-    { limit: 20 },
-    { query: { enabled: true, refetchInterval: 15_000 } },
-  );
+function getStyle(event: ActivityEventRead) {
+  return EVENT_STYLE[event.event_type ?? ""] ?? {
+    icon: "•",
+    color: "text-slate-600 bg-slate-50",
+    border: "border-slate-200",
+    label: event.event_type ?? "Event",
+  };
 }
 
 export function SwarmActivityFeed() {
   const { isSignedIn } = useAuth();
 
-  const alexQuery = useListTasksApiV1BoardsBoardIdTasksGet(
-    BOARD_IDS[0],
-    { limit: 50 },
-    { query: { enabled: !!isSignedIn, refetchInterval: 15_000 } },
-  );
-  const bobQuery = useListTasksApiV1BoardsBoardIdTasksGet(
-    BOARD_IDS[1],
-    { limit: 50 },
-    { query: { enabled: !!isSignedIn, refetchInterval: 15_000 } },
-  );
-  const mcQuery = useListTasksApiV1BoardsBoardIdTasksGet(
-    BOARD_IDS[2],
-    { limit: 50 },
-    { query: { enabled: !!isSignedIn, refetchInterval: 15_000 } },
+  const activityQuery = useListActivityApiV1ActivityGet<listActivityApiV1ActivityGetResponse, ApiError>(
+    { limit: 30 },
+    {
+      query: {
+        enabled: Boolean(isSignedIn),
+        refetchInterval: 15_000,
+        refetchOnMount: "always",
+      },
+    }
   );
 
   const events = useMemo(() => {
-    const all: TaskRead[] = [];
-    for (const q of [alexQuery, bobQuery, mcQuery]) {
-      if (q.data?.status === 200) {
-        all.push(...(q.data.data.items ?? []).filter(isSwarmEvent));
-      }
-    }
-    return all
-      .sort((a, b) => new Date(b.created_at ?? 0).getTime() - new Date(a.created_at ?? 0).getTime())
-      .slice(0, 20);
-  }, [alexQuery.data, bobQuery.data, mcQuery.data]);
+    if (activityQuery.data?.status !== 200) return [];
+    const items = activityQuery.data.data.items ?? [];
+    // Filter out pure heartbeats unless the feed would be empty
+    const meaningful = items.filter(
+      (e) => e.event_type !== "agent.heartbeat"
+    );
+    return (meaningful.length > 0 ? meaningful : items).slice(0, 20);
+  }, [activityQuery.data]);
 
-  const isLoading = alexQuery.isLoading || bobQuery.isLoading || mcQuery.isLoading;
+  const isLoading = activityQuery.isLoading;
 
   return (
     <div className="rounded-xl border border-slate-200 bg-white shadow-sm flex flex-col" style={{ minWidth: 280 }}>
@@ -92,25 +81,28 @@ export function SwarmActivityFeed() {
           <div className="px-4 py-6 text-center text-sm text-slate-400 animate-pulse">Loading events…</div>
         )}
         {!isLoading && events.length === 0 && (
-          <div className="px-4 py-6 text-center text-sm text-slate-400">No swarm events yet</div>
+          <div className="px-4 py-8 text-center">
+            <Activity className="mx-auto h-6 w-6 text-slate-300 mb-2" />
+            <p className="text-sm text-slate-400">No recent activity</p>
+          </div>
         )}
-        {events.map((task) => {
-          const ev = eventLabel(task);
+        {events.map((event) => {
+          const style = getStyle(event);
           return (
-            <div key={task.id} className={`px-3 py-2.5 flex items-start gap-2.5 border-l-2 ${ev.color.includes("amber") ? "border-amber-300" : ev.color.includes("orange") ? "border-orange-300" : ev.color.includes("violet") ? "border-violet-300" : "border-blue-300"}`}>
-              <span className="text-base mt-0.5 shrink-0">{ev.icon}</span>
+            <div
+              key={event.id}
+              className={`px-3 py-2.5 flex items-start gap-2.5 border-l-2 ${style.border}`}
+            >
+              <span className="text-base mt-0.5 shrink-0">{style.icon}</span>
               <div className="min-w-0 flex-1">
-                {/* from → to */}
                 <div className="flex items-center gap-1 text-[10px] font-bold text-slate-500 uppercase mb-0.5">
-                  <span>{ev.from}</span>
-                  <ArrowRight className="h-2.5 w-2.5" />
-                  <span>{ev.to}</span>
+                  <span className={`rounded px-1 ${style.color}`}>{style.label}</span>
                   <span className="ml-auto font-normal normal-case text-slate-400">
-                    {task.created_at ? formatRelativeTimestamp(task.created_at) : ""}
+                    {event.created_at ? formatRelativeTimestamp(event.created_at) : ""}
                   </span>
                 </div>
-                <p className={`text-[11px] font-medium truncate rounded px-1.5 py-0.5 border ${ev.color}`}>
-                  {ev.title || task.title}
+                <p className="text-[11px] text-slate-600 leading-snug line-clamp-2">
+                  {event.message ?? event.event_type ?? "—"}
                 </p>
               </div>
             </div>

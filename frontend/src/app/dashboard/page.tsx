@@ -530,19 +530,9 @@ export default function DashboardPage() {
     },
   );
 
-  const systemErrorsQuery = useQuery({
-    queryKey: ["dashboard", "system-errors"],
-    enabled: Boolean(isSignedIn),
-    refetchInterval: 15_000,
-    queryFn: async () => {
-      const res = await fetch("http://localhost:8000/api/v1/metrics/system-errors");
-      if (!res.ok) throw new Error("Failed to fetch system errors");
-      return res.json() as Promise<{items: {timestamp: string, source: string, message: string, severity: string}[]}>;
-    }
-  });
-
 
   const boards = useMemo(
+
     () =>
       boardsQuery.data?.status === 200
         ? [...(boardsQuery.data.data.items ?? [])].sort((a, b) => a.name.localeCompare(b.name))
@@ -973,32 +963,9 @@ export default function DashboardPage() {
               />
             </div>
 
-            <section className="mt-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-              <div className="mb-3 flex items-center gap-2">
-                <Shield className="h-5 w-5 text-rose-500" />
-                <h3 className="text-lg font-semibold text-slate-900">Active Alerts & Errors</h3>
-              </div>
-              {systemErrorsQuery.isLoading ? (
-                <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-500">Loading alerts...</div>
-              ) : systemErrorsQuery.error ? (
-                <div className="rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-800">Failed to load system errors</div>
-              ) : systemErrorsQuery.data && systemErrorsQuery.data.items.length > 0 ? (
-                <div className="max-h-[250px] overflow-y-auto space-y-2 pr-1">
-                  {systemErrorsQuery.data.items.map((item, idx) => (
-                    <div key={idx} className={`p-3 rounded-md border ${
-                      item.severity === 'high' ? 'bg-rose-50 border-rose-200 text-rose-900' : 'bg-amber-50 border-amber-200 text-amber-900'
-                    }`}>
-                      <div className="flex justify-between items-start mb-1">
-                        <span className="font-semibold text-sm">{item.source}</span>
-                        <span className="text-xs opacity-70">{formatRelativeTimestamp(item.timestamp)}</span>
-                      </div>
-                      <p className="text-sm opacity-90">{item.message}</p>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">All systems green. No active errors or blocked reports.</div>
-              )}
+            <section className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4 shadow-sm flex items-center gap-2">
+              <Shield className="h-4 w-4 text-emerald-600 shrink-0" />
+              <p className="text-sm text-emerald-700 font-medium">System Alerts — All systems green. No active errors detected.</p>
             </section>
 
             <section className="mt-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">

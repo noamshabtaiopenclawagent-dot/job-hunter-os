@@ -1,14 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { GitCommit, FolderGit2, Activity, ExternalLink } from "lucide-react";
+import { useMemo } from "react";
+import { GitCommit, FolderGit2, Activity, ExternalLink, Clock, CheckCircle2, AlertTriangle } from "lucide-react";
+import { useAuth } from "@/auth/clerk";
+import { ApiError } from "@/api/mutator";
+import {
+  type listBoardsApiV1BoardsGetResponse,
+  useListBoardsApiV1BoardsGet,
+} from "@/api/generated/boards/boards";
+import {
+  type listTasksApiV1BoardsBoardIdTasksGetResponse,
+  useListTasksApiV1BoardsBoardIdTasksGet,
+} from "@/api/generated/tasks/tasks";
 
-type BoardCounts = {
-  inbox: number;
-  in_progress: number;
-  review: number;
-  done: number;
-};
+const GITHUB_REPO = "noamshabtaiopenclawagent-dot/job-hunter-os";
+const GITHUB_URL = `https://github.com/${GITHUB_REPO}`;
+const BOARD_NAME = "Job Hunter OS";
 
 type CommitInfo = {
   sha: string;
@@ -18,102 +25,99 @@ type CommitInfo = {
   url: string;
 };
 
-type ProjectData = {
-  board: BoardCounts;
+function timeAgo(dateStr: string): string {
+  if (!dateStr) return "—";
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const m = Math.floor(diff / 60000);
+  if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}h ago`;
+  return `${Math.floor(h / 24)}d ago`;
+}
+
+type GitData = {
   latestCommit: CommitInfo | null;
   commitsThisWeek: number;
+  loaded: boolean;
 };
 
-const GITHUB_REPO = "noamshabtaiopenclawagent-dot/job-hunter-os";
-const GITHUB_URL = `https://github.com/${GITHUB_REPO}`;
-const API_BASE = "http://127.0.0.1:8000/api/v1";
+function useGitData(): GitData {
+  const [state, setState] = React.useState<GitData>({ latestCommit: null, commitsThisWeek: 0, loaded: false });
 
-function timeAgo(dateStr: string): string {
-  const diff = Date.now() - new Date(dateStr).getTime();
-  const mins = Math.floor(diff / 60000);
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
-  return `${Math.floor(hrs / 24)}d ago`;
-}
-
-function StatusBadge({ counts }: { counts: BoardCounts }) {
-  const stagnant = counts.in_progress > 10;
-  const active = counts.in_progress > 0 || counts.review > 0;
-  if (stagnant) return <span className="rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-bold text-red-600">🔴 Stagnant</span>;
-  if (active) return <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700">🟡 Active</span>;
-  return <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700">🟢 On Track</span>;
-}
-
-export function ProjectStatusPanel() {
-  const [data, setData] = useState<ProjectData | null>(null);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    let mounted = true;
-
-    async function load() {
+  React.useEffect(() => {
+    (async () => {
       try {
-        // Fetch board stats from Mission Control API
-        const boardsRes = await fetch(`${API_BASE}/boards?limit=100`, { cache: "no-store" });
-        const boardsData = await boardsRes.json();
-        const boards: { id: string; name: string }[] = boardsData.items ?? boardsData;
-        const jhosBoard = boards.find((b) => b.name === "Job Hunter OS");
-
-        let board: BoardCounts = { inbox: 0, in_progress: 0, review: 0, done: 0 };
-        if (jhosBoard) {
-          const tasksRes = await fetch(`${API_BASE}/boards/${jhosBoard.id}/tasks?limit=500`, { cache: "no-store" });
-          const tasksData = await tasksRes.json();
-          const tasks: { status: string }[] = tasksData.items ?? tasksData;
-          board = tasks.reduce((acc, t) => {
-            const s = t.status as keyof BoardCounts;
-            if (s in acc) acc[s]++;
-            return acc;
-          }, { inbox: 0, in_progress: 0, review: 0, done: 0 });
-        }
-
-        // Fetch GitHub commits (unauthenticated — public repo)
-        let latestCommit: CommitInfo | null = null;
-        let commitsThisWeek = 0;
-        try {
-          const ghRes = await fetch(
-            `https://api.github.com/repos/${GITHUB_REPO}/commits?per_page=30`,
-            { headers: { Accept: "application/vnd.github.v3+json" }, next: { revalidate: 300 } }
-          );
-          if (ghRes.ok) {
-            const commits = await ghRes.json();
-            if (commits.length > 0) {
-              const c = commits[0];
-              latestCommit = {
-                sha: c.sha.slice(0, 7),
-                message: c.commit.message.split("\n")[0].slice(0, 80),
-                author: c.commit.author.name,
-                date: c.commit.author.date,
-                url: c.html_url,
-              };
-              const sevenDaysAgo = Date.now() - 7 * 86400000;
-              commitsThisWeek = commits.filter(
-                (x: { commit: { author: { date: string } } }) =>
-                  new Date(x.commit.author.date).getTime() > sevenDaysAgo
-              ).length;
-            }
-          }
-        } catch {
-          // GitHub API failed — non-critical
-        }
-
-        if (mounted) setData({ board, latestCommit, commitsThisWeek });
-      } catch {
-        if (mounted) setError(true);
-      }
-    }
-
-    load();
-    const id = setInterval(load, 60_000); // refresh every minute
-    return () => { mounted = false; clearInterval(id); };
+        const r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/commits?per_page=30`, {
+          headers: { Accept: "application/vnd.github.v3+json" },
+        });
+        if (!r.ok) return;
+        const commits = await r.json();
+        if (!commits.length) { setState({ latestCommit: null, commitsThisWeek: 0, loaded: true }); return; }
+        const sevenDaysAgo = Date.now() - 7 * 86400000;
+        const commitsThisWeek = commits.filter(
+          (c: { commit: { author: { date: string } } }) =>
+            new Date(c.commit.author.date).getTime() > sevenDaysAgo
+        ).length;
+        const c = commits[0];
+        setState({
+          latestCommit: {
+            sha: c.sha.slice(0, 7),
+            message: c.commit.message.split("\n")[0].slice(0, 72),
+            author: c.commit.author.name,
+            date: c.commit.author.date,
+            url: c.html_url,
+          },
+          commitsThisWeek,
+          loaded: true,
+        });
+      } catch { setState((s) => ({ ...s, loaded: true })); }
+    })();
   }, []);
 
-  if (error) return null;
+  return state;
+}
+
+import React from "react";
+
+export function ProjectStatusPanel() {
+  const { isSignedIn } = useAuth();
+
+  const boardsQuery = useListBoardsApiV1BoardsGet<listBoardsApiV1BoardsGetResponse, ApiError>(
+    { limit: 100 },
+    { query: { enabled: Boolean(isSignedIn), refetchInterval: 60_000 } }
+  );
+
+  const jhosBoard = useMemo(() => {
+    if (boardsQuery.data?.status !== 200) return null;
+    return (boardsQuery.data.data.items ?? []).find((b) => b.name === BOARD_NAME) ?? null;
+  }, [boardsQuery.data]);
+
+  const tasksQuery = useListTasksApiV1BoardsBoardIdTasksGet<listTasksApiV1BoardsBoardIdTasksGetResponse, ApiError>(
+    jhosBoard?.id ?? "",
+    { limit: 500 },
+    { query: { enabled: Boolean(isSignedIn && jhosBoard?.id), refetchInterval: 60_000 } }
+  );
+
+  const counts = useMemo(() => {
+    if (tasksQuery.data?.status !== 200) return null;
+    const tasks = tasksQuery.data.data.items ?? [];
+    return tasks.reduce(
+      (acc, t) => {
+        const s = t.status as keyof typeof acc;
+        if (s in acc) acc[s]++;
+        return acc;
+      },
+      { inbox: 0, in_progress: 0, review: 0, done: 0 }
+    );
+  }, [tasksQuery.data]);
+
+  const git = useGitData();
+
+  // Determine health
+  const stagnant = counts && counts.in_progress > 20;
+  const active = counts && (counts.in_progress > 0 || counts.review > 0);
+
+  if (!isSignedIn) return null;
 
   return (
     <div className="border-b border-slate-100 bg-white px-4 py-2">
@@ -132,41 +136,62 @@ export function ProjectStatusPanel() {
 
         <div className="h-3 w-px bg-slate-200 shrink-0" />
 
-        {/* Board counts */}
-        {data ? (
-          <>
-            <StatusBadge counts={data.board} />
-            <span className="text-slate-400">
-              <span className="font-semibold text-slate-600">{data.board.inbox}</span> inbox ·{" "}
-              <span className="font-semibold text-amber-600">{data.board.in_progress}</span> active ·{" "}
-              <span className="font-semibold text-violet-600">{data.board.review}</span> review ·{" "}
-              <span className="font-semibold text-emerald-600">{data.board.done}</span> done
+        {/* Health badge */}
+        {counts ? (
+          stagnant ? (
+            <span className="flex items-center gap-1 rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-bold text-red-700">
+              <AlertTriangle size={10} /> Stagnant
             </span>
+          ) : active ? (
+            <span className="flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700">
+              <Clock size={10} /> Active
+            </span>
+          ) : (
+            <span className="flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700">
+              <CheckCircle2 size={10} /> On Track
+            </span>
+          )
+        ) : null}
 
-            {data.latestCommit && (
-              <>
-                <div className="h-3 w-px bg-slate-200 shrink-0" />
-                <a
-                  href={data.latestCommit.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1 text-slate-500 hover:text-indigo-600 transition-colors"
-                >
-                  <GitCommit size={11} className="shrink-0" />
-                  <span className="font-mono text-[10px] text-slate-400">{data.latestCommit.sha}</span>
-                  <span className="max-w-[200px] truncate">{data.latestCommit.message}</span>
-                  <span className="text-slate-400 shrink-0">· {timeAgo(data.latestCommit.date)}</span>
-                </a>
-                <div className="h-3 w-px bg-slate-200 shrink-0" />
-                <span className="flex items-center gap-1 text-slate-400">
-                  <Activity size={11} />
-                  <span className="font-semibold text-slate-600">{data.commitsThisWeek}</span> commits this week
-                </span>
-              </>
-            )}
-          </>
+        {/* Board counts */}
+        {counts ? (
+          <span className="text-slate-400">
+            <span className="font-semibold text-slate-600">{counts.inbox}</span> inbox ·{" "}
+            <span className="font-semibold text-amber-600">{counts.in_progress}</span> active ·{" "}
+            <span className="font-semibold text-violet-600">{counts.review}</span> review ·{" "}
+            <span className="font-semibold text-emerald-600">{counts.done}</span> done
+          </span>
         ) : (
-          <span className="animate-pulse text-slate-400">Loading project status…</span>
+          <span className="animate-pulse text-slate-400">Loading board…</span>
+        )}
+
+        {/* GitHub commit strip */}
+        {git.loaded && git.latestCommit && (
+          <>
+            <div className="h-3 w-px bg-slate-200 shrink-0" />
+            <a
+              href={git.latestCommit.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-slate-500 hover:text-indigo-600 transition-colors"
+            >
+              <GitCommit size={11} className="shrink-0" />
+              <span className="font-mono text-[10px] text-slate-400">{git.latestCommit.sha}</span>
+              <span className="max-w-[200px] truncate">{git.latestCommit.message}</span>
+              <span className="text-slate-400 shrink-0">· {timeAgo(git.latestCommit.date)}</span>
+            </a>
+            <div className="h-3 w-px bg-slate-200 shrink-0" />
+            <span className="flex items-center gap-1 text-slate-400">
+              <Activity size={11} />
+              <span className="font-semibold text-slate-600">{git.commitsThisWeek}</span> commits/week
+            </span>
+          </>
+        )}
+        {git.loaded && !git.latestCommit && (
+          <>
+            <div className="h-3 w-px bg-slate-200 shrink-0" />
+            <span className="text-slate-400 italic text-[11px]">No GitHub commits found</span>
+          </>
         )}
       </div>
     </div>

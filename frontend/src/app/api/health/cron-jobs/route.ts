@@ -1,187 +1,121 @@
 import { NextResponse } from "next/server";
+import { execSync } from "child_process";
 import fs from "fs";
 import path from "path";
 
 export const dynamic = "force-dynamic";
 
-const OPENCLAW_DIR =
-  process.env.OPENCLAW_DIR ??
-  path.join(process.env.HOME ?? "/root", ".openclaw");
+const WORKSPACE = path.join(process.env.HOME ?? "/root", ".openclaw/workspace");
+const LOG_CANDIDATES = path.join(WORKSPACE, "local/state");
 
-const WORKSPACE_DIR = path.join(OPENCLAW_DIR, "workspace");
-const CRON_INVENTORY_PATH = path.join(
-  WORKSPACE_DIR,
-  "local/state/cron-inventory.json",
-);
-const CRONTAB_PATH = path.join(WORKSPACE_DIR, "crontab.txt");
-
-type CronInventoryRow = {
+/** Parse active crontab entries (non-comment, non-empty lines with a script path) */
+function parseCrontab(): {
   job_id: string;
   schedule: string;
-  command_short: string;
-  entrypoint: string;
-  domain: string;
-  expected_kind: string;
-  source_used: string;
-  primary_log_file: string;
-  artifact_path: string;
-  risk_flags: string[];
-};
-
-type CronInventory = {
-  generated_at: string;
-  rows: CronInventoryRow[];
-};
-
-function readFileIfExists(filePath: string): string | null {
+  name: string;
+  command: string;
+  log_file: string | null;
+  health: "ok" | "stale" | "unknown";
+  next_run: string | null;
+  log_last_modified: string | null;
+}[] {
+  let raw = "";
   try {
-    if (!fs.existsSync(filePath)) return null;
-    return fs.readFileSync(filePath, "utf-8");
+    raw = execSync("crontab -l 2>/dev/null", { timeout: 3000 }).toString();
   } catch {
-    return null;
+    return [];
   }
-}
 
-/** Read the last N lines of a log file */
-function readLogTail(logFile: string, lines: number = 5): string[] {
-  const content = readFileIfExists(logFile);
-  if (!content) return [];
-  const allLines = content.trim().split("\n");
-  return allLines.slice(-lines).filter(Boolean);
-}
+  const lines = raw.split("\n").filter((l) => {
+    const trimmed = l.trim();
+    return trimmed && !trimmed.startsWith("#");
+  });
 
-/** Compute next cron run from schedule expression (simplified) */
-function computeNextRun(schedule: string): string | null {
-  try {
-    const [min, hour, dom, month, dow] = schedule.split(" ");
-    const now = new Date();
-    const next = new Date(now);
-    next.setSeconds(0, 0);
+  return lines.map((line, idx) => {
+    const parts = line.trim().split(/\s+/);
+    // cron format: min hour dom month dow [command...]
+    const cronFields = parts.slice(0, 5).join(" ");
+    const command = parts.slice(5).join(" ");
 
-    // Handle simple cases
-    if (min.startsWith("*/")) {
-      const interval = parseInt(min.slice(2));
-      const currentMin = next.getMinutes();
-      const nextMin = Math.ceil((currentMin + 1) / interval) * interval;
-      if (nextMin < 60) {
-        next.setMinutes(nextMin);
+    // Extract a human-readable name from the command
+    const nameMatch = command.match(/guarded-run\.sh\s+(\S+)/) ||
+                       command.match(/agents\/(\S+?)\.(?:cjs|sh|js)/) ||
+                       command.match(/cron\/(\S+?)\.sh/);
+    const name = nameMatch?.[1]?.replace(/-/g, " ") ?? `job-${idx}`;
+
+    // Try to find associated log file
+    const logMatch = command.match(/>>?\s*(\S+\.log)/);
+    const guardedNameMatch = command.match(/guarded-run\.sh\s+(\S+)/);
+    let logFile: string | null = null;
+    if (logMatch) {
+      logFile = logMatch[1];
+    } else if (guardedNameMatch) {
+      logFile = path.join(WORKSPACE, "local/logs", `${guardedNameMatch[1]}.log`);
+    }
+
+    // Check log health
+    let health: "ok" | "stale" | "unknown" = "unknown";
+    let logLastModified: string | null = null;
+    if (logFile) {
+      try {
+        if (fs.existsSync(logFile)) {
+          const stat = fs.statSync(logFile);
+          logLastModified = stat.mtime.toISOString();
+          const ageMs = Date.now() - stat.mtime.getTime();
+          // If modified within 2h → ok, within 24h → stale else unknown
+          health = ageMs < 2 * 3600000 ? "ok" : ageMs < 24 * 3600000 ? "stale" : "unknown";
+        }
+      } catch { /* ignore */ }
+    }
+
+    // Simple next-run estimate for */N schedules
+    let nextRun: string | null = null;
+    try {
+      const [min, hour] = cronFields.split(" ");
+      const now = new Date();
+      const next = new Date(now);
+      next.setSeconds(0, 0);
+      if (min.startsWith("*/")) {
+        const interval = parseInt(min.slice(2));
+        const curr = next.getMinutes();
+        const step = Math.ceil((curr + 1) / interval) * interval;
+        if (step < 60) next.setMinutes(step); else { next.setHours(next.getHours() + 1); next.setMinutes(step - 60); }
+        nextRun = next.toISOString();
+      } else if (hour === "*" || hour.startsWith("*/")) {
+        next.setMinutes(parseInt(min) || 0, 0, 0);
+        if (next <= now) next.setHours(next.getHours() + 1);
+        nextRun = next.toISOString();
       } else {
-        next.setHours(next.getHours() + 1);
-        next.setMinutes(nextMin - 60);
+        next.setHours(parseInt(hour) || 0, parseInt(min) || 0, 0, 0);
+        if (next <= now) next.setDate(next.getDate() + 1);
+        nextRun = next.toISOString();
       }
-      return next.toISOString();
-    }
+    } catch { /* ignore */ }
 
-    if (hour.startsWith("*/")) {
-      const interval = parseInt(hour.slice(2));
-      const currentHour = next.getHours();
-      const nextHour = Math.ceil((currentHour + 1) / interval) * interval;
-      next.setHours(nextHour % 24);
-      next.setMinutes(parseInt(min) || 0);
-      if (nextHour >= 24) next.setDate(next.getDate() + 1);
-      return next.toISOString();
-    }
-
-    // For fixed daily/weekly jobs just give the time today or tomorrow
-    const targetHour = parseInt(hour) || 0;
-    const targetMin = parseInt(min) || 0;
-    next.setHours(targetHour, targetMin, 0, 0);
-    if (next <= now) {
-      next.setDate(next.getDate() + 1);
-    }
-    return next.toISOString();
-  } catch {
-    return null;
-  }
-}
-
-function getLogLastModified(logFile: string): string | null {
-  try {
-    if (!logFile || !fs.existsSync(logFile)) return null;
-    const stat = fs.statSync(logFile);
-    return stat.mtime.toISOString();
-  } catch {
-    return null;
-  }
-}
-
-function getLogSizeKb(logFile: string): number | null {
-  try {
-    if (!logFile || !fs.existsSync(logFile)) return null;
-    const stat = fs.statSync(logFile);
-    return Math.round(stat.size / 1024);
-  } catch {
-    return null;
-  }
+    return {
+      job_id: `cron-${idx}`,
+      schedule: cronFields,
+      name,
+      command: command.slice(0, 120),
+      log_file: logFile,
+      health,
+      next_run: nextRun,
+      log_last_modified: logLastModified,
+    };
+  });
 }
 
 export async function GET() {
   try {
-    const jobsPath = path.join(OPENCLAW_DIR, "cron", "jobs.json");
-    const jobsContent = readFileIfExists(jobsPath);
-
-    let jobsList: any[] = [];
-
-    if (jobsContent) {
-      const parsed = JSON.parse(jobsContent);
-      if (parsed.jobs && Array.isArray(parsed.jobs)) {
-        jobsList = parsed.jobs.map((job: any) => {
-          
-          let scheduleStr = "Unknown";
-          if (job.schedule) {
-            if (job.schedule.kind === "cron" && job.schedule.expr) {
-              scheduleStr = job.schedule.expr;
-            } else if (job.schedule.kind === "every" && job.schedule.everyMs) {
-              scheduleStr = `every ${Math.round(job.schedule.everyMs / 60000)}m`;
-            }
-          }
-
-          const lastRunDate = job.state?.lastRunAtMs ? new Date(job.state.lastRunAtMs).toISOString() : null;
-          const nextRunDate = job.state?.nextRunAtMs ? new Date(job.state.nextRunAtMs).toISOString() : null;
-          
-          let health: "ok" | "stale" | "unknown" = "unknown";
-          if (job.enabled === false) {
-             health = "unknown";
-          } else if (job.state?.lastStatus === "error" || job.state?.lastRunStatus === "error") {
-             health = "stale"; // Mark as stale/warning if error
-          } else if (lastRunDate) {
-             health = "ok";
-          }
-
-          const entrypointStr = job.payload?.kind === "agentTurn" 
-            ? "agent: " + (job.agentId || "unknown") 
-            : "system event";
-
-          return {
-            job_id: job.id,
-            schedule: scheduleStr,
-            name: job.name || job.id,
-            entrypoint: entrypointStr,
-            domain: job.agentId || "system",
-            expected_kind: job.payload?.kind || "unknown",
-            log_file: null,
-            log_last_run: lastRunDate,
-            log_size_kb: null,
-            log_tail: job.state?.lastError ? [job.state.lastError] : [],
-            next_run: nextRunDate,
-            risk_flags: job.enabled === false ? ["Disabled"] : [],
-            health,
-          };
-        });
-      }
-    }
-
+    const jobs = parseCrontab();
     return NextResponse.json({
       ok: true,
-      job_count: jobsList.length,
+      job_count: jobs.length,
       generated_at: new Date().toISOString(),
-      crontab_exists: false,
-      jobs: jobsList,
+      crontab_exists: jobs.length > 0,
+      jobs,
     });
   } catch (err) {
-    return NextResponse.json(
-      { ok: false, error: String(err) },
-      { status: 500 },
-    );
+    return NextResponse.json({ ok: false, error: String(err) }, { status: 500 });
   }
 }
