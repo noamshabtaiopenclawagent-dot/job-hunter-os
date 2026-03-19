@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import Link from "next/link";
 import {
   AlertTriangle,
@@ -131,7 +131,7 @@ function BoardScanner({
     { query: { enabled: signedIn, refetchInterval: 30_000 } }
   );
 
-  useMemo(() => {
+  useEffect(() => {
     if (tasksQ.data?.status === 200) {
       const items = tasksQ.data.data.items ?? [];
       const stuck = items.filter(t => {
@@ -144,7 +144,7 @@ function BoardScanner({
   // eslint-disable-next-line
   }, [tasksQ.data]);
 
-  useMemo(() => {
+  useEffect(() => {
     if (approvalsQ.data?.status === 200) {
       const items = approvalsQ.data.data.items ?? [];
       onApprovals(items.map(approval => ({ approval, board })));
@@ -197,7 +197,7 @@ export default function InboxPage() {
 
   // ── Cron health ─────────────────────────────────────────────────────────
   const [cronIssues, setCronIssues] = useState<{ name: string; lastRun?: string }[]>([]);
-  useMemo(() => {
+  useEffect(() => {
     if (!isSignedIn) return;
     fetch("/api/health/cron-jobs")
       .then(r => r.json())

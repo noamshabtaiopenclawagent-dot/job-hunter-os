@@ -404,6 +404,7 @@ export function BoardApprovalsPanel({
   const [error, setError] = useState<string | null>(null);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [lowConfidenceOnly, setLowConfidenceOnly] = useState(false);
   const usingExternal = Array.isArray(externalApprovals);
   const approvalsKey = useMemo(
     () => getListApprovalsApiV1BoardsBoardIdApprovalsGetQueryKey(boardId),
@@ -514,14 +515,19 @@ export function BoardApprovalsPanel({
         const bTime = apiDatetimeToMs(b.created_at) ?? 0;
         return bTime - aTime;
       });
+      
+    const itemsToFilter = lowConfidenceOnly 
+      ? approvals.filter((item) => item.confidence < 80)
+      : approvals;
+
     const pending = sortByTime(
-      approvals.filter((item) => item.status === "pending"),
+      itemsToFilter.filter((item) => item.status === "pending"),
     );
     const resolved = sortByTime(
-      approvals.filter((item) => item.status !== "pending"),
+      itemsToFilter.filter((item) => item.status !== "pending"),
     );
     return { pending, resolved };
-  }, [approvals]);
+  }, [approvals, lowConfidenceOnly]);
 
   const orderedApprovals = useMemo(
     () => [...sortedApprovals.pending, ...sortedApprovals.resolved],
@@ -588,13 +594,26 @@ export function BoardApprovalsPanel({
               scrollable && "flex min-h-0 flex-col",
             )}
           >
-            <div className="border-b border-slate-200 bg-slate-50 px-4 py-3">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
-                Unapproved tasks
-              </p>
-              <p className="mt-1 text-xs text-slate-500">
-                {pendingCount} pending · {resolvedCount} resolved
-              </p>
+            <div className="border-b border-slate-200 bg-slate-50 px-4 py-3 flex items-center justify-between">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
+                  Unapproved tasks
+                </p>
+                <p className="mt-1 text-xs text-slate-500">
+                  {pendingCount} pending · {resolvedCount} resolved
+                </p>
+              </div>
+              <button
+                onClick={() => setLowConfidenceOnly(!lowConfidenceOnly)}
+                className={cn(
+                  "text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded-md border transition-colors",
+                  lowConfidenceOnly 
+                    ? "bg-amber-100 border-amber-300 text-amber-700" 
+                    : "bg-white border-slate-200 text-slate-500 hover:bg-slate-100"
+                )}
+              >
+                &lt; 80% Conf
+              </button>
             </div>
             <div
               className={cn(
@@ -849,6 +868,18 @@ export function BoardApprovalsPanel({
                         </p>
                         <div className="rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600">
                           <p>{reasoningText}</p>
+                        </div>
+                      </div>
+                    ) : null}
+
+                    {payloadValue(selectedApproval.payload, "preview") || payloadValue(selectedApproval.payload, "action_preview") ? (
+                      <div className="space-y-2">
+                        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500 flex items-center justify-between">
+                          <span>Action Preview</span>
+                          <span className="text-[9px] text-amber-600 bg-amber-100 px-1.5 rounded">AUTO-GENERATED</span>
+                        </p>
+                        <div className="rounded-lg border border-slate-200 bg-slate-900 px-4 py-3 text-sm text-slate-300 font-mono overflow-x-auto">
+                          <pre>{payloadValue(selectedApproval.payload, "preview") || payloadValue(selectedApproval.payload, "action_preview")}</pre>
                         </div>
                       </div>
                     ) : null}

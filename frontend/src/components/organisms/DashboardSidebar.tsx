@@ -13,11 +13,13 @@ import {
   Building2,
   GitBranch,
   Inbox,
+  Layers,
   LayoutGrid,
   Moon,
   Sun,
   Timer,
   Zap,
+  Target,
 } from "lucide-react";
 
 import { useAuth } from "@/auth/clerk";
