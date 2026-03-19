@@ -22,6 +22,7 @@ import { DashboardSidebar } from "@/components/organisms/DashboardSidebar";
 import { DashboardShell } from "@/components/templates/DashboardShell";
 import { SystemHealthStrip } from "@/components/organisms/SystemHealthStrip";
 import { ProjectStatusPanel } from "@/components/organisms/ProjectStatusPanel";
+import { AgentStatusBar } from "@/components/organisms/AgentStatusBar";
 import { Markdown } from "@/components/atoms/Markdown";
 import { SignedOutPanel } from "@/components/auth/SignedOutPanel";
 import { ApiError } from "@/api/mutator";
@@ -961,6 +962,11 @@ export default function DashboardPage() {
                 }}
                 rows={gatewayRows}
               />
+            </div>
+
+            {/* Agent Status — live staleness view */}
+            <div className="mt-4">
+              <AgentStatusBar />
             </div>
 
             <section className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4 shadow-sm flex items-center gap-2">

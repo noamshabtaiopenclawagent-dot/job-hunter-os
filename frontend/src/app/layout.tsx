@@ -8,6 +8,7 @@ import { DM_Serif_Display, IBM_Plex_Sans, Sora } from "next/font/google";
 import { AuthProvider } from "@/components/providers/AuthProvider";
 import { QueryProvider } from "@/components/providers/QueryProvider";
 import { GlobalLoader } from "@/components/ui/global-loader";
+import { ClientShell } from "@/components/providers/ClientShell";
 
 export const metadata: Metadata = {
   title: "OpenClaw Mission Control",
@@ -44,6 +45,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <AuthProvider>
           <QueryProvider>
             <GlobalLoader />
+            <ClientShell />
             {children}
           </QueryProvider>
         </AuthProvider>
