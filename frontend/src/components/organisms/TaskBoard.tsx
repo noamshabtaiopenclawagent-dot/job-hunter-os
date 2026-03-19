@@ -22,6 +22,7 @@ type Task = {
   priority: string;
   description?: string | null;
   due_at?: string | null;
+  updated_at?: string | null;
   assigned_agent_id?: string | null;
   assignee?: string | null;
   approvals_pending_count?: number;
@@ -491,6 +492,7 @@ export const TaskBoard = memo(function TaskBoard({
               <div className="space-y-3">
                 {filteredTasks.map((task) => {
                   const dueState = resolveDueState(task);
+                  const isStuck = task.updated_at ? (Date.now() - new Date(task.updated_at).getTime() > 24 * 60 * 60 * 1000) : false;
                   return (
                     <div key={task.id} ref={setCardRef(task.id)}>
                       <TaskCard
@@ -504,6 +506,8 @@ export const TaskBoard = memo(function TaskBoard({
                         tags={task.tags}
                         isBlocked={task.is_blocked}
                         blockedByCount={task.blocked_by_task_ids?.length ?? 0}
+                        isStuck={isStuck}
+                        description={task.description}
                         onClick={() => onTaskSelect?.(task)}
                         draggable={!readOnly && !task.is_blocked}
                         isDragging={draggingId === task.id}

@@ -12,7 +12,6 @@ import {
   useGetMeApiV1UsersMeGet,
 } from "@/api/generated/users/users";
 import { BrandMark } from "@/components/atoms/BrandMark";
-import { OrgSwitcher } from "@/components/organisms/OrgSwitcher";
 import { UserMenu } from "@/components/organisms/UserMenu";
 import { isOnboardingComplete } from "@/lib/onboarding";
 
@@ -76,10 +75,8 @@ export function DashboardShell({ children }: { children: ReactNode }) {
             <BrandMark />
           </div>
           <SignedIn>
-            <div className="flex items-center">
-              <div className="max-w-[220px]">
-                <OrgSwitcher />
-              </div>
+            <div className="flex flex-1 items-center">
+              {/* Org Switcher Removed */}
             </div>
           </SignedIn>
           <SignedIn>

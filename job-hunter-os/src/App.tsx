@@ -242,6 +242,26 @@ const mockOfferConsensusBlockers = [
 export const App: React.FC = () => {
   const [activeView, setActiveView] = useState('candidate-source-quality-explorer');
 
+  const moduleLabelToViewId: Record<string, string> = {
+    'Roadmap Artifact Mapping': 'roadmap-mapping',
+    'Review Backlog Cleanup': 'review-backlog-cleanup',
+    'Dashboard Actionability': 'dashboard-actionability',
+    'Org Tree UX': 'org-tree-ux-hardening',
+    'Priority Inbox Smart Triage': 'priority-inbox-triage',
+    'Offer Decision Collaboration': 'offer-decision-canvas',
+    'Journey Friction Heatmap': 'journey-friction-heatmap',
+    'CV-JD Calibration': 'cv-jd-calibration',
+    'Sourcing Velocity Radar': 'sourcing-radar',
+    'Israel Source Hardening': 'israel-source-hardening',
+  };
+
+  const handleOrgTreeModuleNavigate = (moduleLabel: string) => {
+    const targetView = moduleLabelToViewId[moduleLabel];
+    if (targetView) {
+      setActiveView(targetView);
+    }
+  };
+
   const renderContent = () => {
     switch (activeView) {
       case 'dashboard':
@@ -262,9 +282,9 @@ export const App: React.FC = () => {
       case 'cv-jd-calibration':
         return <CvJdExplainableMatchCalibrationThresholdTuning data={mockCvJdCalibrationData} hasQaFail={true} />;
       case 'dashboard-actionability':
-        return <DashboardActionabilityUpgradeDecisionActions actions={mockDashboardDecisionActions} />;
+        return <DashboardActionabilityUpgradeDecisionActions actions={mockDashboardDecisionActions} hasQaFail={true} />;
       case 'org-tree-ux-hardening':
-        return <OrgTreeUxHardeningRoleBasedNavigationClarity nodes={mockOrgTreeNodes} signalsEndpoint="/api/org-tree/risk-signals" intentsEndpoint="/api/org-tree/intent-signals" qaOwner="Alex" />;
+        return <OrgTreeUxHardeningRoleBasedNavigationClarity nodes={mockOrgTreeNodes} signalsEndpoint="/api/org-tree/risk-signals" intentsEndpoint="/api/org-tree/intent-signals" qaOwner="Alex" onNavigateModule={handleOrgTreeModuleNavigate} />;
       case 'evergreen-cycle':
         return <EvergreenImprovementCycleBoard insights={mockEvergreenInsights} proposals={mockEvergreenProposals} onCreateApprovalRequest={async (proposalId) => ({ requestId: `BOARD-APR-${proposalId}` })} />;
       case 'error-telemetry-unification':

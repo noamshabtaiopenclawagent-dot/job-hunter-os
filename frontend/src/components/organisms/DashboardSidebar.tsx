@@ -9,6 +9,7 @@ import {
   Boxes,
   CheckCircle2,
   Folder,
+  FolderGit2,
   Building2,
   GitBranch,
   LayoutGrid,
@@ -84,6 +85,18 @@ export function DashboardSidebar() {
                 Dashboard
               </Link>
               <Link
+                href="/projects"
+                className={cn(
+                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-slate-700 transition",
+                  pathname.startsWith("/projects")
+                    ? "bg-indigo-100 text-indigo-800 font-medium"
+                    : "hover:bg-slate-100",
+                )}
+              >
+                <FolderGit2 className="h-4 w-4" />
+                Projects
+              </Link>
+              <Link
                 href="/activity"
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2.5 text-slate-700 transition",
@@ -150,18 +163,6 @@ export function DashboardSidebar() {
             </p>
             <div className="mt-1 space-y-1">
               <Link
-                href="/organization"
-                className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-slate-700 transition",
-                  pathname.startsWith("/organization")
-                    ? "bg-blue-100 text-blue-800 font-medium"
-                    : "hover:bg-slate-100",
-                )}
-              >
-                <Building2 className="h-4 w-4" />
-                Organization
-              </Link>
-              <Link
                 href="/org-tree"
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2.5 text-slate-700 transition",
@@ -197,20 +198,6 @@ export function DashboardSidebar() {
                 <Timer className="h-4 w-4" />
                 Scheduled
               </Link>
-              {isAdmin ? (
-                <Link
-                  href="/gateways"
-                  className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-2.5 text-slate-700 transition",
-                    pathname.startsWith("/gateways")
-                      ? "bg-blue-100 text-blue-800 font-medium"
-                      : "hover:bg-slate-100",
-                  )}
-                >
-                  <Network className="h-4 w-4" />
-                  Gateways
-                </Link>
-              ) : null}
               {isAdmin ? (
                 <Link
                   href="/agents"

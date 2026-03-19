@@ -15,6 +15,8 @@ interface TaskCardProps {
   tags?: Array<{ id: string; name: string; color: string }>;
   isBlocked?: boolean;
   blockedByCount?: number;
+  isStuck?: boolean;
+  description?: string | null;
   onClick?: () => void;
   draggable?: boolean;
   isDragging?: boolean;
@@ -33,6 +35,8 @@ export function TaskCard({
   tags = [],
   isBlocked = false,
   blockedByCount = 0,
+  isStuck = false,
+  description,
   onClick,
   draggable = false,
   isDragging = false,
@@ -67,6 +71,10 @@ export function TaskCard({
   const priorityLabel = priority ? priority.toUpperCase() : "MEDIUM";
   const visibleTags = tags.slice(0, 3);
 
+  // Extract Artifact URL from description if present
+  const artifactMatch = description?.match(/Artifact:\s*([^\s]+)/i) || description?.match(/\[Artifact\]\(([^)]+)\)/i);
+  const artifactUrl = artifactMatch ? artifactMatch[1].replace(/\]$/, '') : null;
+
   return (
     <div
       className={cn(
@@ -75,6 +83,7 @@ export function TaskCard({
         hasPendingApproval && "border-amber-200 bg-amber-50/40",
         isBlocked && "border-rose-200 bg-rose-50/50",
         needsLeadReview && "border-indigo-200 bg-indigo-50/30",
+        isStuck && "ring-2 ring-red-400"
       )}
       draggable={draggable}
       onDragStart={onDragStart}
@@ -102,6 +111,12 @@ export function TaskCard({
           <p className="text-sm font-medium text-slate-900 line-clamp-2 break-words">
             {title}
           </p>
+          {isStuck ? (
+            <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-wide text-red-600">
+              <span className="h-1.5 w-1.5 rounded-full bg-red-600 animate-pulse" />
+              Stagnant (24h+)
+            </div>
+          ) : null}
           {isBlocked ? (
             <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-wide text-rose-700">
               <span className="h-1.5 w-1.5 rounded-full bg-rose-500" />
@@ -175,6 +190,21 @@ export function TaskCard({
           </div>
         ) : null}
       </div>
+      
+      {artifactUrl ? (
+        <div className="mt-3 border-t border-slate-100 pt-3">
+          <a
+            href={typeof window !== "undefined" && artifactUrl.startsWith("/") ? `file://${artifactUrl}` : artifactUrl}
+            target="_blank"
+            rel="noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="inline-flex w-full items-center justify-center gap-1.5 rounded-md bg-slate-50 py-1.5 text-[10px] font-semibold uppercase tracking-wide text-slate-600 hover:bg-slate-100 hover:text-indigo-600 transition"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            View Generated Artifact
+          </a>
+        </div>
+      ) : null}
     </div>
   );
 }

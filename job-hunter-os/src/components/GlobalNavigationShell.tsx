@@ -145,10 +145,25 @@ export const GlobalNavigationShell: React.FC<Props> = ({ children, activeViewId,
 
       {/* Main Content Area */}
       <main style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-        <header style={{ height: 56, backgroundColor: '#ffffff', borderBottom: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', padding: '0 24px' }}>
-          <h2 style={{ margin: 0, fontSize: '16px', fontWeight: 600, color: '#111827' }}>
-            {defaultNavItems.find(i => i.id === activeViewId)?.label || 'View'}
-          </h2>
+        <header style={{ minHeight: 56, backgroundColor: '#ffffff', borderBottom: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', padding: '8px 24px' }}>
+          <div>
+            <h2 style={{ margin: 0, fontSize: '16px', fontWeight: 600, color: '#111827' }}>
+              {defaultNavItems.find(i => i.id === activeViewId)?.label || 'View'}
+            </h2>
+            {[
+              'priority-inbox-triage',
+              'offer-decision-canvas',
+              'journey-friction-heatmap',
+              'cv-jd-calibration',
+              'sourcing-radar',
+              'israel-source-hardening',
+              'dashboard-actionability',
+            ].includes(activeViewId) && (
+              <div style={{ fontSize: 12, color: '#1d4ed8', marginTop: 2 }}>
+                Opened via role-based org navigation
+              </div>
+            )}
+          </div>
         </header>
         
         <div style={{ flexGrow: 1, padding: 24, overflowY: 'auto' }}>

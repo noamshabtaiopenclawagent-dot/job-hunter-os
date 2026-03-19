@@ -21,6 +21,7 @@ import {
 import { DashboardSidebar } from "@/components/organisms/DashboardSidebar";
 import { DashboardShell } from "@/components/templates/DashboardShell";
 import { SystemHealthStrip } from "@/components/organisms/SystemHealthStrip";
+import { ProjectStatusPanel } from "@/components/organisms/ProjectStatusPanel";
 import { Markdown } from "@/components/atoms/Markdown";
 import { SignedOutPanel } from "@/components/auth/SignedOutPanel";
 import { ApiError } from "@/api/mutator";
@@ -917,6 +918,7 @@ export default function DashboardPage() {
               hasConfiguredGateways && gatewayConnectedCount > 0
             }
           />
+          <ProjectStatusPanel />
           <div className="p-8">
             {metricsQuery.error ? (
               <div className="mb-4 rounded-lg border border-rose-300 bg-rose-50 p-3 text-sm text-rose-700">

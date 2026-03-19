@@ -1,0 +1,769 @@
+2026-03-15 12:55:56,925 INFO app.core.logging logging.configured level=INFO format=text use_utc=False app=mission-control version=0.1.0
+2026-03-15 12:55:57,593 INFO app.main app.cors.enabled origins_count=2 app=mission-control version=0.1.0
+INFO:     Started server process [4169]
+INFO:     Waiting for application startup.
+2026-03-15 12:55:57,866 INFO app.main app.lifecycle.starting environment=dev db_auto_migrate=True app=mission-control version=0.1.0
+2026-03-15 12:55:57,866 INFO app.db.session Running migrations on startup app=mission-control version=0.1.0
+2026-03-15 12:55:57,866 INFO app.db.session Running database migrations. app=mission-control version=0.1.0
+2026-03-15 12:55:57,882 INFO alembic.runtime.migration Context impl PostgresqlImpl. app=mission-control version=0.1.0
+2026-03-15 12:55:57,882 INFO alembic.runtime.migration Will assume transactional DDL. app=mission-control version=0.1.0
+2026-03-15 12:55:57,896 INFO app.db.session Database migrations complete. app=mission-control version=0.1.0
+2026-03-15 12:55:57,897 INFO app.main app.lifecycle.started app=mission-control version=0.1.0
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:56915 - "PATCH /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks/fb62d7de-4111-42e6-b515-4caa9152e4c8 HTTP/1.1" 200 OK
+2026-03-15 12:56:06,087 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=f25080e53e1b4fcca03b2beea8eac1e2
+INFO:     127.0.0.1:56918 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57156 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57157 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57207 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57208 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57382 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57383 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57428 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57429 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57595 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57596 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57631 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57632 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57786 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57787 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57836 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57837 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58071 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58072 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58124 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58125 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58417 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58418 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58455 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58456 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58582 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58583 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58632 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58633 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58755 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58756 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58830 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58831 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58984 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58985 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59036 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59037 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59235 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59236 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59329 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59330 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59503 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59504 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59563 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59564 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59735 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59736 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59803 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59804 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60027 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60028 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60098 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60099 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60360 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60361 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60411 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60412 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60528 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60529 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60570 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60571 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60689 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60690 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60732 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60733 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60872 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60873 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60911 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60912 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61024 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61025 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61062 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61063 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61223 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61224 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61260 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61261 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61398 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61399 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61439 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61440 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61587 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61588 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61622 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61623 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61771 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61772 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61850 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61851 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62009 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62010 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62072 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62073 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62183 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62184 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62234 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62235 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62393 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62394 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62464 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62465 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62466 - "OPTIONS /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62467 - "OPTIONS /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62468 - "OPTIONS /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62469 - "OPTIONS /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62468 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62466 - "GET /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62470 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62467 - "GET /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62466 - "OPTIONS /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62469 - "OPTIONS /api/v1/boards HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62472 - "OPTIONS /api/v1/board-groups?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62466 - "OPTIONS /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62469 - "OPTIONS /api/v1/boards HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62472 - "OPTIONS /api/v1/board-groups?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62466 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62468 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62473 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62474 - "GET /api/v1/boards HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62476 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62475 - "GET /api/v1/board-groups?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62477 - "GET /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62466 - "GET /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62475 - "OPTIONS /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62474 - "OPTIONS /api/v1/tags HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62473 - "OPTIONS /api/v1/organizations/me/custom-fields HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62475 - "OPTIONS /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/snapshot HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62473 - "OPTIONS /api/v1/agents/stream?board_id=a9a74814-6693-438c-a7b2-b439d3eaa24f&since=null HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62476 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62476 - "OPTIONS /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62476 - "OPTIONS /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/snapshot HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62474 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62466 - "GET /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62476 - "OPTIONS /api/v1/agents/stream?board_id=a9a74814-6693-438c-a7b2-b439d3eaa24f&since=null HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62477 - "GET /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62477 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62475 - "GET /api/v1/organizations/me/custom-fields HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62473 - "GET /api/v1/tags HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62476 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62477 - "GET /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62473 - "GET /api/v1/organizations/me/custom-fields HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62475 - "GET /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62480 - "GET /api/v1/tags HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62476 - "GET /api/v1/agents/stream?board_id=a9a74814-6693-438c-a7b2-b439d3eaa24f&since=null HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62474 - "GET /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/snapshot HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62480 - "OPTIONS /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/group-snapshot?include_self=false&include_done=false&per_board_task_limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62475 - "OPTIONS /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/approvals/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62473 - "OPTIONS /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/tasks/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62477 - "GET /api/v1/agents/stream?board_id=a9a74814-6693-438c-a7b2-b439d3eaa24f&since=null HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62483 - "OPTIONS /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62485 - "OPTIONS /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62491 - "OPTIONS /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62492 - "OPTIONS /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62492 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62474 - "GET /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/snapshot HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62483 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62491 - "GET /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62485 - "GET /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62480 - "GET /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/group-snapshot?include_self=false&include_done=false&per_board_task_limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62485 - "GET /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/group-snapshot?include_self=false&include_done=false&per_board_task_limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62483 - "OPTIONS /api/v1/boards?limit=200&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62474 - "OPTIONS /api/v1/agents/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62492 - "OPTIONS /api/v1/boards?limit=200&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62483 - "OPTIONS /api/v1/agents/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62483 - "OPTIONS /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62483 - "OPTIONS /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62483 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62483 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62474 - "GET /api/v1/boards?limit=200&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62506 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62483 - "GET /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62505 - "GET /api/v1/agents/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62507 - "GET /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62474 - "GET /api/v1/boards?limit=200&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62474 - "OPTIONS /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/snapshot HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62483 - "OPTIONS /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/snapshot HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62506 - "OPTIONS /api/v1/boards/4ec8efd0-17c5-4c3d-91b8-dcff44ba021f/snapshot HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62506 - "OPTIONS /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/tasks/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62506 - "OPTIONS /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/approvals/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62506 - "OPTIONS /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/memory/stream?is_chat=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62506 - "GET /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/tasks/stream HTTP/1.1" 200 OK
+2026-03-15 15:01:35,188 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/snapshot status_code=200 duration_ms=1003 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=f9ebdc23adf14d649b35fd7f947d36b6
+INFO:     127.0.0.1:62507 - "GET /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/snapshot HTTP/1.1" 200 OK
+2026-03-15 15:01:35,191 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/4ec8efd0-17c5-4c3d-91b8-dcff44ba021f/snapshot status_code=200 duration_ms=1004 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=d6a17061c0fb4aadacc3b50a89f3b2ff
+INFO:     127.0.0.1:62483 - "GET /api/v1/boards/4ec8efd0-17c5-4c3d-91b8-dcff44ba021f/snapshot HTTP/1.1" 200 OK
+2026-03-15 15:01:35,203 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/snapshot status_code=200 duration_ms=1017 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=4081760f9f214871b7848bef0941b6d0
+INFO:     127.0.0.1:62474 - "GET /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/snapshot HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62507 - "GET /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/approvals/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62483 - "GET /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/memory/stream?is_chat=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62474 - "GET /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/tasks/stream HTTP/1.1" 200 OK
+2026-03-15 15:01:35,861 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/snapshot status_code=200 duration_ms=1674 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=9d81333e2b5840fb851a34477a75d803
+INFO:     127.0.0.1:62508 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/snapshot HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62508 - "GET /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/approvals/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62510 - "OPTIONS /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/memory/stream?is_chat=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62511 - "OPTIONS /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62510 - "OPTIONS /api/v1/boards/4ec8efd0-17c5-4c3d-91b8-dcff44ba021f/memory/stream?is_chat=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62512 - "OPTIONS /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/approvals/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62511 - "OPTIONS /api/v1/activity?limit=200&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62513 - "OPTIONS /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/memory/stream?is_chat=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62514 - "OPTIONS /api/v1/boards/4ec8efd0-17c5-4c3d-91b8-dcff44ba021f/tasks/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62515 - "OPTIONS /api/v1/boards/4ec8efd0-17c5-4c3d-91b8-dcff44ba021f/approvals/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62512 - "GET /api/v1/activity?limit=200&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62512 - "OPTIONS /api/v1/activity?limit=200&offset=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62515 - "GET /api/v1/activity?limit=200&offset=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62515 - "OPTIONS /api/v1/activity?limit=200&offset=400 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62512 - "GET /api/v1/activity?limit=200&offset=400 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62512 - "OPTIONS /api/v1/activity?limit=200&offset=600 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62515 - "GET /api/v1/activity?limit=200&offset=600 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62515 - "OPTIONS /api/v1/activity?limit=200&offset=800 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62512 - "GET /api/v1/activity?limit=200&offset=800 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62512 - "OPTIONS /api/v1/agents/stream?since=2026-03-12T09%3A44%3A29.485Z HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62515 - "OPTIONS /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/tasks/stream?since=2026-03-12T05%3A58%3A07.766Z HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62511 - "GET /api/v1/agents/stream?since=2026-03-12T09%3A44%3A29.485Z HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62514 - "GET /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/approvals/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62512 - "GET /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/tasks/stream?since=2026-03-12T05%3A58%3A07.766Z HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62513 - "GET /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/memory/stream?is_chat=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62515 - "GET /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/tasks/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62510 - "GET /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/approvals/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62531 - "OPTIONS /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks/stream?since=2026-03-15T10%3A56%3A04.374Z HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62532 - "OPTIONS /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/approvals/stream?since=2026-03-15T10%3A52%3A18.380Z HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62541 - "OPTIONS /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62541 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62542 - "OPTIONS /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62542 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62552 - "OPTIONS /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62552 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62566 - "OPTIONS /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62566 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62587 - "GET /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/approvals/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62572 - "GET /api/v1/agents/stream?since=2026-03-12T09%3A44%3A29.485Z HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62588 - "GET /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/memory/stream?is_chat=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62586 - "GET /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/tasks/stream?since=2026-03-12T05%3A58%3A07.766Z HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62589 - "GET /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/tasks/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62590 - "GET /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/approvals/stream HTTP/1.1" 200 OK
+2026-03-15 15:03:48,659 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/4ec8efd0-17c5-4c3d-91b8-dcff44ba021f/tasks/stream status_code=200 duration_ms=1025 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=42d588d36f5949018768c807c78379c2
+2026-03-15 15:03:48,663 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/memory/stream status_code=200 duration_ms=1030 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=8a513d0e05a94cc4a24ecbd6f9b1bf3e
+2026-03-15 15:03:48,663 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/memory/stream status_code=200 duration_ms=1029 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=4c26729bf9534e8c98ef0363a9889ba2
+2026-03-15 15:03:48,665 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks/stream status_code=200 duration_ms=1032 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=c90291c671284e7291465000f877f392
+2026-03-15 15:03:48,683 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/approvals/stream status_code=200 duration_ms=1049 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=67a7cfac3757419b87d1adb8c08c77d1
+2026-03-15 15:03:49,072 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/4ec8efd0-17c5-4c3d-91b8-dcff44ba021f/approvals/stream status_code=200 duration_ms=1437 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=7a3b886002da45c6b83eb86c98a6e43a
+2026-03-15 15:03:49,072 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/4ec8efd0-17c5-4c3d-91b8-dcff44ba021f/memory/stream status_code=200 duration_ms=1434 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=5eca97fc906f48218b2a287d123e9061
+INFO:     127.0.0.1:62653 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62654 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62717 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62718 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62808 - "POST /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62897 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62898 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62970 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62971 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63166 - "GET /api/v1/agent/boards HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63227 - "GET /api/v1/agent/boards HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63245 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63246 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63307 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63308 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63319 - "GET /openapi.json HTTP/1.1" 200 OK
+2026-03-15 15:17:43,078 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/boards status_code=401 duration_ms=1 client_ip=127.0.0.1 request_id=961f2fcd69074a1abf056fe2aa1d6543
+INFO:     127.0.0.1:63370 - "GET /api/v1/boards HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:63470 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63470 - "GET /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/tasks?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63480 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63481 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63519 - "OPTIONS /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63520 - "OPTIONS /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63521 - "OPTIONS /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63522 - "OPTIONS /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63522 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63520 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63521 - "GET /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63519 - "GET /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63519 - "OPTIONS /api/v1/agents/stream?since=2026-03-12T09%3A44%3A29.485Z HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63521 - "GET /api/v1/agents/stream?since=2026-03-12T09%3A44%3A29.485Z HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63519 - "OPTIONS /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/tasks/stream?since=2026-03-12T05%3A58%3A07.766Z HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63520 - "OPTIONS /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/approvals/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63522 - "OPTIONS /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/memory/stream?is_chat=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63522 - "OPTIONS /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/tasks/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63524 - "OPTIONS /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/approvals/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63522 - "OPTIONS /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/memory/stream?is_chat=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63524 - "OPTIONS /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks/stream?since=2026-03-15T10%3A56%3A04.374Z HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63522 - "OPTIONS /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/approvals/stream?since=2026-03-15T10%3A52%3A18.380Z HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63524 - "OPTIONS /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/memory/stream?is_chat=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63522 - "OPTIONS /api/v1/boards/4ec8efd0-17c5-4c3d-91b8-dcff44ba021f/tasks/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63524 - "OPTIONS /api/v1/boards/4ec8efd0-17c5-4c3d-91b8-dcff44ba021f/approvals/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63523 - "GET /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/tasks/stream?since=2026-03-12T05%3A58%3A07.766Z HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63522 - "OPTIONS /api/v1/boards/4ec8efd0-17c5-4c3d-91b8-dcff44ba021f/memory/stream?is_chat=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63519 - "GET /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/approvals/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63520 - "GET /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/memory/stream?is_chat=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63524 - "GET /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/tasks/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63522 - "GET /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/approvals/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63531 - "OPTIONS /api/v1/agents/stream?since=2026-03-15T13%3A14%3A43.087Z HTTP/1.1" 200 OK
+2026-03-15 15:20:02,505 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/memory/stream status_code=200 duration_ms=1182 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=7e1a9d350bbc49058752c2b38676c699
+2026-03-15 15:20:02,514 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/4ec8efd0-17c5-4c3d-91b8-dcff44ba021f/tasks/stream status_code=200 duration_ms=1187 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=5f3b4e806f5841fa825a0bd1fbe76331
+2026-03-15 15:20:02,516 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/memory/stream status_code=200 duration_ms=1199 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=8ef5a38b01984c17b13be4deadc5acff
+2026-03-15 15:20:02,516 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/4ec8efd0-17c5-4c3d-91b8-dcff44ba021f/approvals/stream status_code=200 duration_ms=1188 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=64b4ed335b1a444c9dc91093ce19524c
+2026-03-15 15:20:02,898 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/4ec8efd0-17c5-4c3d-91b8-dcff44ba021f/memory/stream status_code=200 duration_ms=1567 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=38b7bff3500642019cc2bef2c8dd0bd2
+2026-03-15 15:20:03,088 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/approvals/stream status_code=200 duration_ms=1762 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=a97b955aea454acba8191fde7d9b730c
+2026-03-15 15:20:03,091 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/agents/stream status_code=200 duration_ms=1348 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=0f1d0d6a5fd04bb7b1cd138582f0e4df
+INFO:     127.0.0.1:63531 - "GET /api/v1/agents/stream?since=2026-03-15T13%3A14%3A43.087Z HTTP/1.1" 200 OK
+2026-03-15 15:20:03,096 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/tasks/stream status_code=200 duration_ms=1545 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=e3662b7b59314e9eaa2ace53b36a93ab
+INFO:     127.0.0.1:63532 - "GET /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/tasks/stream?since=2026-03-12T05%3A58%3A07.766Z HTTP/1.1" 200 OK
+2026-03-15 15:20:03,097 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/approvals/stream status_code=200 duration_ms=1355 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=3b53c4a668264721afbb07c31e30af0f
+INFO:     127.0.0.1:63533 - "GET /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/approvals/stream HTTP/1.1" 200 OK
+2026-03-15 15:20:03,473 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/memory/stream status_code=200 duration_ms=1349 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=eef55c132a3140baba99d126bbca78fb
+INFO:     127.0.0.1:63534 - "GET /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/memory/stream?is_chat=true HTTP/1.1" 200 OK
+2026-03-15 15:20:03,477 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/tasks/stream status_code=200 duration_ms=1164 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=e98f6f997d4b4220ad2f14949ac480b9
+INFO:     127.0.0.1:63535 - "GET /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/tasks/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63536 - "GET /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/approvals/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63539 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63540 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63556 - "OPTIONS /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63556 - "OPTIONS /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63559 - "OPTIONS /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+2026-03-15 15:20:12,366 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/memory/stream status_code=200 duration_ms=1151 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=915b6949e30b42adbe474aaeab4db1d2
+INFO:     127.0.0.1:63560 - "OPTIONS /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+2026-03-15 15:20:12,368 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks/stream status_code=200 duration_ms=1148 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=0cfee5bef8fc49698b7b8ce2c684101d
+2026-03-15 15:20:12,368 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=22d4e237a6574e0ba29698a1fc0b9e7a
+INFO:     127.0.0.1:63562 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63564 - "OPTIONS /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63565 - "OPTIONS /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63566 - "OPTIONS /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63556 - "OPTIONS /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63559 - "OPTIONS /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+2026-03-15 15:20:12,371 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/approvals/stream status_code=200 duration_ms=1150 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=c6ef3157456c4be2b49a99e98675f63d
+INFO:     127.0.0.1:63560 - "OPTIONS /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+2026-03-15 15:20:12,376 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/memory/stream status_code=200 duration_ms=1153 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=b33b0069451e4ed681aecf6d79637464
+2026-03-15 15:20:12,376 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/4ec8efd0-17c5-4c3d-91b8-dcff44ba021f/approvals/stream status_code=200 duration_ms=1152 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=b01a53190961417ba50ba3828925fc20
+2026-03-15 15:20:12,377 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/4ec8efd0-17c5-4c3d-91b8-dcff44ba021f/memory/stream status_code=200 duration_ms=1152 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=b2c98fefaf844ad48eb0fef0bd7f2632
+INFO:     127.0.0.1:63559 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63564 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63565 - "GET /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63560 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63566 - "GET /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63556 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63564 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63560 - "OPTIONS /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63559 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63564 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+2026-03-15 15:20:13,380 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=1 client_ip=127.0.0.1 request_id=126a2d3e73a64b479568645c05e8f45e
+INFO:     127.0.0.1:63562 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63579 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63580 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63581 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63582 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+2026-03-15 15:20:28,390 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=1 client_ip=127.0.0.1 request_id=5e77f76a800d458a9ce22975fb4db5ed
+INFO:     127.0.0.1:63588 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+2026-03-15 15:20:29,439 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=1 client_ip=127.0.0.1 request_id=af93563a70814745b7bdcc370bbc99e2
+INFO:     127.0.0.1:63588 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63580 - "OPTIONS /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63594 - "OPTIONS /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63579 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63580 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63594 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63579 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63594 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63580 - "GET /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63595 - "GET /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63604 - "OPTIONS /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63604 - "OPTIONS /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63606 - "OPTIONS /api/v1/agents/948ceee4-5e53-4ee6-b17d-a4cd0eba8b34 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63607 - "OPTIONS /api/v1/boards HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63604 - "OPTIONS /api/v1/agents/948ceee4-5e53-4ee6-b17d-a4cd0eba8b34 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63606 - "OPTIONS /api/v1/boards HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63605 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63604 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63608 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63611 - "GET /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63610 - "GET /api/v1/boards HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63609 - "GET /api/v1/agents/948ceee4-5e53-4ee6-b17d-a4cd0eba8b34 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63612 - "GET /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63656 - "OPTIONS /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63656 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63656 - "OPTIONS /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63664 - "OPTIONS /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63665 - "OPTIONS /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63668 - "OPTIONS /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63669 - "OPTIONS /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63670 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63669 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63667 - "GET /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63668 - "GET /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63670 - "OPTIONS /api/v1/agents/948ceee4-5e53-4ee6-b17d-a4cd0eba8b34 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63669 - "OPTIONS /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63667 - "OPTIONS /api/v1/boards HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63668 - "GET /api/v1/agents/948ceee4-5e53-4ee6-b17d-a4cd0eba8b34 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63669 - "GET /api/v1/boards HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63670 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63675 - "OPTIONS /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63675 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63676 - "GET /api/v1/agents/948ceee4-5e53-4ee6-b17d-a4cd0eba8b34 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63674 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63686 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63687 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63690 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63690 - "GET /api/v1/agents/948ceee4-5e53-4ee6-b17d-a4cd0eba8b34 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63690 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63703 - "GET /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63708 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63707 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63706 - "GET /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63721 - "GET /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63727 - "OPTIONS /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63728 - "OPTIONS /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+2026-03-15 15:22:06,154 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=cb09d041450e4a2b8acc3c89909b9bca
+INFO:     127.0.0.1:63729 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63727 - "OPTIONS /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63725 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63726 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63724 - "GET /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63728 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63727 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63726 - "OPTIONS /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63721 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63725 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63724 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+2026-03-15 15:22:07,160 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=a4de1deb45294600ae07c89bf8c23b06
+INFO:     127.0.0.1:63729 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+2026-03-15 15:22:31,595 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=4a44ef32bcce4befa65e99cc8203455c
+INFO:     127.0.0.1:63750 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63746 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63748 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63744 - "GET /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63747 - "GET /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63749 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63746 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63745 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63744 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63748 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+2026-03-15 15:22:32,601 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=869188e6c0614dd8aa4c45e9c099fddb
+INFO:     127.0.0.1:63750 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63779 - "OPTIONS /api/v1/agents HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63776 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63774 - "GET /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63777 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63775 - "GET /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63778 - "GET /api/v1/boards HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63779 - "GET /api/v1/agents HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63780 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63781 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63778 - "OPTIONS /api/v1/gateways HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63787 - "OPTIONS /api/v1/gateways HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63785 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63779 - "GET /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63784 - "GET /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63787 - "GET /api/v1/gateways HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63786 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63784 - "GET /healthz HTTP/1.1" 200 OK
+2026-03-15 15:22:51,542 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=c624a618675f42fa9cc3a74af345d0f0
+INFO:     127.0.0.1:63794 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63790 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63788 - "GET /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63791 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63789 - "GET /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63792 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63793 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63788 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63790 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63791 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+2026-03-15 15:22:52,549 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=b087a613611049bc89dcf2437c00f9e3
+INFO:     127.0.0.1:63794 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63827 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63827 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63828 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63829 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+2026-03-15 15:23:07,557 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=5643cab4306344deb53409caa0864a2e
+INFO:     127.0.0.1:63840 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+2026-03-15 15:23:08,565 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=b4dbda0122da46cab6d7f6ebc52bade5
+INFO:     127.0.0.1:63840 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63850 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63851 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63862 - "OPTIONS /api/v1/board-groups?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63857 - "GET /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63860 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63859 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63858 - "GET /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63861 - "GET /api/v1/boards HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63862 - "GET /api/v1/board-groups?limit=200 HTTP/1.1" 200 OK
+2026-03-15 15:23:21,372 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=26d0e1217fd0477691b1fee62d1efbc4
+INFO:     127.0.0.1:63885 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63881 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63882 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63879 - "GET /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63880 - "GET /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63883 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63884 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63881 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63882 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63879 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+2026-03-15 15:23:22,376 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=661f92321193434483408894dd4931f5
+INFO:     127.0.0.1:63885 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63882 - "OPTIONS /api/v1/organizations/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63879 - "OPTIONS /api/v1/organizations/me/members?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63884 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63881 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63894 - "OPTIONS /api/v1/organizations/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63895 - "OPTIONS /api/v1/organizations/me/members?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63895 - "OPTIONS /api/v1/organizations/me/invites?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63892 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63893 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63890 - "GET /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63891 - "GET /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63895 - "GET /api/v1/organizations/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63892 - "GET /api/v1/organizations/me/members?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63894 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63893 - "GET /api/v1/organizations/me/invites?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63897 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63893 - "GET /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63898 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63896 - "GET /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63899 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63932 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63943 - "OPTIONS /api/v1/boards?limit=200&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63944 - "OPTIONS /api/v1/agents/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63945 - "OPTIONS /api/v1/boards?limit=200&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63940 - "GET /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63941 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63943 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63942 - "GET /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63944 - "GET /api/v1/boards?limit=200&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63945 - "GET /api/v1/boards?limit=200&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63940 - "GET /api/v1/agents/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63941 - "OPTIONS /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/snapshot HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63943 - "OPTIONS /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/snapshot HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63942 - "OPTIONS /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/snapshot HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63944 - "OPTIONS /api/v1/boards/4ec8efd0-17c5-4c3d-91b8-dcff44ba021f/snapshot HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63944 - "OPTIONS /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/tasks/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63944 - "OPTIONS /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/approvals/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63944 - "OPTIONS /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/memory/stream?is_chat=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63944 - "GET /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/tasks/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63941 - "GET /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/snapshot HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63942 - "GET /api/v1/boards/4ec8efd0-17c5-4c3d-91b8-dcff44ba021f/snapshot HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63942 - "OPTIONS /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/tasks/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63942 - "OPTIONS /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/approvals/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63942 - "OPTIONS /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/memory/stream?is_chat=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63942 - "OPTIONS /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63942 - "OPTIONS /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/approvals/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63942 - "OPTIONS /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/memory/stream?is_chat=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63942 - "OPTIONS /api/v1/boards/4ec8efd0-17c5-4c3d-91b8-dcff44ba021f/tasks/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63942 - "OPTIONS /api/v1/boards/4ec8efd0-17c5-4c3d-91b8-dcff44ba021f/approvals/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63942 - "OPTIONS /api/v1/boards/4ec8efd0-17c5-4c3d-91b8-dcff44ba021f/memory/stream?is_chat=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63941 - "GET /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/approvals/stream HTTP/1.1" 200 OK
+2026-03-15 15:23:50,360 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/snapshot status_code=200 duration_ms=1180 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=98f7b7681e2940eb9fec2254f71004b0
+INFO:     127.0.0.1:63945 - "GET /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/snapshot HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63942 - "GET /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/memory/stream?is_chat=true HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63945 - "GET /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/tasks/stream HTTP/1.1" 200 OK
+2026-03-15 15:23:50,775 WARNING app.core.error_handling http.request.slow app=mission-control version=0.1.0 method=GET path=/api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/snapshot status_code=200 duration_ms=1593 client_ip=127.0.0.1 slow_threshold_ms=1000 request_id=e7230d84ea0842238a6925a733738ea7
+INFO:     127.0.0.1:63943 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/snapshot HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63943 - "GET /api/v1/boards/a9a74814-6693-438c-a7b2-b439d3eaa24f/approvals/stream HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63946 - "OPTIONS /api/v1/activity?limit=200&offset=0 HTTP/1.1" 200 OK
+2026-03-15 15:23:52,112 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=7dbb58d50d514cdfa0c8787f295712bf
+INFO:     127.0.0.1:63950 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63949 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63946 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63947 - "GET /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63948 - "GET /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63946 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63949 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63951 - "GET /api/v1/activity?limit=200&offset=0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63948 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63947 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63946 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+2026-03-15 15:23:53,119 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=77e3d1e61794490696562289de6239d6
+INFO:     127.0.0.1:63950 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63967 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63967 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63969 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63970 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+2026-03-15 15:24:08,127 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=a990cdcae8cd470cbacf46def19a2c74
+INFO:     127.0.0.1:63976 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+2026-03-15 15:24:09,141 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=668b6eb6a337472ba1912ed4a4d6009b
+INFO:     127.0.0.1:63976 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63985 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63986 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63983 - "GET /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63984 - "GET /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63987 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63983 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63984 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+2026-03-15 15:24:16,142 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=85df76e8cc0e40789907c6a110f4a180
+INFO:     127.0.0.1:63993 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63990 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63992 - "GET /api/v1/users/me HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63988 - "GET /api/v1/organizations/me/list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63989 - "GET /api/v1/organizations/me/member HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63994 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63995 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63992 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63990 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63988 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+2026-03-15 15:24:17,150 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=1 client_ip=127.0.0.1 request_id=3c441dc08cad4ec68066533f583b5f73
+INFO:     127.0.0.1:63993 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64009 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64009 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64010 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64012 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+2026-03-15 15:24:32,170 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=1 client_ip=127.0.0.1 request_id=b87d744f289c4009aadc4a63666266fa
+INFO:     127.0.0.1:64024 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+2026-03-15 15:24:33,180 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=1 client_ip=127.0.0.1 request_id=dfd896bf9db74e3b9fc4f77ff8de8249
+INFO:     127.0.0.1:64024 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64036 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64036 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64037 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64036 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64037 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64038 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+2026-03-15 15:24:48,195 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=1 client_ip=127.0.0.1 request_id=6d4691d92bf94f4495734211c39040c4
+INFO:     127.0.0.1:64045 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+2026-03-15 15:24:49,213 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=1 client_ip=127.0.0.1 request_id=04afb62a148f432fa39411c39dd79a33
+INFO:     127.0.0.1:64045 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64052 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64052 - "GET /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/tasks?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64053 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64053 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64055 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64056 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+2026-03-15 15:25:04,224 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=6e7ba9d48839404bb9a41a7be5d4d75d
+INFO:     127.0.0.1:64070 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64074 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+2026-03-15 15:25:05,244 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=61637e3bbf634f0683b54a406aac8476
+INFO:     127.0.0.1:64070 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64075 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64092 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64093 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64092 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64093 - "GET /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/tasks?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64094 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64092 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64094 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64095 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+2026-03-15 15:25:20,255 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=75701de19f874e7a88ad55951dea52e4
+INFO:     127.0.0.1:64102 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+2026-03-15 15:25:21,267 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=1 client_ip=127.0.0.1 request_id=7d176167a0a64b83b43ae7b04080f98c
+INFO:     127.0.0.1:64102 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64111 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64111 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64114 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64115 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+2026-03-15 15:25:36,287 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=628ac70b88164f8b9c0a17ac632a18a8
+INFO:     127.0.0.1:64131 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+2026-03-15 15:25:37,291 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=b292abc63cf64e78a9ced820d8b4c422
+INFO:     127.0.0.1:64131 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64146 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64146 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64146 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64146 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64151 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64152 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+2026-03-15 15:25:52,302 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=6424b8cb5a4d4b6ca8cda80994752f0e
+INFO:     127.0.0.1:64159 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+2026-03-15 15:25:53,309 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=9f6d745dda634a3dbb881595e66e2eb3
+INFO:     127.0.0.1:64159 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64171 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64171 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64180 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64181 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+2026-03-15 15:26:08,322 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=b4902ab3cc30450690940040887d3b2c
+INFO:     127.0.0.1:64193 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+2026-03-15 15:26:09,329 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=9631b51d7d4e4cf6bba17c9bf9a97332
+INFO:     127.0.0.1:64193 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64198 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64198 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64198 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64198 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64201 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64202 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+2026-03-15 15:26:24,339 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=e241309d0b5b48febac6f97f429797cc
+INFO:     127.0.0.1:64220 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64225 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+2026-03-15 15:26:25,478 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=25a006a4b1c840b2868dae5af1f5a6bf
+INFO:     127.0.0.1:64220 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64226 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64227 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64227 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64230 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64231 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+2026-03-15 15:26:40,488 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=91cbb955916945939c7f83b6a99994ed
+INFO:     127.0.0.1:64245 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+2026-03-15 15:26:41,493 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=f9f60cc4c17642e8bbb427bd43f362a5
+INFO:     127.0.0.1:64245 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64250 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64250 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64250 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64250 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64251 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64252 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+2026-03-15 15:26:56,508 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=1 client_ip=127.0.0.1 request_id=8cd6acb33abd439a99886900cc267faa
+INFO:     127.0.0.1:64263 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+2026-03-15 15:26:57,527 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=1 client_ip=127.0.0.1 request_id=e4ede759b60847328bf887a2fccb15a0
+INFO:     127.0.0.1:64263 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64268 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+2026-03-15 15:27:03,984 ERROR app.services.openclaw.gateway_rpc gateway.rpc.connect_metadata.transport_error duration_ms=0 error_type=ConnectionRefusedError app=mission-control version=0.1.0 request_id=aeb0a60914f94a208f6c17b0ec7a8755 method=GET path=/api/v1/gateways/status
+INFO:     127.0.0.1:64279 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64268 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64278 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+2026-03-15 15:27:12,538 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=10cd05ccf6824d2da6d36905fa6968fb
+INFO:     127.0.0.1:64311 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+2026-03-15 15:27:13,544 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=56a99c6f28da4709b90872c850679fe1
+INFO:     127.0.0.1:64311 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64320 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64320 - "GET /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/tasks?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64322 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64322 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64322 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64332 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64333 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64322 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64343 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64344 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=200 HTTP/1.1" 200 OK
+2026-03-15 15:27:28,557 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=00e153bc110749e8a2ef0fe19cdf07e3
+INFO:     127.0.0.1:64376 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+2026-03-15 15:27:29,573 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=1 client_ip=127.0.0.1 request_id=346a9483daaf4de5ace70fdeaba98184
+INFO:     127.0.0.1:64376 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64387 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64387 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64392 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64393 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+2026-03-15 15:27:44,587 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=5d204ebd07c34fa99d44220c74529553
+INFO:     127.0.0.1:64419 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+2026-03-15 15:27:45,604 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=1 client_ip=127.0.0.1 request_id=42a64a5fc55147b4a18dd3b3c36ef169
+INFO:     127.0.0.1:64419 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64420 - "GET /healthz HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64420 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64420 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64427 - "GET /api/v1/boards/24a91d03-2211-4376-92d6-7e2f7251e51a/tasks?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64427 - "GET /api/v1/boards/278627d8-606a-4935-bd8f-9293ffcfabc7/tasks?limit=10 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64420 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64440 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64441 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+2026-03-15 15:28:00,616 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=a6c6fad63d874a19bac9ac67286ade83
+INFO:     127.0.0.1:64456 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+2026-03-15 15:28:01,630 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=1 client_ip=127.0.0.1 request_id=8a2bd62be52346d7ab0398fa375f8ebc
+INFO:     127.0.0.1:64456 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64458 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64458 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64460 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64461 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64500 - "GET /healthz HTTP/1.1" 200 OK
+2026-03-15 15:28:16,637 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=78c8e6ccf19c42829bab487dc42dcd96
+INFO:     127.0.0.1:64501 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64500 - "GET /api/v1/boards?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64500 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+2026-03-15 15:28:17,650 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=1 client_ip=127.0.0.1 request_id=1456373fec934257aaa48d0cee794143
+INFO:     127.0.0.1:64501 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64500 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64502 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64503 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64530 - "GET /api/v1/agents?limit=200 HTTP/1.1" 200 OK
+2026-03-15 15:28:32,665 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=d27de939d94f4d5baf2093fd08120e66
+INFO:     127.0.0.1:64533 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+2026-03-15 15:28:33,681 WARNING app.core.error_handling http.request.complete app=mission-control version=0.1.0 method=GET path=/api/v1/metrics/system-errors status_code=404 duration_ms=0 client_ip=127.0.0.1 request_id=e664b13fa83f476b96a599b96ec819bf
+INFO:     127.0.0.1:64533 - "GET /api/v1/metrics/system-errors HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64530 - "GET /api/v1/activity?limit=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64546 - "GET /api/v1/metrics/dashboard?range_key=7d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64547 - "GET /api/v1/gateways/status?board_id=278627d8-606a-4935-bd8f-9293ffcfabc7 HTTP/1.1" 200 OK

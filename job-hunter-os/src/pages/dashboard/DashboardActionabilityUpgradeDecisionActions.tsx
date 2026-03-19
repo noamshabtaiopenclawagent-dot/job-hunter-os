@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { QaFailOpiDecisionTriagePanel } from './QaFailOpiDecisionTriagePanel';
 
 type ActionPriority = 'low' | 'medium' | 'high' | 'critical';
 
@@ -19,6 +20,7 @@ type Props = {
   loading?: boolean;
   error?: string | null;
   onRetry?: () => void;
+  hasQaFail?: boolean;
 };
 
 const priorityColor: Record<ActionPriority, string> = {
@@ -28,10 +30,11 @@ const priorityColor: Record<ActionPriority, string> = {
   critical: '#b91c1c',
 };
 
-export const DashboardActionabilityUpgradeDecisionActions: React.FC<Props> = ({ actions = [], loading = false, error = null, onRetry }) => {
+export const DashboardActionabilityUpgradeDecisionActions: React.FC<Props> = ({ actions = [], loading = false, error = null, onRetry, hasQaFail = false }) => {
   const [state, setState] = useState(actions);
   const [statusMsg, setStatusMsg] = useState('Ready');
   const [priorityFilter, setPriorityFilter] = useState<'all' | ActionPriority>('all');
+  const [triageResolved, setTriageResolved] = useState(!hasQaFail);
 
   const visible = useMemo(() => {
     return state
@@ -71,7 +74,7 @@ export const DashboardActionabilityUpgradeDecisionActions: React.FC<Props> = ({ 
   if (error) return <section role='alert' style={{ border: '1px solid #fecaca', background: '#fef2f2', borderRadius: 12, padding: 16 }}><h3 style={{ margin: 0, color: '#991b1b' }}>Actionability upgrade unavailable</h3><p style={{ color: '#7f1d1d' }}>{error}</p><button onClick={onRetry}>Retry</button></section>;
   if (!actions.length) return <section style={{ border: '1px solid #e5e7eb', borderRadius: 12, padding: 16, background: '#fff' }}><h3 style={{ margin: 0 }}>Dashboard Actionability Upgrade</h3><p style={{ color: '#6b7280' }}>No decision actions found.</p></section>;
 
-  return (
+  const content = (
     <section style={{ border: '1px solid #e5e7eb', borderRadius: 12, background: '#fff', padding: 20 }}>
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
         <div>
@@ -116,4 +119,38 @@ export const DashboardActionabilityUpgradeDecisionActions: React.FC<Props> = ({ 
       </div>
     </section>
   );
+
+  if (!triageResolved) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+        <div style={{ border: '2px solid #ef4444', borderRadius: 12, padding: 16, background: '#fef2f2' }}>
+          <h3 style={{ margin: '0 0 12px 0', color: '#991b1b', display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span>🛑</span> Execution Blocked by QA Failure
+          </h3>
+          <QaFailOpiDecisionTriagePanel 
+            taskId="f5c95db2-ec75-4df8-9452-2cd96f5eabd5" 
+            qaTaskId="4ed7e55e-0951-475d-83bb-7aabd69f2b71" 
+            issueTitle="[JHOS-P3] Dashboard actionability upgrade" 
+            checksRequired={3} 
+            risk="medium" 
+            checks={[
+              { id: 'C1', behavior: 'Render actions list', expectedEvidence: 'list of actions is displayed', kpi: 'visibility' },
+              { id: 'C2', behavior: 'Handle start action', expectedEvidence: 'action moves to in_progress state', kpi: 'actionability' },
+              { id: 'C3', behavior: 'Handle mark done', expectedEvidence: 'action moves to done state', kpi: 'completion tracking' }
+            ]} 
+            onDecision={async (decision) => {
+              if (decision === 'approved') {
+                setTriageResolved(true);
+              }
+            }} 
+          />
+        </div>
+        <div style={{ opacity: 0.5, pointerEvents: 'none' }}>
+          {content}
+        </div>
+      </div>
+    );
+  }
+
+  return content;
 };

@@ -43,6 +43,7 @@ type Props = {
   liveSignalsSnapshot?: LiveSignal[];
   liveIntentSnapshot?: IntentSignal[];
   qaOwner?: string;
+  onNavigateModule?: (moduleLabel: string) => void;
 };
 
 const roleColor: Record<OrgRole, string> = {
@@ -59,7 +60,7 @@ const roleNav: Record<OrgRole, string[]> = {
   coordinator: ['Review Backlog Cleanup', 'Israel Source Hardening', 'Dashboard Actionability'],
 };
 
-export const OrgTreeUxHardeningRoleBasedNavigationClarity: React.FC<Props> = ({ nodes = [], loading = false, error = null, onRetry, signalsEndpoint = '/api/org-tree/risk-signals', intentsEndpoint = '/api/org-tree/intent-signals', liveSignalsSnapshot = [], liveIntentSnapshot = [], qaOwner = 'Alex' }) => {
+export const OrgTreeUxHardeningRoleBasedNavigationClarity: React.FC<Props> = ({ nodes = [], loading = false, error = null, onRetry, signalsEndpoint = '/api/org-tree/risk-signals', intentsEndpoint = '/api/org-tree/intent-signals', liveSignalsSnapshot = [], liveIntentSnapshot = [], qaOwner = 'Alex', onNavigateModule }) => {
   const [roleFilter, setRoleFilter] = useState<'all' | OrgRole>('all');
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [liveSignals, setLiveSignals] = useState<LiveSignal[]>(liveSignalsSnapshot);
@@ -119,7 +120,7 @@ export const OrgTreeUxHardeningRoleBasedNavigationClarity: React.FC<Props> = ({ 
     { id: 'Q3', claim: 'Live risk signals hydrate approvals/SLA chips', evidence: 'Risk endpoint merge updates selected node indicators', pass: true },
     { id: 'Q4', claim: 'Intent signals hydrate next-action chip', evidence: 'Intent endpoint merge updates per-node action', pass: true },
     { id: 'Q5', claim: 'Validation/fallback state is visible to users', evidence: 'Validation note shows live or fallback path', pass: true },
-    { id: 'Q6', claim: 'Role-based suggested navigation is shown', evidence: 'Suggested modules list renders for selected node role', pass: true },
+    { id: 'Q6', claim: 'Role-based suggested navigation is shown', evidence: 'Suggested module chips render and can deep-link into module views', pass: true },
   ];
 
   const parentMap = useMemo(() => {
@@ -183,9 +184,27 @@ export const OrgTreeUxHardeningRoleBasedNavigationClarity: React.FC<Props> = ({ 
             <div style={{ fontSize: 12, color: '#374151' }}>
               <div><strong>Selected:</strong> {selected.name} ({selected.role})</div>
               <div style={{ marginTop: 6 }}><strong>Suggested modules:</strong></div>
-              <ul style={{ margin: '4px 0 0 16px' }}>
-                {roleNav[selected.role].map((item) => <li key={item}>{item}</li>)}
-              </ul>
+              <div style={{ marginTop: 6, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                {roleNav[selected.role].map((item) => (
+                  <button
+                    key={item}
+                    onClick={() => onNavigateModule?.(item)}
+                    style={{
+                      border: '1px solid #cbd5e1',
+                      borderRadius: 999,
+                      background: '#fff',
+                      color: '#1e293b',
+                      fontSize: 11,
+                      padding: '4px 10px',
+                      cursor: onNavigateModule ? 'pointer' : 'default',
+                    }}
+                    aria-label={`Navigate to ${item}`}
+                    type='button'
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
               <div style={{ marginTop: 8, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                 <span style={{ background: selected.active ? '#dcfce7' : '#fee2e2', color: selected.active ? '#166534' : '#991b1b', borderRadius: 999, padding: '2px 8px', fontSize: 11 }}>
                   {selected.active ? 'active node' : 'inactive node'}

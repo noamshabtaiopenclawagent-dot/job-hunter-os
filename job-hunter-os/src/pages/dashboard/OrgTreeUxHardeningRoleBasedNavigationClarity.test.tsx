@@ -1,5 +1,5 @@
 import React from 'react';
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { OrgTreeUxHardeningRoleBasedNavigationClarity } from './OrgTreeUxHardeningRoleBasedNavigationClarity';
 
@@ -32,5 +32,13 @@ describe('OrgTreeUxHardeningRoleBasedNavigationClarity', () => {
     render(<OrgTreeUxHardeningRoleBasedNavigationClarity nodes={nodes} />);
     fireEvent.change(screen.getAllByDisplayValue('All roles')[0], { target: { value: 'recruiter' } });
     expect(screen.getAllByText(/Recruiter/).length).toBeGreaterThan(0);
+  });
+
+  it('emits module navigation when suggested module chip is clicked', () => {
+    const onNavigateModule = vi.fn();
+    render(<OrgTreeUxHardeningRoleBasedNavigationClarity nodes={nodes} onNavigateModule={onNavigateModule} />);
+    fireEvent.click(screen.getByRole('button', { name: /Recruiter recruiter/ }));
+    fireEvent.click(screen.getByRole('button', { name: 'Navigate to Priority Inbox Smart Triage' }));
+    expect(onNavigateModule).toHaveBeenCalledWith('Priority Inbox Smart Triage');
   });
 });

@@ -1,6 +1,9 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { describe, it, expect, afterEach } from 'vitest';
+import { fireEvent, render, screen, cleanup } from '@testing-library/react';
 import { DashboardActionabilityUpgradeDecisionActions } from './DashboardActionabilityUpgradeDecisionActions';
+
+afterEach(cleanup);
 
 describe('DashboardActionabilityUpgradeDecisionActions', () => {
   const actions = [
@@ -20,6 +23,16 @@ describe('DashboardActionabilityUpgradeDecisionActions', () => {
   it('starts an action', () => {
     render(<DashboardActionabilityUpgradeDecisionActions actions={actions} />);
     fireEvent.click(screen.getByText('Start'));
-    expect(screen.getByText(/started/i)).toBeInTheDocument();
+    expect(screen.getByText(/started/i)).toBeTruthy();
+  });
+
+  it('renders QaFailOpiDecisionTriagePanel when hasQaFail is true and hides component until resolved', () => {
+    render(<DashboardActionabilityUpgradeDecisionActions actions={actions} hasQaFail={true} />);
+    expect(screen.getByText(/Execution Blocked by QA Failure/i)).toBeTruthy();
+    expect(screen.getByText(/QA FAIL Triage \(OPI Decision Required\)/i)).toBeTruthy();
+    
+    // Attempt approval
+    fireEvent.click(screen.getByText('Approve fix execution'));
+    expect(screen.queryByText(/Execution Blocked by QA Failure/i)).toBeNull();
   });
 });
