@@ -12,6 +12,7 @@ import { useAuth, SignedIn, SignedOut } from "@/auth/clerk";
 import { DashboardShell } from "@/components/templates/DashboardShell";
 import { DashboardSidebar } from "@/components/organisms/DashboardSidebar";
 import { SignedOutPanel } from "@/components/auth/SignedOutPanel";
+import { LogViewer } from "@/components/organisms/LogViewer";
 import { ApiError } from "@/api/mutator";
 import {
   type listAgentsApiV1AgentsGetResponse,
@@ -659,6 +660,8 @@ function AgentDetailPanel({
   const done  = tasks.filter(t => (t.status as string) === "done").length;
   const color = TIER_COLOR[node.tier] ?? "#6b7280";
 
+  const [activeTab, setActiveTab] = useState<"overview" | "logs">("overview");
+
   return (
     <div className="absolute right-6 top-24 bottom-6 w-[360px] z-50 animate-in slide-in-from-right duration-400">
       <div className="h-full rounded-2xl border border-white/10 bg-[#020617]/95 backdrop-blur-3xl shadow-[0_0_80px_rgba(0,0,0,0.8)] flex flex-col overflow-hidden">
@@ -682,66 +685,88 @@ function AgentDetailPanel({
           </button>
         </div>
 
-        {/* Body */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
-
-          {/* Responsibility */}
-          <div>
-            <h3 className="text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] mb-3">Primary Directive</h3>
-            <p className="text-sm text-slate-300 leading-relaxed italic bg-white/[0.03] rounded-xl p-4 border border-white/5">
-              "{node.responsibility}"
-            </p>
+          <div className="flex px-6 space-x-4 border-b border-white/5">
+            <button 
+              onClick={() => setActiveTab("overview")}
+              className={`pb-2 text-[10px] font-bold uppercase tracking-widest ${activeTab === "overview" ? "text-white border-b-2 border-emerald-400" : "text-slate-500 hover:text-slate-300"}`}
+            >
+              Overview
+            </button>
+            <button 
+              onClick={() => setActiveTab("logs")}
+              className={`pb-2 text-[10px] font-bold uppercase tracking-widest ${activeTab === "logs" ? "text-white border-b-2 border-emerald-400" : "text-slate-500 hover:text-slate-300"}`}
+            >
+              Logs
+            </button>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-3">
-            {[
-              { l: "TODO",   v: todo,  c: "text-slate-400" },
-              { l: "ACTIVE", v: doing, c: "text-emerald-400" },
-              { l: "DONE",   v: done,  c: "text-blue-400" },
-            ].map(s => (
-              <div key={s.l} className="bg-white/5 rounded-xl p-3 border border-white/5 text-center">
-                <div className={`text-xl font-black ${s.c}`}>{s.v}</div>
-                <div className="text-[7px] font-black text-slate-500 tracking-widest">{s.l}</div>
-              </div>
-            ))}
-          </div>
+          {/* Body */}
+          <div className="flex-1 overflow-hidden relative">
+            {activeTab === "overview" ? (
+              <div className="h-full overflow-y-auto p-6 space-y-6">
+                {/* Responsibility */}
+                <div>
+                  <h3 className="text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] mb-3">Primary Directive</h3>
+                  <p className="text-sm text-slate-300 leading-relaxed italic bg-white/[0.03] rounded-xl p-4 border border-white/5">
+                    "{node.responsibility}"
+                  </p>
+                </div>
 
-          {/* Online status */}
-          <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/5">
-            <span className={`h-2 w-2 rounded-full flex-shrink-0 ${
-              agent?.status === "online"
-                ? "bg-emerald-400 shadow-[0_0_6px_#10b981] animate-pulse"
-                : "bg-slate-600"
-            }`} />
-            <span className="text-xs font-bold text-slate-300">
-              {agent?.status === "online" ? "ONLINE — ACTIVE" : "OFFLINE"}
-            </span>
-            <span className="ml-auto text-[9px] text-slate-600 font-mono">{node.model}</span>
-          </div>
+                {/* Stats */}
+                <div className="grid grid-cols-3 gap-3">
+                  {[
+                    { l: "TODO",   v: todo,  c: "text-slate-400" },
+                    { l: "ACTIVE", v: doing, c: "text-emerald-400" },
+                    { l: "DONE",   v: done,  c: "text-blue-400" },
+                  ].map(s => (
+                    <div key={s.l} className="bg-white/5 rounded-xl p-3 border border-white/5 text-center">
+                      <div className={`text-xl font-black ${s.c}`}>{s.v}</div>
+                      <div className="text-[7px] font-black text-slate-500 tracking-widest">{s.l}</div>
+                    </div>
+                  ))}
+                </div>
 
-          {/* Recent tasks */}
-          {tasks.length > 0 && (
-            <div>
-              <h3 className="text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] mb-3">Recent Directives</h3>
-              <div className="space-y-2">
-                {tasks.slice(0, 5).map(t => (
-                  <div key={t.id}
-                    className="p-3 rounded-lg border border-white/5 bg-white/[0.02] flex items-center gap-3">
-                    <span className={`h-1.5 w-1.5 rounded-full flex-shrink-0 ${
-                      (t.status as string) === "done"        ? "bg-blue-400" :
-                      (t.status as string) === "in_progress" ? "bg-emerald-400" :
-                      "bg-amber-400"
-                    }`} />
-                    <p className="text-[11px] text-slate-300 truncate font-medium">{t.title}</p>
+                {/* Online status */}
+                <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/5">
+                  <span className={`h-2 w-2 rounded-full flex-shrink-0 ${
+                    agent?.status === "online"
+                      ? "bg-emerald-400 shadow-[0_0_6px_#10b981] animate-pulse"
+                      : "bg-slate-600"
+                  }`} />
+                  <span className="text-xs font-bold text-slate-300">
+                    {agent?.status === "online" ? "ONLINE — ACTIVE" : "OFFLINE"}
+                  </span>
+                  <span className="ml-auto text-[9px] text-slate-600 font-mono">{node.model}</span>
+                </div>
+
+                {/* Recent tasks */}
+                {tasks.length > 0 && (
+                  <div>
+                    <h3 className="text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] mb-3">Recent Directives</h3>
+                    <div className="space-y-2">
+                      {tasks.slice(0, 5).map(t => (
+                        <div key={t.id}
+                          className="p-3 rounded-lg border border-white/5 bg-white/[0.02] flex items-center gap-3">
+                          <span className={`h-1.5 w-1.5 rounded-full flex-shrink-0 ${
+                            (t.status as string) === "done"        ? "bg-blue-400" :
+                            (t.status as string) === "in_progress" ? "bg-emerald-400" :
+                            "bg-amber-400"
+                          }`} />
+                          <p className="text-[11px] text-slate-300 truncate font-medium">{t.title}</p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                ))}
+                )}
               </div>
-            </div>
-          )}
+            ) : (
+              <div className="h-full p-4">
+                <LogViewer agentName={node.name} agentId={node.id} />
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
   );
 }
 

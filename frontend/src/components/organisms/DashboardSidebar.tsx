@@ -17,6 +17,7 @@ import {
   Moon,
   Sun,
   Timer,
+  Zap,
 } from "lucide-react";
 
 import { useAuth } from "@/auth/clerk";
@@ -128,6 +129,9 @@ export function DashboardSidebar() {
           <div>
             <p className={sectionLabelCls}>Boards</p>
             <div className="mt-1 space-y-1">
+              <Link href="/sprint" className={cn(linkBase, pathname.startsWith("/sprint") ? linkActive : linkHover)}>
+                <Zap className="h-4 w-4" /> Sprint Board
+              </Link>
               <Link href="/board-groups" className={cn(linkBase, pathname.startsWith("/board-groups") ? linkActive : linkHover)}>
                 <Folder className="h-4 w-4" /> Board groups
               </Link>
