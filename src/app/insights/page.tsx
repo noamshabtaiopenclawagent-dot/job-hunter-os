@@ -35,9 +35,6 @@ export default function InsightsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const MC = "http://127.0.0.1:8000/api/v1";
-    const ENV_TOKEN_KEY = "LOCAL_AUTH_TOKEN";
-
     (async () => {
       try {
         // Fetch board data via /api/pipeline which already has auth
@@ -139,13 +136,13 @@ export default function InsightsPage() {
           <h2 style={{ fontSize: 13, fontWeight: 700, color: "#475569", textTransform: "uppercase", letterSpacing: 1, marginBottom: 12 }}>System Health</h2>
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 24 }}>
             {[
-              { label: "BOB Loop", status: "✅ Running every 5 min", ok: true },
-              { label: "ALEX QA", status: "✅ Running every 15 min", ok: true },
-              { label: "OPI Manager", status: "✅ Running every hour", ok: true },
-              { label: "SENTRY", status: "✅ Nightly 01:00", ok: true },
-              { label: "CRONX", status: "✅ Every 12h", ok: true },
-              { label: "Weekly Report", status: "✅ Mon 09:00", ok: true },
-              { label: "Dedup Guards", status: "✅ Active (cronx+sentry)", ok: true },
+              { label: "Gateway", status: "✅ Active launch service", ok: true },
+              { label: "Native Cron", status: "✅ 4 jobs only", ok: true },
+              { label: "OPI", status: "✅ 09:00 / 14:00 / 19:30", ok: true },
+              { label: "BOB", status: "✅ Daily pickup 09:15", ok: true },
+              { label: "Mission Control", status: "✅ 2 agents / 2 boards", ok: true },
+              { label: "Synthetic Heartbeat", status: "✅ Removed", ok: true },
+              { label: "Legacy Loops", status: "✅ Removed", ok: true },
               { label: "GitHub CI", status: "✅ On every push", ok: true },
             ].map(({ label, status, ok }) => (
               <div key={label} style={{ background: "#1a1d2e", border: `1px solid ${ok ? "rgba(16,185,129,0.2)" : "rgba(248,113,113,0.2)"}`, borderRadius: 10, padding: "10px 14px", minWidth: 170 }}>
