@@ -1,4 +1,4 @@
-import { CalendarClock, UserCircle } from "lucide-react";
+import { CalendarClock, Check, UserCircle, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -18,6 +18,8 @@ interface TaskCardProps {
   isStuck?: boolean;
   description?: string | null;
   onClick?: () => void;
+  onApprove?: () => void;
+  onReject?: () => void;
   draggable?: boolean;
   isDragging?: boolean;
   onDragStart?: (event: React.DragEvent<HTMLDivElement>) => void;
@@ -38,6 +40,8 @@ export function TaskCard({
   isStuck = false,
   description,
   onClick,
+  onApprove,
+  onReject,
   draggable = false,
   isDragging = false,
   onDragStart,
@@ -203,6 +207,30 @@ export function TaskCard({
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
             View Generated Artifact
           </a>
+        </div>
+      ) : null}
+
+      {/* Inline Approval Actions — visible only on cards in Review with pending approvals */}
+      {hasPendingApproval && status === "review" && (onApprove || onReject) ? (
+        <div className="mt-3 flex items-center gap-2 border-t border-amber-100 pt-3">
+          {onApprove ? (
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); onApprove(); }}
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-[11px] font-bold text-white transition hover:bg-emerald-700 active:scale-95"
+            >
+              <Check className="h-3 w-3" /> Approve
+            </button>
+          ) : null}
+          {onReject ? (
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); onReject(); }}
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-rose-200 bg-rose-50 px-3 py-1.5 text-[11px] font-bold text-rose-700 transition hover:bg-rose-100 active:scale-95"
+            >
+              <X className="h-3 w-3" /> Reject
+            </button>
+          ) : null}
         </div>
       ) : null}
     </div>

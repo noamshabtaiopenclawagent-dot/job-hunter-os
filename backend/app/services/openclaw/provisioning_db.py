@@ -68,15 +68,17 @@ from app.services.openclaw.gateway_rpc import (
 )
 from app.services.openclaw.internal.agent_key import agent_key as _agent_key
 from app.services.openclaw.internal.retry import GatewayBackoff
-from app.services.openclaw.internal.session_keys import (
-    board_agent_session_key,
-    board_lead_session_key,
-)
 from app.services.openclaw.lifecycle_orchestrator import AgentLifecycleOrchestrator
 from app.services.openclaw.policies import OpenClawAuthorizationPolicy
 from app.services.openclaw.provisioning import (
     OpenClawGatewayControlPlane,
     OpenClawGatewayProvisioner,
+)
+from app.services.openclaw.runtime_identity import (
+    canonical_runtime_persona_for_agent,
+    canonical_persona_for_request,
+    canonical_session_key_for_persona,
+    classify_runtime_identity,
 )
 from app.services.openclaw.shared import GatewayAgentIdentity
 from app.services.organizations import (
@@ -143,94 +145,38 @@ class OpenClawProvisioningService(OpenClawDBService):
     def __init__(self, session: AsyncSession) -> None:
         super().__init__(session)
 
-    @staticmethod
-    def lead_session_key(board: Board) -> str:
-        return board_lead_session_key(board.id)
-
-    @staticmethod
-    def lead_agent_name(_: Board) -> str:
-        return "Lead Agent"
-
     async def ensure_board_lead_agent(
         self,
         *,
         request: LeadAgentRequest,
     ) -> tuple[Agent, bool]:
-        """Ensure a board has a lead agent; return `(agent, created)`."""
+        """Return the board's canonical agent in strict two-agent mode."""
         board = request.board
-        config_options = request.options
-
-        existing = (
+        existing_agents = (
             await self.session.exec(
                 select(Agent)
                 .where(Agent.board_id == board.id)
-                .where(col(Agent.is_board_lead).is_(True)),
+                .order_by(asc(col(Agent.created_at))),
             )
-        ).first()
-        if existing:
-            desired_name = config_options.agent_name or self.lead_agent_name(board)
-            changed = False
-            if existing.name != desired_name:
-                existing.name = desired_name
-                changed = True
-            if existing.gateway_id != request.gateway.id:
-                existing.gateway_id = request.gateway.id
-                changed = True
-            desired_session_key = self.lead_session_key(board)
-            if existing.openclaw_session_id != desired_session_key:
-                existing.openclaw_session_id = desired_session_key
-                changed = True
-            if changed:
-                existing.updated_at = utcnow()
-                self.session.add(existing)
-                await self.session.commit()
-                await self.session.refresh(existing)
-            return existing, False
+        ).all()
+        for candidate in existing_agents:
+            canonical_persona = canonical_runtime_persona_for_agent(candidate)
+            if canonical_persona in {"main", "bob"}:
+                if candidate.is_board_lead:
+                    candidate.is_board_lead = False
+                    candidate.updated_at = utcnow()
+                    self.session.add(candidate)
+                    await self.session.commit()
+                    await self.session.refresh(candidate)
+                return candidate, False
 
-        merged_identity_profile: dict[str, Any] = {
-            "role": "Board Lead",
-            "communication_style": "direct, concise, practical",
-            "emoji": ":gear:",
-        }
-        if config_options.identity_profile:
-            merged_identity_profile.update(
-                {
-                    key: value.strip()
-                    for key, value in config_options.identity_profile.items()
-                    if value.strip()
-                },
-            )
-
-        agent = Agent(
-            name=config_options.agent_name or self.lead_agent_name(board),
-            board_id=board.id,
-            gateway_id=request.gateway.id,
-            is_board_lead=True,
-            heartbeat_config=DEFAULT_HEARTBEAT_CONFIG.copy(),
-            identity_profile=merged_identity_profile,
-            openclaw_session_id=self.lead_session_key(board),
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=(
+                "Board lead runtimes are disabled in the canonical two-agent architecture. "
+                "Assign the board to the canonical OPI/main or BOB agent instead."
+            ),
         )
-        raw_token = mint_agent_token(agent)
-        await self.add_commit_refresh(agent)
-
-        # Strict behavior: provisioning errors surface to the caller. The DB row exists
-        # so a later retry can succeed with the same deterministic identity/session key.
-        agent = await AgentLifecycleOrchestrator(self.session).run_lifecycle(
-            gateway=request.gateway,
-            agent_id=agent.id,
-            board=board,
-            user=request.user,
-            action=config_options.action,
-            auth_token=raw_token,
-            force_bootstrap=False,
-            reset_session=False,
-            wake=True,
-            deliver_wakeup=True,
-            wakeup_verb=None,
-            clear_confirm_token=False,
-            raise_gateway_errors=True,
-        )
-        return agent, True
 
     async def sync_gateway_templates(
         self,
@@ -779,7 +725,7 @@ class AgentLifecycleService(OpenClawDBService):
         """Resolve the gateway session key for an agent.
 
         Notes:
-        - For board-scoped agents, default to a UUID-based key to avoid name collisions.
+        - Board-scoped agents must map to a canonical two-agent session.
         """
 
         existing = (agent.openclaw_session_id or "").strip()
@@ -791,9 +737,14 @@ class AgentLifecycleService(OpenClawDBService):
                 status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
                 detail="Gateway main agent session key is required",
             )
-        if agent.is_board_lead:
-            return board_lead_session_key(agent.board_id)
-        return board_agent_session_key(agent.id)
+        canonical_persona = canonical_runtime_persona_for_agent(agent)
+        canonical_session_key = canonical_session_key_for_persona(canonical_persona)
+        if canonical_session_key:
+            return canonical_session_key
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+            detail="Only canonical OPI/main and BOB agents are supported in the two-agent runtime.",
+        )
 
     @classmethod
     def workspace_path(cls, agent_name: str, workspace_root: str | None) -> str:
@@ -844,9 +795,18 @@ class AgentLifecycleService(OpenClawDBService):
 
     @classmethod
     def to_agent_read(cls, agent: Agent) -> AgentRead:
+        runtime_identity = classify_runtime_identity(agent)
         model = AgentRead.model_validate(agent, from_attributes=True)
         return model.model_copy(
-            update={"is_gateway_main": cls.is_gateway_main(agent)},
+            update={
+                "is_gateway_main": cls.is_gateway_main(agent),
+                "logical_name": runtime_identity.logical_name,
+                "runtime_mode": runtime_identity.runtime_mode,
+                "canonical_persona": runtime_identity.canonical_persona,
+                "canonical_runtime_agent_id": runtime_identity.canonical_runtime_agent_id,
+                "canonical_session_key": runtime_identity.canonical_session_key,
+                "is_canonical_candidate": runtime_identity.is_canonical_candidate,
+            },
         )
 
     @staticmethod
@@ -1029,31 +989,46 @@ class AgentLifecycleService(OpenClawDBService):
         board: Board,
         gateway: Gateway,
         requested_name: str,
+        identity_profile: dict[str, Any] | None = None,
+        exclude_agent_id: UUID | None = None,
     ) -> None:
         if not requested_name:
             return
 
-        existing = (
-            await self.session.exec(
-                select(Agent)
-                .where(Agent.board_id == board.id)
-                .where(col(Agent.name).ilike(requested_name)),
+        canonical_persona = canonical_persona_for_request(requested_name, identity_profile)
+        if canonical_persona not in {"main", "bob"}:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
+                detail="Only canonical OPI/main and BOB agents are supported in the two-agent runtime.",
             )
-        ).first()
+
+        existing_statement = (
+            select(Agent)
+            .where(Agent.board_id == board.id)
+            .where(col(Agent.name).ilike(requested_name))
+        )
+        if exclude_agent_id is not None:
+            existing_statement = existing_statement.where(col(Agent.id) != exclude_agent_id)
+
+        existing = (await self.session.exec(existing_statement)).first()
         if existing:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
                 detail="An agent with this name already exists on this board.",
             )
 
-        existing_gateway = (
-            await self.session.exec(
-                select(Agent)
-                .join(Board, col(Agent.board_id) == col(Board.id))
-                .where(col(Board.gateway_id) == gateway.id)
-                .where(col(Agent.name).ilike(requested_name)),
+        existing_gateway_statement = (
+            select(Agent)
+            .join(Board, col(Agent.board_id) == col(Board.id))
+            .where(col(Board.gateway_id) == gateway.id)
+            .where(col(Agent.name).ilike(requested_name))
+        )
+        if exclude_agent_id is not None:
+            existing_gateway_statement = existing_gateway_statement.where(
+                col(Agent.id) != exclude_agent_id,
             )
-        ).first()
+
+        existing_gateway = (await self.session.exec(existing_gateway_statement)).first()
         if existing_gateway:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
@@ -1204,6 +1179,38 @@ class AgentLifecycleService(OpenClawDBService):
                 write=True,
             )
             OpenClawAuthorizationPolicy.require_board_write_access(allowed=allowed)
+
+    async def ensure_update_name_remains_unique(
+        self,
+        *,
+        agent: Agent,
+        updates: dict[str, Any],
+        make_main: bool | None,
+    ) -> None:
+        if make_main is True:
+            return
+
+        target_board_id = updates.get("board_id", agent.board_id)
+        if target_board_id is None:
+            return
+
+        requested_name = str(updates.get("name", agent.name) or "").strip()
+        if not requested_name:
+            return
+
+        identity_profile_raw = updates.get("identity_profile", agent.identity_profile)
+        identity_profile = (
+            identity_profile_raw if isinstance(identity_profile_raw, dict) else None
+        )
+        board = await self.require_board(target_board_id)
+        gateway, _client_config = await self.require_gateway(board)
+        await self.ensure_unique_agent_name(
+            board=board,
+            gateway=gateway,
+            requested_name=requested_name,
+            identity_profile=identity_profile,
+            exclude_agent_id=agent.id,
+        )
 
     async def apply_agent_update_mutations(
         self,
@@ -1366,6 +1373,11 @@ class AgentLifecycleService(OpenClawDBService):
             "gateway_id": gateway.id,
             "heartbeat_config": DEFAULT_HEARTBEAT_CONFIG.copy(),
         }
+        await self.ensure_unique_agent_name(
+            board=board,
+            gateway=gateway,
+            requested_name=payload.name,
+        )
         agent, raw_token = await self.persist_new_agent(data=data)
         await self.provision_new_agent(
             agent=agent,
@@ -1568,6 +1580,7 @@ class AgentLifecycleService(OpenClawDBService):
             board=board,
             gateway=gateway,
             requested_name=requested_name,
+            identity_profile=data.get("identity_profile"),
         )
         agent, raw_token = await self.persist_new_agent(data=data)
         await self.provision_new_agent(
@@ -1614,6 +1627,11 @@ class AgentLifecycleService(OpenClawDBService):
         make_main = updates.pop("is_gateway_main", None)
         await self.validate_agent_update_inputs(
             ctx=options.context,
+            updates=updates,
+            make_main=make_main,
+        )
+        await self.ensure_update_name_remains_unique(
+            agent=agent,
             updates=updates,
             make_main=make_main,
         )

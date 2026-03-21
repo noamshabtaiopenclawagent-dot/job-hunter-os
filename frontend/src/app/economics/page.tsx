@@ -11,7 +11,7 @@ type EconData = {
   currentBurnRate: string;
   projectedMonthly: string;
   agents: Array<{ agentId: string; name: string; role: string; dailyTokens: number; cost: number }>;
-  history: Array<{ date: string; Bob: number; Alex: number; Opi: number }>;
+  history: Array<{ date: string; Bob: number; Opi: number }>;
 };
 
 export default function EconomicsPage() {
@@ -46,7 +46,7 @@ export default function EconomicsPage() {
             </div>
             <div>
               <h1 className="text-xl font-bold text-slate-900 tracking-tight leading-tight">Economics & Tokens</h1>
-              <p className="text-xs text-slate-500">Real-time AI compute spend across your swarm.</p>
+              <p className="text-xs text-slate-500">Real-time AI compute spend across the 2-agent runtime.</p>
             </div>
           </div>
 
@@ -93,7 +93,6 @@ export default function EconomicsPage() {
                       />
                       <Legend iconType="circle" wrapperStyle={{fontSize: '12px', paddingTop: '10px'}} />
                       <Bar dataKey="Bob" stackId="a" fill="#3b82f6" radius={[0, 0, 4, 4]} />
-                      <Bar dataKey="Alex" stackId="a" fill="#10b981" />
                       <Bar dataKey="Opi" stackId="a" fill="#f59e0b" radius={[4, 4, 0, 0]} />
                     </BarChart>
                   </ResponsiveContainer>

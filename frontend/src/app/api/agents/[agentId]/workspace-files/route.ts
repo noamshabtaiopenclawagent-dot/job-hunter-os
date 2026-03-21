@@ -19,6 +19,12 @@ const MEMORY_FILES = [
   "ROSTER.md",
 ];
 
+const CANONICAL_WORKSPACES: Record<string, string> = {
+  main: path.join(OPENCLAW_DIR, "workspace"),
+  opi: path.join(OPENCLAW_DIR, "workspace"),
+  bob: path.join(OPENCLAW_DIR, "workspace", "workspace-agents", "bob"),
+};
+
 function readFileIfExists(filePath: string): string | null {
   try {
     if (!fs.existsSync(filePath)) return null;
@@ -36,33 +42,13 @@ export async function GET(
   if (!agentId) {
     return NextResponse.json({ error: "agentId required" }, { status: 400 });
   }
+  const normalizedAgentId = agentId.trim().toLowerCase();
+  const workspaceDir = CANONICAL_WORKSPACES[normalizedAgentId];
+  if (!workspaceDir) {
+    return NextResponse.json({ error: "unknown canonical agent" }, { status: 404 });
+  }
 
   const results: Record<string, string | null> = {};
-
-  // Try main workspace (for the gateway/main agent)
-  const mainWorkspace = path.join(OPENCLAW_DIR, "workspace");
-  // Try sub-agent workspace: workspace-mc-{agentId}
-  const subWorkspace = path.join(
-    OPENCLAW_DIR,
-    `workspace`,
-    `workspace-mc-${agentId}`,
-  );
-  // Also try at the same level as workspace/
-  const siblingWorkspace = path.join(
-    OPENCLAW_DIR,
-    `workspace-mc-${agentId}`,
-  );
-
-  // Pick the workspace that exists
-  let workspaceDir: string;
-  if (fs.existsSync(subWorkspace)) {
-    workspaceDir = subWorkspace;
-  } else if (fs.existsSync(siblingWorkspace)) {
-    workspaceDir = siblingWorkspace;
-  } else {
-    // Fall back to main workspace (for OPI/gateway agent)
-    workspaceDir = mainWorkspace;
-  }
 
   for (const file of MEMORY_FILES) {
     const filePath = path.join(workspaceDir, file);
@@ -73,7 +59,7 @@ export async function GET(
 
   return NextResponse.json({
     ok: true,
-    agentId,
+    agentId: normalizedAgentId,
     workspaceDir,
     files: results,
     hasContent: hasAnyContent,

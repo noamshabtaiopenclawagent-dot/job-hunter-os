@@ -1,9 +1,0 @@
-✓ src/pages/dashboard/RecruiterPipelineReboundPlannerWithStalledStageRecoverySequences.test.tsx (2)
-  ✓ RecruiterPipelineReboundPlannerWithStalledStageRecoverySequences (2)
-    ✓ renders the planner title
-    ✓ renders the description
-
-Test Files  1 passed (1)
-     Tests  2 passed (2)
-  Start at  10:50:00
-  Duration  100ms

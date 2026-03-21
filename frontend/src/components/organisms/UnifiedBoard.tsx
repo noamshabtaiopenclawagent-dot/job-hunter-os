@@ -14,7 +14,6 @@ import { SignInButton, SignedIn, SignedOut, useAuth } from "@/auth/clerk";
 import {
   Activity,
   ArrowUpRight,
-  Loader2,
   MessageSquare,
   Pause,
   Plus,
@@ -23,7 +22,6 @@ import {
   RefreshCcw,
   Settings,
   ShieldCheck,
-  Users,
   X,
 } from "lucide-react";
 
@@ -37,7 +35,7 @@ import {
 } from "@/components/molecules/DependencyBanner";
 import { DashboardShell } from "@/components/templates/DashboardShell";
 import { BoardChatComposer } from "@/components/BoardChatComposer";
-import { TaskCustomFieldsEditor } from "@/components/organisms/TaskCustomFieldsEditor";
+import { TaskCustomFieldsEditor } from "./TaskCustomFieldsEditor";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -60,7 +58,10 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { ApiError } from "@/api/mutator";
-import { streamAgentsApiV1AgentsStreamGet } from "@/api/generated/agents/agents";
+import { 
+  streamAgentsApiV1AgentsStreamGet,
+  useListAgentsApiV1AgentsGet 
+} from "@/api/generated/agents/agents";
 import {
   streamApprovalsApiV1BoardsBoardIdApprovalsStreamGet,
   updateApprovalApiV1BoardsBoardIdApprovalsApprovalIdPatch,
@@ -69,7 +70,6 @@ import { listActivityApiV1ActivityGet } from "@/api/generated/activity/activity"
 import {
   getBoardGroupSnapshotApiV1BoardsBoardIdGroupSnapshotGet,
   getBoardSnapshotApiV1BoardsBoardIdSnapshotGet,
-  useListBoardsApiV1BoardsGet,
 } from "@/api/generated/boards/boards";
 import {
   createBoardMemoryApiV1BoardsBoardIdMemoryPost,
@@ -133,7 +133,7 @@ import {
   formatCustomFieldDetailValue,
   isCustomFieldVisible,
   type TaskCustomFieldValues,
-} from "@/components/organisms/custom-field-utils";
+} from "./custom-field-utils";
 
 type Board = BoardRead;
 
@@ -740,25 +740,11 @@ const LiveFeedCard = memo(function LiveFeedCard({
 
 LiveFeedCard.displayName = "LiveFeedCard";
 
-export default function CommandBoardPage() {
+export function UnifiedBoard({ boardId }: { boardId: string }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { isSignedIn, isLoaded } = useAuth();
-
-  const { data: boardsData, isLoading: isLoadingBoards } = useListBoardsApiV1BoardsGet(
-    { limit: 1 },
-    {
-      query: {
-        enabled: !!isSignedIn,
-        refetchInterval: 60000,
-      },
-    }
-  );
-
-  const boards = (boardsData?.data as any)?.items || [];
-  const boardId = boards[0]?.id;
-
+  const { isSignedIn } = useAuth();
   const isPageActive = usePageActive();
   const taskIdFromUrl = searchParams.get("taskId");
   const commentIdFromUrl = searchParams.get("commentId");
@@ -800,6 +786,10 @@ export default function CommandBoardPage() {
       refetchOnMount: "always",
     },
   });
+  const globalAgentsQuery = useListAgentsApiV1AgentsGet(
+    { limit: 100 },
+    { query: { enabled: Boolean(isSignedIn) } }
+  );
   const tagsQuery = useListTagsApiV1TagsGet<
     listTagsApiV1TagsGetResponse,
     ApiError
@@ -861,6 +851,22 @@ export default function CommandBoardPage() {
   const [board, setBoard] = useState<Board | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [agents, setAgents] = useState<Agent[]>([]);
+
+  useEffect(() => {
+    if (globalAgentsQuery.data?.data) {
+      setAgents((prev) => {
+        const payload = globalAgentsQuery.data.data as any;
+        const newAgents = payload.items?.map(normalizeAgent) ?? [];
+        const combined = [...prev];
+        for (const na of newAgents) {
+          if (!combined.some(ca => ca.id === na.id)) {
+            combined.push(na);
+          }
+        }
+        return combined;
+      });
+    }
+  }, [globalAgentsQuery.data]);
   const [groupSnapshot, setGroupSnapshot] = useState<BoardGroupSnapshot | null>(
     null,
   );
@@ -2144,7 +2150,6 @@ export default function CommandBoardPage() {
   const assigneeById = useMemo(() => {
     const map = new Map<string, string>();
     agents
-      .filter((agent) => !boardId || agent.board_id === boardId)
       .forEach((agent) => {
         map.set(agent.id, agent.name);
       });
@@ -3093,50 +3098,13 @@ export default function CommandBoardPage() {
   );
 
   return (
-    <DashboardShell>
-      <SignedOut>
-        <div className="flex h-full flex-col items-center justify-center gap-4 rounded-2xl surface-panel p-10 text-center">
-          <p className="text-sm text-muted">Sign in to view boards.</p>
-          <SignInButton
-            mode="modal"
-            forceRedirectUrl="/boards"
-            signUpForceRedirectUrl="/boards"
-          >
-            <Button>Sign in</Button>
-          </SignInButton>
-        </div>
-      </SignedOut>
-      <SignedIn>
-        {isLoadingBoards || !isLoaded ? (
-          <div className="flex h-[80vh] items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-slate-300" />
-          </div>
-        ) : boards.length === 0 ? (
-          <div className="flex h-[80vh] flex-col items-center justify-center space-y-4 px-4 text-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-rose-100 bg-rose-50 text-rose-500 shadow-sm">
-              <Users className="h-8 w-8" />
-            </div>
-            <h2 className="text-xl font-bold text-slate-900">No Operation Context Found</h2>
-            <p className="max-w-md text-sm text-slate-500">
-              The Command Board requires at least one active Agent configuration to anchor tasks. 
-              Please navigate to the <strong className="text-slate-700">Agent Directory</strong> and deploy a new agent before managing tasks here.
-            </p>
-            <a 
-              href="/agents/new" 
-              className="mt-2 inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-indigo-700 transition"
-            >
-              Configure Agent
-            </a>
-          </div>
-        ) : (
-          <>
-            <DashboardSidebar />
-            <main
-          className={cn(
-            "flex-1 bg-gradient-to-br from-slate-50 to-slate-100",
-            isSidePanelOpen ? "overflow-hidden" : "overflow-y-auto",
-          )}
-        >
+    <div className="flex-1 w-full min-w-0 flex flex-col relative h-full">
+      <main
+        className={cn(
+          "flex-1 bg-gradient-to-br from-slate-50 to-slate-100 flex flex-col",
+          isSidePanelOpen ? "overflow-hidden" : "overflow-y-auto",
+        )}
+      >
           <div className="sticky top-0 z-30 border-b border-slate-200 bg-white shadow-sm">
             <div className="px-8 py-6">
               <div className="flex flex-wrap items-center justify-between gap-4">
@@ -3359,217 +3327,6 @@ export default function CommandBoardPage() {
                         </div>
                       ) : null}
 
-                      {groupSnapshot?.group ? (
-                        <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
-                          <div className="border-b border-slate-200 px-5 py-4">
-                            <div className="flex flex-wrap items-center justify-between gap-3">
-                              <div className="min-w-0">
-                                <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                                  Related boards
-                                </p>
-                                <p className="mt-1 truncate text-sm font-semibold text-slate-900">
-                                  {groupSnapshot.group.name}
-                                </p>
-                                {groupSnapshot.group.description ? (
-                                  <p className="mt-1 max-w-3xl text-xs text-slate-500 line-clamp-2">
-                                    {groupSnapshot.group.description}
-                                  </p>
-                                ) : null}
-                              </div>
-                              <div className="flex flex-wrap items-center gap-2">
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() =>
-                                    router.push(
-                                      `/board-groups/${groupSnapshot.group?.id}`,
-                                    )
-                                  }
-                                  disabled={!groupSnapshot.group?.id}
-                                >
-                                  View group
-                                </Button>
-                                {isOrgAdmin ? (
-                                  <Button
-                                    variant="ghost"
-                                    size="sm"
-                                    onClick={() =>
-                                      router.push(`/boards/${boardId}/edit`)
-                                    }
-                                    disabled={!boardId}
-                                  >
-                                    Settings
-                                  </Button>
-                                ) : null}
-                              </div>
-                            </div>
-                          </div>
-                          <div className="px-5 py-4">
-                            {groupSnapshot.boards &&
-                            groupSnapshot.boards.length ? (
-                              <div className="grid gap-4 md:grid-cols-2">
-                                {groupSnapshot.boards.map((item) => (
-                                  <div
-                                    key={item.board.id}
-                                    className="rounded-xl border border-slate-200 bg-slate-50/40 p-4"
-                                  >
-                                    <button
-                                      type="button"
-                                      className="group flex w-full items-start justify-between gap-3 text-left"
-                                      onClick={() =>
-                                        router.push(`/boards/${item.board.id}`)
-                                      }
-                                    >
-                                      <div className="min-w-0">
-                                        <p className="truncate text-sm font-semibold text-slate-900 group-hover:text-blue-600">
-                                          {item.board.name}
-                                        </p>
-                                        <p className="mt-1 text-xs text-slate-500">
-                                          Updated{" "}
-                                          {formatTaskTimestamp(
-                                            item.board.updated_at,
-                                          )}
-                                        </p>
-                                      </div>
-                                      <ArrowUpRight className="mt-0.5 h-4 w-4 flex-shrink-0 text-slate-400 group-hover:text-blue-600" />
-                                    </button>
-
-                                    <div className="mt-3 flex flex-wrap gap-2 text-xs">
-                                      <span className="rounded-full border border-slate-200 bg-white px-2 py-0.5 text-slate-700">
-                                        Inbox {item.task_counts?.inbox ?? 0}
-                                      </span>
-                                      <span className="rounded-full border border-slate-200 bg-white px-2 py-0.5 text-slate-700">
-                                        In progress{" "}
-                                        {item.task_counts?.in_progress ?? 0}
-                                      </span>
-                                      <span className="rounded-full border border-slate-200 bg-white px-2 py-0.5 text-slate-700">
-                                        Review {item.task_counts?.review ?? 0}
-                                      </span>
-                                    </div>
-
-                                    {item.tasks && item.tasks.length ? (
-                                      <ul className="mt-3 space-y-2">
-                                        {item.tasks.slice(0, 3).map((task) => (
-                                          <li
-                                            key={task.id}
-                                            className="rounded-lg border border-slate-200 bg-white p-3"
-                                          >
-                                            <div className="flex flex-wrap items-center justify-between gap-2">
-                                              <div className="flex min-w-0 items-center gap-2">
-                                                <span
-                                                  className={cn(
-                                                    "rounded-full px-2 py-1 text-[10px] font-semibold uppercase tracking-wide",
-                                                    statusBadgeClass(
-                                                      task.status,
-                                                    ),
-                                                  )}
-                                                >
-                                                  {task.status.replace(
-                                                    /_/g,
-                                                    " ",
-                                                  )}
-                                                </span>
-                                                <span
-                                                  className={cn(
-                                                    "rounded-full px-2 py-1 text-[10px] font-semibold uppercase tracking-wide",
-                                                    priorityBadgeClass(
-                                                      task.priority,
-                                                    ),
-                                                  )}
-                                                >
-                                                  {task.priority}
-                                                </span>
-                                                <p className="truncate text-sm font-medium text-slate-900">
-                                                  {task.title}
-                                                </p>
-                                              </div>
-                                              <p className="text-xs text-slate-500">
-                                                {formatTaskTimestamp(
-                                                  task.updated_at,
-                                                )}
-                                              </p>
-                                            </div>
-                                            <p className="mt-2 truncate text-xs text-slate-600">
-                                              Assignee:{" "}
-                                              <span className="font-medium text-slate-900">
-                                                {task.assignee ?? "Unassigned"}
-                                              </span>
-                                            </p>
-                                            {task.tags?.length ? (
-                                              <div className="mt-2 flex flex-wrap gap-1.5">
-                                                {task.tags
-                                                  .slice(0, 3)
-                                                  .map((tag) => (
-                                                    <span
-                                                      key={tag.id}
-                                                      className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[10px] font-semibold text-slate-700"
-                                                    >
-                                                      <span
-                                                        className="h-1.5 w-1.5 rounded-full"
-                                                        style={{
-                                                          backgroundColor: `#${normalizeTagColor(
-                                                            tag.color,
-                                                          )}`,
-                                                        }}
-                                                      />
-                                                      {tag.name}
-                                                    </span>
-                                                  ))}
-                                              </div>
-                                            ) : null}
-                                          </li>
-                                        ))}
-                                        {item.tasks.length > 3 ? (
-                                          <li className="text-xs text-slate-500">
-                                            +{item.tasks.length - 3} more…
-                                          </li>
-                                        ) : null}
-                                      </ul>
-                                    ) : (
-                                      <p className="mt-3 text-sm text-slate-500">
-                                        No tasks in this snapshot.
-                                      </p>
-                                    )}
-                                  </div>
-                                ))}
-                              </div>
-                            ) : (
-                              <p className="text-sm text-slate-500">
-                                No other boards in this group yet.
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      ) : groupSnapshot ? (
-                        <div className="rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-600 shadow-sm">
-                          <p className="font-semibold text-slate-900">
-                            No board group configured
-                          </p>
-                          <p className="mt-1 text-sm text-slate-600">
-                            Assign this board to a group to give agents
-                            visibility into related work.
-                          </p>
-                          <div className="mt-3 flex flex-wrap gap-2">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() =>
-                                router.push(`/boards/${boardId}/edit`)
-                              }
-                              disabled={!boardId}
-                            >
-                              Open settings
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => router.push("/board-groups")}
-                            >
-                              View groups
-                            </Button>
-                          </div>
-                        </div>
-                      ) : null}
                     </>
                   ) : null}
 
@@ -3589,7 +3346,7 @@ export default function CommandBoardPage() {
                               All tasks
                             </p>
                             <p className="text-xs text-slate-500">
-                              {tasks.length} tasks in this board
+                              {tasks.length} task{tasks.length === 1 ? "" : "s"} total
                             </p>
                           </div>
                           <Button
@@ -3757,7 +3514,7 @@ export default function CommandBoardPage() {
               {selectedTask?.description ? (
                 <div className="prose prose-sm max-w-none text-slate-700">
                   <Markdown
-                    content={selectedTask.description}
+                    content={selectedTask?.description ?? ""}
                     variant="description"
                   />
                 </div>
@@ -4493,7 +4250,7 @@ export default function CommandBoardPage() {
             </Button>
             <Button
               onClick={handleDeleteTask}
-              disabled={isDeletingTask || !canWrite}
+              disabled={isDeletingTask || !selectedTask?.id}
               className="bg-rose-600 text-white hover:bg-rose-700"
             >
               {isDeletingTask ? "Deleting…" : "Delete task"}
@@ -4758,9 +4515,6 @@ export default function CommandBoardPage() {
       ) : null}
 
       {/* onboarding moved to board settings */}
-          </>
-        )}
-      </SignedIn>
-    </DashboardShell>
+    </div>
   );
 }

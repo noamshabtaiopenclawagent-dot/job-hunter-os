@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { getApiBaseUrl } from "@/lib/api-base";
 
-const LOCAL_AUTH_TOKEN_MIN_LENGTH = 50;
+const LOCAL_AUTH_TOKEN_MIN_LENGTH = 32;
 
 async function validateLocalToken(token: string): Promise<string | null> {
   let baseUrl: string;

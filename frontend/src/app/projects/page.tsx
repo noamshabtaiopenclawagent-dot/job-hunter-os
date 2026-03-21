@@ -12,8 +12,8 @@ import { SignedOutPanel } from "@/components/auth/SignedOutPanel";
 
 const MC_API = "http://127.0.0.1:8000/api/v1";
 const GITHUB_REPOS = [
-  { name: "Job Hunter OS", repo: "noamshabtaiopenclawagent-dot/job-hunter-os", board: "Job Hunter OS", owner: "BOB", qa: "ALEX" },
-  { name: "Mission Control", repo: "noamshabtaiopenclawagent-dot/openclaw-mission-control", board: "Mission Control", owner: "DASH", qa: "ALEX" },
+  { name: "Job Hunter OS", repo: "noamshabtaiopenclawagent-dot/job-hunter-os", board: "Job Hunter OS", owner: "BOB", reviewer: "OPI" },
+  { name: "Mission Control", repo: "noamshabtaiopenclawagent-dot/openclaw-mission-control", board: "Autonomous Mission Control", owner: "OPI", reviewer: "OPI" },
 ];
 
 type CommitInfo = { sha: string; message: string; author: string; date: string; url: string };
@@ -26,7 +26,7 @@ type Project = {
   githubUrl: string;
   board: string;
   owner: string;
-  qa: string;
+  reviewer: string;
   counts: BoardCounts;
   latestCommit: CommitInfo | null;
   commitsWeek: number;
@@ -77,7 +77,7 @@ async function fetchBoardCounts(boardName: string): Promise<BoardCounts> {
     const boards: { id: string; name: string }[] = bd.items ?? bd;
     const board = boards.find((b) => b.name === boardName);
     if (!board) return { inbox: 0, in_progress: 0, review: 0, done: 0, total: 0 };
-    const tr = await fetch(`${MC_API}/boards/${board.id}/tasks?limit=500`, { cache: "no-store" });
+    const tr = await fetch(`${MC_API}/boards/${board.id}/tasks?limit=200`, { cache: "no-store" });
     const td = await tr.json();
     const tasks: { status: string }[] = td.items ?? td;
     const counts = tasks.reduce(
@@ -201,7 +201,7 @@ export default function ProjectsPage() {
                         </div>
                         <div className="text-xs text-slate-400 mt-0.5">
                           Owner: <strong className="text-slate-600">{p.owner}</strong>
-                          {" · "}QA: <strong className="text-slate-600">{p.qa}</strong>
+                          {" · "}Review: <strong className="text-slate-600">{p.reviewer}</strong>
                         </div>
                       </div>
                     </div>

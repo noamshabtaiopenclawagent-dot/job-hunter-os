@@ -236,6 +236,36 @@ class AgentRead(AgentBase):
         default=False,
         description="Whether this agent is the primary gateway agent.",
     )
+    logical_name: str = Field(
+        default="unknown",
+        description="Normalized logical handle used for duplicate-runtime detection and migration planning.",
+    )
+    runtime_mode: str = Field(
+        default="unknown",
+        description=(
+            "Runtime classification. Typical values: `gateway_main`, "
+            "`board_lead`, `mission_control_managed`, `canonical_openclaw`, `unknown`."
+        ),
+    )
+    canonical_persona: str | None = Field(
+        default=None,
+        description="Canonical named persona, when this runtime appears to mirror one.",
+    )
+    canonical_runtime_agent_id: str | None = Field(
+        default=None,
+        description="Expected canonical OpenClaw runtime agent id for the mirrored persona.",
+    )
+    canonical_session_key: str | None = Field(
+        default=None,
+        description="Expected canonical OpenClaw session key for the mirrored persona.",
+    )
+    is_canonical_candidate: bool = Field(
+        default=False,
+        description=(
+            "Whether this runtime looks like a Mission Control-managed duplicate of a named "
+            "OpenClaw persona."
+        ),
+    )
     openclaw_session_id: str | None = Field(
         default=None,
         description="Optional openclaw session token.",

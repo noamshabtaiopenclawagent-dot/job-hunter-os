@@ -65,7 +65,7 @@ export function SwarmActivityFeed() {
       {/* Header */}
       <div className="flex items-center gap-2 border-b border-slate-100 px-4 py-3">
         <Zap className="h-4 w-4 text-violet-500" />
-        <span className="font-semibold text-sm text-slate-800">Swarm Activity</span>
+        <span className="font-semibold text-sm text-slate-800">Runtime Activity</span>
         <span className="ml-auto text-[10px] text-slate-400 flex items-center gap-1">
           <span className="relative flex h-1.5 w-1.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-violet-400 opacity-75" />

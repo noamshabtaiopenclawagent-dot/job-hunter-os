@@ -35,6 +35,7 @@ class _AgentStub:
     heartbeat_config: dict | None = None
     is_board_lead: bool = False
     id: UUID = field(default_factory=uuid4)
+    board_id: UUID | None = None
     identity_profile: dict | None = None
     identity_template: str | None = None
     soul_template: str | None = None
@@ -54,6 +55,59 @@ def test_workspace_path_preserves_tilde_in_workspace_root():
     # filesystem path since that behavior depends on the host environment.
     agent = _AgentStub(name="Alice", openclaw_session_id="agent:alice:main")
     assert agent_provisioning._workspace_path(agent, "~/.openclaw") == "~/.openclaw/workspace-alice"
+
+
+def test_canonical_runtime_workspace_path_uses_workspace_agents_folder():
+    agent = _AgentStub(
+        name="BOB",
+        board_id=uuid4(),
+        identity_profile={
+            "canonical_runtime_enabled": "true",
+            "canonical_runtime_agent_id": "bob",
+        },
+    )
+
+    assert (
+        agent_provisioning._workspace_path(agent, "/tmp/openclaw")
+        == "/tmp/openclaw/workspace-agents/bob"
+    )
+
+
+def test_canonical_runtime_session_key_uses_named_persona_key():
+    agent = _AgentStub(
+        name="BOB",
+        board_id=uuid4(),
+        identity_profile={
+            "canonical_runtime_enabled": "true",
+            "canonical_runtime_agent_id": "bob",
+        },
+    )
+
+    assert agent_provisioning._session_key(agent) == "agent:bob:main"
+
+
+def test_board_agent_manager_uses_canonical_persona_as_runtime_agent_id():
+    gateway = _GatewayStub(
+        id=uuid4(),
+        name="Acme",
+        url="ws://gateway.example/ws",
+        token=None,
+        workspace_root="/tmp/openclaw",
+    )
+    manager = agent_provisioning.BoardAgentLifecycleManager(
+        gateway,  # type: ignore[arg-type]
+        SimpleNamespace(),
+    )
+    agent = _AgentStub(
+        name="BOB",
+        board_id=uuid4(),
+        identity_profile={
+            "canonical_runtime_enabled": "true",
+            "canonical_runtime_agent_id": "bob",
+        },
+    )
+
+    assert manager._agent_id(agent) == "bob"
 
 
 def test_wakeup_text_includes_bootstrap_before_agents():
@@ -189,6 +243,104 @@ async def test_provision_main_agent_uses_dedicated_openclaw_agent_id(monkeypatch
     expected_agent_id = GatewayAgentIdentity.openclaw_agent_id_for_id(gateway_id)
     assert captured["patched_agent_id"] == expected_agent_id
     assert captured["files_index_agent_id"] == expected_agent_id
+
+
+@pytest.mark.asyncio
+async def test_canonical_runtime_provision_skips_workspace_file_sync(monkeypatch):
+    class _ControlPlaneStub:
+        def __init__(self) -> None:
+            self.upserted: list[agent_provisioning.GatewayAgentRegistration] = []
+            self.list_calls = 0
+
+        async def ensure_agent_session(self, session_key, *, label=None):
+            _ = (session_key, label)
+            return None
+
+        async def reset_agent_session(self, session_key):
+            _ = session_key
+            return None
+
+        async def delete_agent_session(self, session_key):
+            _ = session_key
+            return None
+
+        async def upsert_agent(self, registration):
+            self.upserted.append(registration)
+
+        async def delete_agent(self, agent_id, *, delete_files=True):
+            _ = (agent_id, delete_files)
+            return None
+
+        async def list_agent_files(self, agent_id):
+            _ = agent_id
+            self.list_calls += 1
+            return {}
+
+        async def get_agent_file_payload(self, *, agent_id, name):
+            _ = (agent_id, name)
+            return {}
+
+        async def set_agent_file(self, *, agent_id, name, content):
+            raise AssertionError("canonical cutover should not overwrite canonical workspace files")
+
+        async def delete_agent_file(self, *, agent_id, name):
+            raise AssertionError("canonical cutover should not delete canonical workspace files")
+
+        async def patch_agent_heartbeats(self, entries):
+            _ = entries
+            return None
+
+    gateway = _GatewayStub(
+        id=uuid4(),
+        name="Acme",
+        url="ws://gateway.example/ws",
+        token=None,
+        workspace_root="/tmp/openclaw",
+    )
+    control_plane = _ControlPlaneStub()
+    manager = agent_provisioning.BoardAgentLifecycleManager(  # type: ignore[arg-type]
+        gateway,
+        control_plane,
+    )
+    agent = _AgentStub(
+        name="BOB",
+        board_id=uuid4(),
+        identity_profile={
+            "canonical_runtime_enabled": "true",
+            "canonical_runtime_agent_id": "bob",
+        },
+    )
+    board = SimpleNamespace(
+        id=uuid4(),
+        name="Job Hunter",
+        board_type="product",
+        objective="Ship",
+        success_metrics={},
+        target_date=None,
+        goal_confirmed=True,
+        require_approval_for_done=False,
+        require_review_before_done=False,
+        comment_required_for_review=False,
+        block_status_changes_with_pending_approval=False,
+        only_lead_can_change_status=False,
+        max_agents=5,
+    )
+
+    monkeypatch.setattr(agent_provisioning, "_resolve_role_soul_markdown", lambda _role: ("", ""))
+
+    await manager.provision(
+        agent=agent,  # type: ignore[arg-type]
+        board=board,  # type: ignore[arg-type]
+        session_key="agent:bob:main",
+        auth_token="secret",
+        user=None,
+        options=agent_provisioning.ProvisionOptions(action="update"),
+    )
+
+    assert len(control_plane.upserted) == 1
+    assert control_plane.upserted[0].agent_id == "bob"
+    assert control_plane.upserted[0].workspace_path == "/tmp/openclaw/workspace-agents/bob"
+    assert control_plane.list_calls == 0
 
 
 @pytest.mark.asyncio
@@ -764,3 +916,50 @@ async def test_delete_agent_lifecycle_raises_on_non_missing_agent_error(monkeypa
             delete_files=True,
             delete_session=True,
         )
+
+
+@pytest.mark.asyncio
+async def test_delete_agent_lifecycle_skips_runtime_deletion_for_canonical_alias(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class _ControlPlaneStub:
+        def __init__(self) -> None:
+            self.delete_agent_calls = 0
+            self.delete_session_calls = 0
+
+        async def delete_agent(self, agent_id: str, *, delete_files: bool = True) -> None:
+            _ = (agent_id, delete_files)
+            self.delete_agent_calls += 1
+
+        async def delete_agent_session(self, session_key: str) -> None:
+            _ = session_key
+            self.delete_session_calls += 1
+
+    gateway = _GatewayStub(
+        id=uuid4(),
+        name="Acme",
+        url="ws://gateway.example/ws",
+        token=None,
+        workspace_root="/tmp/openclaw",
+    )
+    agent = _AgentStub(
+        name="BOB",
+        board_id=uuid4(),
+        identity_profile={
+            "canonical_runtime_enabled": "true",
+            "canonical_runtime_agent_id": "bob",
+        },
+    )
+    control_plane = _ControlPlaneStub()
+    monkeypatch.setattr(agent_provisioning, "_control_plane_for_gateway", lambda _g: control_plane)
+
+    workspace_path = await agent_provisioning.OpenClawGatewayProvisioner().delete_agent_lifecycle(
+        agent=agent,  # type: ignore[arg-type]
+        gateway=gateway,  # type: ignore[arg-type]
+        delete_files=True,
+        delete_session=True,
+    )
+
+    assert workspace_path == "/tmp/openclaw/workspace-agents/bob"
+    assert control_plane.delete_agent_calls == 0
+    assert control_plane.delete_session_calls == 0

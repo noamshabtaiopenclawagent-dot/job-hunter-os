@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:  # pragma: no cover
     from app.models.agents import Agent
 
-# Mention tokens are single, space-free words (e.g. "@alex", "@lead").
+# Mention tokens are single, space-free words (e.g. "@bob", "@lead").
 MENTION_PATTERN = re.compile(r"@([A-Za-z][\w-]{0,31})")
 
 

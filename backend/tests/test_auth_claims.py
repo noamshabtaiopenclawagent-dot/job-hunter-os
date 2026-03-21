@@ -59,10 +59,10 @@ def test_extract_claim_email_falls_back_to_first_address() -> None:
 
 def test_extract_claim_name_from_parts() -> None:
     claims: dict[str, object] = {
-        "given_name": "Alex",
-        "family_name": "Morgan",
+        "given_name": "Opi",
+        "family_name": "Agent",
     }
-    assert auth._extract_claim_name(claims) == "Alex Morgan"
+    assert auth._extract_claim_name(claims) == "Opi Agent"
 
 
 def test_extract_clerk_profile_prefers_primary_email() -> None:

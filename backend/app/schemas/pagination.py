@@ -22,7 +22,7 @@ else:
     DefaultLimitOffsetPage = CustomizedPage[
         LimitOffsetPage[T],
         UseParamsFields(
-            limit=Query(200, ge=1, le=200),
+            limit=Query(200, ge=1, le=1000),
             offset=Query(0, ge=0),
         ),
     ]

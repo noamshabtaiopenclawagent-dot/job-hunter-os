@@ -36,6 +36,7 @@ type TaskBoardProps = {
   tasks: Task[];
   onTaskSelect?: (task: Task) => void;
   onTaskMove?: (taskId: string, status: TaskStatus) => void | Promise<void>;
+  onTaskApprove?: (taskId: string, decision: "approved" | "rejected") => void | Promise<void>;
   readOnly?: boolean;
 };
 
@@ -128,6 +129,7 @@ export const TaskBoard = memo(function TaskBoard({
   tasks,
   onTaskSelect,
   onTaskMove,
+  onTaskApprove,
   readOnly = false,
 }: TaskBoardProps) {
   const boardRef = useRef<HTMLDivElement | null>(null);
@@ -490,35 +492,40 @@ export const TaskBoard = memo(function TaskBoard({
             </div>
             <div className="rounded-b-xl border border-t-0 border-slate-200 bg-white p-3">
               <div className="space-y-3">
-                {filteredTasks.map((task) => {
-                  const dueState = resolveDueState(task);
-                  const isStuck = task.updated_at ? (Date.now() - new Date(task.updated_at).getTime() > 24 * 60 * 60 * 1000) : false;
-                  return (
-                    <div key={task.id} ref={setCardRef(task.id)}>
-                      <TaskCard
-                        title={task.title}
-                        status={task.status}
-                        priority={task.priority}
-                        assignee={task.assignee ?? undefined}
-                        due={dueState.due}
-                        isOverdue={dueState.isOverdue}
-                        approvalsPendingCount={task.approvals_pending_count}
-                        tags={task.tags}
-                        isBlocked={task.is_blocked}
-                        blockedByCount={task.blocked_by_task_ids?.length ?? 0}
-                        isStuck={isStuck}
-                        description={task.description}
-                        onClick={() => onTaskSelect?.(task)}
-                        draggable={!readOnly && !task.is_blocked}
-                        isDragging={draggingId === task.id}
-                        onDragStart={
-                          readOnly ? undefined : handleDragStart(task)
-                        }
-                        onDragEnd={readOnly ? undefined : handleDragEnd}
-                      />
+                  {filteredTasks.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center py-10 text-center opacity-40">
+                      <span className="text-2xl mb-2">📭</span>
+                      <p className="text-xs font-semibold text-slate-500">No tasks in this stage</p>
                     </div>
-                  );
-                })}
+                  ) : filteredTasks.map((task) => {
+                    const dueState = resolveDueState(task);
+                    const isStuck = task.updated_at ? (Date.now() - new Date(task.updated_at).getTime() > 24 * 60 * 60 * 1000) : false;
+                    return (
+                      <div key={task.id} ref={setCardRef(task.id)}>
+                        <TaskCard
+                          title={task.title}
+                          status={task.status}
+                          priority={task.priority}
+                          assignee={task.assignee ?? undefined}
+                          due={dueState.due}
+                          isOverdue={dueState.isOverdue}
+                          approvalsPendingCount={task.approvals_pending_count}
+                          tags={task.tags}
+                          isBlocked={task.is_blocked}
+                          blockedByCount={task.blocked_by_task_ids?.length ?? 0}
+                          isStuck={isStuck}
+                          description={task.description}
+                          onClick={() => onTaskSelect?.(task)}
+                          draggable={!readOnly && !task.is_blocked}
+                          isDragging={draggingId === task.id}
+                          onDragStart={readOnly ? undefined : handleDragStart(task)}
+                          onDragEnd={readOnly ? undefined : handleDragEnd}
+                          onApprove={onTaskApprove ? () => onTaskApprove(task.id, "approved") : undefined}
+                          onReject={onTaskApprove ? () => onTaskApprove(task.id, "rejected") : undefined}
+                        />
+                      </div>
+                    );
+                  })}
               </div>
             </div>
           </div>

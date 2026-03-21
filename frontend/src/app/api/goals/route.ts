@@ -8,16 +8,16 @@ const GOALS_FILE = path.join(WORKSPACE_DIR, "COMPANY_GOALS.md");
 const DEFAULT_GOALS = `# Company Goals & OKRs
 _Last updated: ${new Date().toISOString().split("T")[0]}_
 
-## 🎯 Q1 Objective: Autonomous Agent Stability
+## 🎯 Q1 Objective: Lean Two-Agent Reliability
 **Key Results:**
-- [x] KR1: Implement Mission Control Phase 3
-- [ ] KR2: Achieve 0 critical crontab overlaps
-- [ ] KR3: 100% test coverage on Core Health Loop
+- [x] KR1: Run only OPI and Bob as autonomous agents
+- [x] KR2: Keep native OpenClaw cron as the only scheduler plane
+- [ ] KR3: Keep Mission Control, Discord, memory, and backups aligned with live runtime truth
 
-## 🎯 Q2 Objective: Revenue & Growth
+## 🎯 Q2 Objective: Product Delivery
 **Key Results:**
-- [ ] KR1: Launch Agent SaaS Platform
-- [ ] KR2: Onboard 5 beta customers
+- [ ] KR1: Ship the next highest-value Job Hunter OS slice with verification
+- [ ] KR2: Keep nightly backups healthy without reintroducing scheduler sprawl
 `;
 
 export async function GET() {

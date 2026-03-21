@@ -11,7 +11,7 @@ def _agent(name: str, *, is_board_lead: bool = False) -> Agent:
 
 
 def test_extract_mentions_parses_tokens():
-    assert extract_mentions("hi @Alex and @bob-2") == {"alex", "bob-2"}
+    assert extract_mentions("hi @opi and @bob-2") == {"opi", "bob-2"}
 
 
 def test_matches_agent_mention_matches_first_name():

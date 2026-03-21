@@ -249,46 +249,33 @@ function AgentFigure({ c, r, color, state, role }: {
   const roleLower = role.toLowerCase();
 
   const getRoleOverlay = (x: number, y: number, isHead: boolean) => {
-    if (roleLower.includes("security") || roleLower.includes("sentry")) {
+    if (roleLower.includes("ceo") || roleLower.includes("mission control") || roleLower.includes("opi")) {
       return isHead ? (
         <g>
-          <rect x={x-10} y={y-3} width={20} height={3} rx={1} fill="#ef4444" filter="url(#glow)">
-            <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite" />
-          </rect>
-          <animateTransform attributeName="transform" type="rotate" values="-15;15;-15" dur="4s" repeatCount="indefinite" cx={x} cy={y} />
+          <path d={`M ${x-7} ${y-16} L ${x} ${y-24} L ${x+7} ${y-16}`} stroke="#fbbf24" strokeWidth={2} fill="none" opacity={0.7} filter="url(#glow)">
+            <animate attributeName="opacity" values="0.3;1;0.3" dur="3s" repeatCount="indefinite" />
+          </path>
         </g>
       ) : (
         <g>
-           {/* Heavy Shoulder Pads */}
-           <rect x={x-14} y={y-4} width={8} height={6} rx={2} fill="url(#plateGrad)" opacity={0.8} />
-           <rect x={x+6} y={y-4} width={8} height={6} rx={2} fill="url(#plateGrad)" opacity={0.8} />
+          <rect x={x-14} y={y-4} width={8} height={6} rx={2} fill="url(#plateGrad)" opacity={0.6} />
+          <rect x={x+6} y={y-4} width={8} height={6} rx={2} fill="url(#plateGrad)" opacity={0.6} />
         </g>
       );
     }
-    if (roleLower.includes("research") || roleLower.includes("rex")) {
-      return isHead ? (
-        <g transform={`translate(${x+5}, ${y-2})`}>
-          <circle r={5} fill="none" stroke="#22d3ee" strokeWidth={1} filter="url(#glow)">
-             <animate attributeName="r" values="4;6.5;4" dur="3s" repeatCount="indefinite" />
-          </circle>
-          <line x1={0} y1={0} x2={6} y2={-4} stroke="#22d3ee" strokeWidth={0.5} />
-        </g>
-      ) : null;
-    }
-    if (roleLower.includes("dev") || roleLower.includes("builder") || roleLower.includes("bob") || roleLower.includes("qa")) {
+    if (roleLower.includes("dev") || roleLower.includes("builder") || roleLower.includes("bob")) {
       return !isHead ? (
         <g>
           <rect x={x-12} y={y+10} width={24} height={4} fill="#1e293b" rx={1} />
           <path d={`M ${x-8} ${y+10} L ${x-6} ${y+12} L ${x-8} ${y+14}`} stroke="#94a3b8" strokeWidth={1.5} fill="none" />
         </g>
-      ) : null;
-    }
-    if (roleLower.includes("manager") || roleLower.includes("scrum") || roleLower.includes("mico")) {
-      return isHead ? (
-        <path d={`M ${x-7} ${y-16} L ${x} ${y-24} L ${x+7} ${y-16}`} stroke="#fbbf24" strokeWidth={2} fill="none" opacity={0.7} filter="url(#glow)">
-           <animate attributeName="opacity" values="0.3;1;0.3" dur="3s" repeatCount="indefinite" />
-        </path>
-      ) : null;
+      ) : (
+        <g>
+          <rect x={x-10} y={y-3} width={20} height={3} rx={1} fill="#38bdf8" filter="url(#glow)">
+            <animate attributeName="opacity" values="0.35;0.85;0.35" dur="2s" repeatCount="indefinite" />
+          </rect>
+        </g>
+      );
     }
     return null;
   };
@@ -933,7 +920,7 @@ export default function VirtualOfficePage() {
             {/* Telemetry */}
             <div className="bg-slate-900/50 backdrop-blur-md border border-slate-700/50 rounded-2xl p-4 shadow-2xl pointer-events-auto min-w-[210px]">
               <div className="flex items-center justify-between border-b border-slate-700/50 pb-2 mb-3">
-                <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Swarm Telemetry</h3>
+                <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Runtime Telemetry</h3>
                 <Link href="/org-tree" className="text-[9px] font-bold text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1">
                   ORG TREE <span className="text-base">↗</span>
                 </Link>

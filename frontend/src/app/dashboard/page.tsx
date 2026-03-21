@@ -90,7 +90,7 @@ type GatewaySnapshot = GatewayTarget & {
   requestError: string | null;
 };
 
-const DASH = "—";
+const EM_DASH = "—";
 const DASHBOARD_RANGE = "7d";
 const DASHBOARD_RANGE_DAYS = 7;
 const DASHBOARD_RANGE_LABEL = "7 days";
@@ -207,7 +207,7 @@ const sharesSessionIdentity = (left: string[], right: string[]): boolean =>
   left.some((value) => right.includes(value));
 
 const compactNumber = (value: number): string => {
-  if (!Number.isFinite(value)) return DASH;
+  if (!Number.isFinite(value)) return EM_DASH;
   if (Math.abs(value) >= 1_000_000) {
     return `${(value / 1_000_000).toFixed(1)}m`;
   }
@@ -221,10 +221,10 @@ const formatCount = (value: number): string =>
   Number.isFinite(value) ? numberFormatter.format(Math.max(0, Math.round(value))) : "0";
 
 const formatPercent = (value: number): string =>
-  Number.isFinite(value) ? `${value.toFixed(1)}%` : DASH;
+  Number.isFinite(value) ? `${value.toFixed(1)}%` : EM_DASH;
 
 const formatPerDay = (total: number, days: number): string => {
-  if (!Number.isFinite(total) || !Number.isFinite(days) || days <= 0) return DASH;
+  if (!Number.isFinite(total) || !Number.isFinite(days) || days <= 0) return EM_DASH;
   return `${(total / days).toFixed(1)}/day`;
 };
 
@@ -341,7 +341,7 @@ const toSessionSummaries = (
         ? `${compactNumber(usedTokens)}/${compactNumber(maxTokens)} (${usagePct}%)`
         : usedTokens !== null
           ? `${compactNumber(usedTokens)} tokens`
-          : DASH;
+          : EM_DASH;
 
     const subtitleBits = [channel, model].filter(Boolean) as string[];
     const subtitle = subtitleBits.length > 0 ? subtitleBits.join(" · ") : "Session";
@@ -1073,7 +1073,7 @@ export default function DashboardPage() {
                                           <p className="mt-0.5 truncate text-xs text-slate-500">{session.subtitle}</p>
                                         </div>
                                         <div className="min-w-0 max-w-[45%] text-right">
-                                          <p className="truncate text-xs font-medium text-slate-700">{session.usage === DASH ? "Usage unavailable" : session.usage}</p>
+                                          <p className="truncate text-xs font-medium text-slate-700">{session.usage === EM_DASH ? "Usage unavailable" : session.usage}</p>
                                           <p className="text-[11px] text-slate-500">{session.lastSeenAt ? formatRelativeTimestamp(session.lastSeenAt) : "Activity unavailable"}</p>
                                         </div>
                                       </div>

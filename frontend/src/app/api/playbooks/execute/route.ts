@@ -3,24 +3,22 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   try {
     const { playbookId } = await req.json();
-    
-    // Simulate API delay for fan-out task creation
+
     await new Promise(resolve => setTimeout(resolve, 1500));
 
     let createdTasks = [];
-    if (playbookId === "audit") {
+    if (playbookId === "runtime-audit") {
       createdTasks = [
-        { id: "t_sec_1", title: "Run static code analysis", agent: "SENTRY", status: "inbox" },
-        { id: "t_lint_2", title: "Enforce ESLint boundaries", agent: "Bob", status: "inbox" },
-        { id: "t_dep_3", title: "Audit NPM dependencies", agent: "SENTRY", status: "inbox" },
+        { id: "t_rt_1", title: "Review runtime truth against Mission Control", agent: "OPI", status: "inbox" },
+        { id: "t_rt_2", title: "Verify builder board has one clear next task", agent: "Bob", status: "inbox" },
       ];
-    } else if (playbookId === "deploy") {
+    } else if (playbookId === "delivery-review") {
       createdTasks = [
-        { id: "t_dep_1", title: "Compile production build", agent: "Bob", status: "inbox" },
-        { id: "t_dep_2", title: "Run end-to-end smoke tests", agent: "Alex", status: "inbox" },
+        { id: "t_del_1", title: "Implement highest-value Job Hunter OS task", agent: "Bob", status: "inbox" },
+        { id: "t_del_2", title: "Review artifact, impact, and blockers", agent: "OPI", status: "inbox" },
       ];
     } else {
-      createdTasks = [{ id: "t_gen_1", title: "General Playbook execution", agent: "Agent", status: "inbox" }];
+      createdTasks = [{ id: "t_gen_1", title: "Mission Control follow-up", agent: "OPI", status: "inbox" }];
     }
 
     return NextResponse.json({ success: true, tasks: createdTasks }, { status: 200 });

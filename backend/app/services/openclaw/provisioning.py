@@ -47,9 +47,9 @@ from app.services.openclaw.gateway_rpc import (
 )
 from app.services.openclaw.internal.agent_key import agent_key as _agent_key
 from app.services.openclaw.internal.agent_key import slugify
-from app.services.openclaw.internal.session_keys import (
-    board_agent_session_key,
-    board_lead_session_key,
+from app.services.openclaw.runtime_identity import (
+    canonical_runtime_persona_for_agent,
+    canonical_session_key_for_persona,
 )
 from app.services.openclaw.shared import GatewayAgentIdentity
 
@@ -199,6 +199,9 @@ def _workspace_path(agent: Agent, workspace_root: str) -> str:
         raise ValueError(msg)
 
     root = workspace_root.rstrip("/")
+    canonical_persona = canonical_runtime_persona_for_agent(agent)
+    if canonical_persona is not None:
+        return f"{root}/workspace-agents/{canonical_persona}"
 
     # Use agent key derived from session key when possible. This prevents collisions for
     # lead agents (session key includes board id) even if multiple boards share the same
@@ -429,14 +432,13 @@ def _build_main_context(
 
 
 def _session_key(agent: Agent) -> str:
-    """Return the deterministic session key for a board-scoped agent.
-
-    Note: Never derive session keys from a human-provided name; use stable ids instead.
-    """
-
-    if agent.is_board_lead and agent.board_id is not None:
-        return board_lead_session_key(agent.board_id)
-    return board_agent_session_key(agent.id)
+    """Return the canonical session key for a supported board-scoped agent."""
+    canonical_persona = canonical_runtime_persona_for_agent(agent)
+    canonical_session_key = canonical_session_key_for_persona(canonical_persona)
+    if canonical_session_key:
+        return canonical_session_key
+    msg = "Only canonical OPI/main and BOB agents are supported in the two-agent runtime."
+    raise ValueError(msg)
 
 
 def _render_agent_files(
@@ -823,6 +825,10 @@ class BaseAgentLifecycleManager(ABC):
         _ = agent
         return set()
 
+    def _skip_workspace_file_sync(self, agent: Agent) -> bool:
+        _ = agent
+        return False
+
     async def _set_agent_files(
         self,
         *,
@@ -922,6 +928,9 @@ class BaseAgentLifecycleManager(ABC):
             ),
         )
 
+        if self._skip_workspace_file_sync(agent):
+            return
+
         context = self._build_context(
             agent=agent,
             auth_token=auth_token,
@@ -961,6 +970,9 @@ class BoardAgentLifecycleManager(BaseAgentLifecycleManager):
     """Provisioning manager for board-scoped agents."""
 
     def _agent_id(self, agent: Agent) -> str:
+        canonical_persona = canonical_runtime_persona_for_agent(agent)
+        if canonical_persona is not None:
+            return canonical_persona
         return _agent_key(agent)
 
     def _build_context(
@@ -1024,6 +1036,9 @@ class BoardAgentLifecycleManager(BaseAgentLifecycleManager):
                 "APIS.md",
             }
         )
+
+    def _skip_workspace_file_sync(self, agent: Agent) -> bool:
+        return canonical_runtime_persona_for_agent(agent) is not None
 
 
 class GatewayMainAgentLifecycleManager(BaseAgentLifecycleManager):
@@ -1115,7 +1130,7 @@ class OpenClawGatewayProvisioner:
             raise OpenClawGatewayError(msg)
         entries: list[tuple[str, str, dict[str, Any]]] = []
         for agent in agents:
-            agent_id = _agent_key(agent)
+            agent_id = canonical_runtime_persona_for_agent(agent) or _agent_key(agent)
             workspace_path = _workspace_path(agent, gateway.workspace_root)
             heartbeat = _heartbeat_config(agent)
             entries.append((agent_id, workspace_path, heartbeat))
@@ -1232,6 +1247,8 @@ class OpenClawGatewayProvisioner:
 
         if agent.board_id is None:
             agent_gateway_id = GatewayAgentIdentity.openclaw_agent_id(gateway)
+        elif canonical_runtime_persona_for_agent(agent) is not None:
+            return workspace_path
         else:
             agent_gateway_id = _agent_key(agent)
         try:

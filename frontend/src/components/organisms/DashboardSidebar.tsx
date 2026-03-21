@@ -7,24 +7,16 @@ import {
   Activity,
   BarChart3,
   Bot,
-  CheckCircle2,
-  Folder,
-  FolderGit2,
   Building2,
-  GitBranch,
+  FolderGit2,
   Inbox,
-  Layers,
   LayoutGrid,
   Moon,
   Sun,
   Timer,
-  Target,
   Network,
   Coins,
-  PlaySquare,
-  Zap,
   ShieldCheck,
-  History,
 } from "lucide-react";
 
 import { useAuth } from "@/auth/clerk";
@@ -135,80 +127,49 @@ export function DashboardSidebar() {
                 <Inbox className="h-4 w-4" />
                 <span className="flex-1">Inbox</span>
               </Link>
-              <Link href="/projects" className={cn(linkBase, pathname.startsWith("/projects") ? (D ? "bg-indigo-800 text-white font-medium" : "bg-indigo-100 text-indigo-800 font-medium") : linkHover)}>
-                <FolderGit2 className="h-4 w-4" /> Projects
-              </Link>
               <Link href="/activity" className={cn(linkBase, pathname.startsWith("/activity") ? linkActive : linkHover)}>
                 <Activity className="h-4 w-4" /> Live feed
               </Link>
-            </div>
-          </div>
-
-          {/* Strategy & QA */}
-          <div className="mt-8">
-            <p className={sectionLabelCls}>Strategy & QA</p>
-            <div className="mt-1 space-y-1">
-              <Link href="/goals" className={cn(linkBase, pathname.startsWith("/goals") ? linkActive : linkHover)}>
-                <Target className="h-4 w-4" /> Company OKRs
-              </Link>
-              <Link href="/qa-center" className={cn(linkBase, pathname.startsWith("/qa-center") ? linkActive : linkHover)}>
-                <ShieldCheck className="h-4 w-4" /> QA Center
-              </Link>
               <Link href="/economics" className={cn(linkBase, pathname.startsWith("/economics") ? linkActive : linkHover)}>
-                <Coins className="h-4 w-4" /> Token economics
-              </Link>
-              <Link href="/playbooks" className={cn(linkBase, pathname.startsWith("/playbooks") ? linkActive : linkHover)}>
-                <PlaySquare className="h-4 w-4" /> Sub-swarm playbooks
+                <Coins className="h-4 w-4" /> Economics
               </Link>
             </div>
           </div>
 
-          {/* Boards */}
-          <div>
-            <p className={sectionLabelCls}>Boards</p>
+          {/* Operations */}
+          <div className="mt-8">
+            <p className={sectionLabelCls}>Operations</p>
             <div className="mt-1 space-y-1">
-              <Link href="/sprint" className={cn(linkBase, pathname.startsWith("/sprint") ? linkActive : linkHover)}>
-                <Zap className="h-4 w-4" /> Sprint Board
-              </Link>
-              <Link href="/workboard" className={cn(linkBase, pathname.startsWith("/workboard") ? linkActive : linkHover)}>
-                <Layers className="h-4 w-4" /> Workboard
-              </Link>
-              <Link href="/board-groups" className={cn(linkBase, pathname.startsWith("/board-groups") ? linkActive : linkHover)}>
-                <Folder className="h-4 w-4" /> Board groups
+              <Link href="/projects" className={cn(linkBase, pathname.startsWith("/projects") ? (D ? "bg-indigo-800 text-white font-medium" : "bg-indigo-100 text-indigo-800 font-medium") : linkHover)}>
+                <FolderGit2 className="h-4 w-4" /> Projects
               </Link>
               <Link href="/boards" className={cn(linkBase, pathname.startsWith("/boards") ? linkActive : linkHover)}>
-                <LayoutGrid className="h-4 w-4" /> Boards
+                <LayoutGrid className="h-4 w-4" /> Command Board
               </Link>
-              <Link href="/approvals" className={cn(linkBase, pathname.startsWith("/approvals") ? linkActive : linkHover)}>
-                <CheckCircle2 className="h-4 w-4" /> Approvals
+              <Link href="/approvals" className={cn(linkBase, pathname.startsWith("/approvals") ? (D ? "bg-amber-900 text-amber-200 font-medium" : "bg-amber-100 text-amber-800 font-medium") : linkHover)}>
+                <ShieldCheck className="h-4 w-4" /> Approvals
+              </Link>
+              <Link href="/scheduled" className={cn(linkBase, pathname.startsWith("/scheduled") ? linkActive : linkHover)}>
+                <Timer className="h-4 w-4" /> Scheduled Tasks
               </Link>
             </div>
           </div>
 
-          {/* Administration */}
-          <div>
-            <p className={sectionLabelCls}>Administration</p>
+          {/* Swarm Intelligence */}
+          <div className="mt-8">
+            <p className={sectionLabelCls}>Swarm Intelligence</p>
             <div className="mt-1 space-y-1">
-              <Link href="/org-tree" className={cn(linkBase, pathname.startsWith("/org-tree") ? linkActive : linkHover)}>
-                <GitBranch className="h-4 w-4" /> Org Tree
-              </Link>
               <Link href="/virtual-office" className={cn(linkBase, pathname.startsWith("/virtual-office") ? (D ? "bg-violet-900 text-violet-200 font-medium" : "bg-violet-100 text-violet-800 font-medium") : linkHover)}>
                 <Building2 className="h-4 w-4" /> Virtual Office
               </Link>
-              <Link href="/scheduled" className={cn(linkBase, pathname.startsWith("/scheduled") ? linkActive : linkHover)}>
-                <Timer className="h-4 w-4" /> Scheduled
+              <Link href="/org-graph" className={cn(linkBase, pathname.startsWith("/org-graph") ? linkActive : linkHover)}>
+                <Network className="h-4 w-4" /> Swarm Graph
               </Link>
               {isAdmin ? (
                 <Link href="/agents" className={cn(linkBase, pathname === "/agents" ? linkActive : linkHover)}>
-                  <Bot className="h-4 w-4" /> Agent directory
+                  <Bot className="h-4 w-4" /> Agent Directory
                 </Link>
               ) : null}
-              <Link href="/replay" className={cn(linkBase, pathname.startsWith("/replay") ? linkActive : linkHover)}>
-                <History className="h-4 w-4" /> Session replay
-              </Link>
-              <Link href="/org-graph" className={cn(linkBase, pathname.startsWith("/org-graph") ? linkActive : linkHover)}>
-                <Network className="h-4 w-4" /> Swarm graph
-              </Link>
             </div>
           </div>
 

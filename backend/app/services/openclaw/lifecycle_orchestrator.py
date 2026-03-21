@@ -146,7 +146,7 @@ class AgentLifecycleOrchestrator(OpenClawDBService):
 
         mark_provision_complete(
             locked,
-            status="online",
+            status="provisioning",
             clear_confirm_token=clear_confirm_token,
         )
         locked.last_provision_error = None

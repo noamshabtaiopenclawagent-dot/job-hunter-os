@@ -203,7 +203,7 @@ export default function InboxPage() {
   });
 
   // ── Cron health ─────────────────────────────────────────────────────────
-  const [cronIssues, setCronIssues] = useState<{ name: string; lastRun?: string }[]>([]);
+  const [cronIssues, setCronIssues] = useState<{ name: string; lastRun?: string; health: string }[]>([]);
   useEffect(() => {
     if (!isSignedIn) return;
     fetch("/api/health/cron-jobs")
@@ -212,9 +212,10 @@ export default function InboxPage() {
         const issues = (data.jobs ?? []).filter(
           (j: { health: string }) => j.health === "stale" || j.health === "unknown"
         );
-        setCronIssues(issues.map((j: { name: string; last_run?: string }) => ({
+        setCronIssues(issues.map((j: { name: string; last_run?: string; health: string }) => ({
           name: j.name,
           lastRun: j.last_run,
+          health: j.health,
         })));
       })
       .catch(() => {});
@@ -368,7 +369,7 @@ export default function InboxPage() {
       {/* Cron Issues */}
       <InboxSection
         icon={<Timer size={15} />}
-        title="Cron Jobs — Stale or Unknown"
+        title="Native Cron — Attention Needed"
         count={cronIssues.length}
         tone={cronIssues.length > 0 ? "amber" : "slate"}
       >
@@ -376,10 +377,10 @@ export default function InboxPage() {
           <InboxRow
             key={c.name}
             label={c.name}
-            sub="Last run unknown or stale"
+            sub={`Health status: ${c.health}`}
             age={c.lastRun ? fmtAge(ageMin(c.lastRun)) : undefined}
             href="/scheduled"
-            badge="STALE"
+            badge={c.health.toUpperCase()}
           />
         ))}
       </InboxSection>

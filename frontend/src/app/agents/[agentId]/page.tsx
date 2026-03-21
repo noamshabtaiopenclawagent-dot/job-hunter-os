@@ -441,25 +441,7 @@ export default function AgentDetailPage() {
                               {agent.openclaw_session_id ?? "—"}
                             </p>
                           </div>
-                          <div>
-                            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-quiet">
-                              Board
-                            </p>
-                            {agent.is_gateway_main ? (
-                              <p className="mt-1 text-sm text-strong">
-                                Gateway main (no board)
-                              </p>
-                            ) : linkedBoard ? (
-                              <Link
-                                href={`/boards/${linkedBoard.id}`}
-                                className="mt-1 inline-flex text-sm font-medium text-[color:var(--accent)] transition hover:underline"
-                              >
-                                {linkedBoard.name}
-                              </Link>
-                            ) : (
-                              <p className="mt-1 text-sm text-strong">—</p>
-                            )}
-                          </div>
+
                           <div>
                             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-quiet">
                               Last seen
@@ -564,9 +546,8 @@ export default function AgentDetailPage() {
                   </div>
                 )}
 
-                {/* ── MEMORY TAB ── */}
-                {activeTab === "memory" && agentId && (
-                  <MemoryBrowser agentId={agentId} />
+                {activeTab === "memory" && agent && (
+                  <MemoryBrowser agentId={agent.name ?? agentId ?? ""} />
                 )}
 
                 {/* ── ACTIVITY TAB ── */}

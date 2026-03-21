@@ -20,17 +20,17 @@ class UserBase(SQLModel):
     email: str | None = Field(
         default=None,
         description="Primary email address for the user.",
-        examples=["alex@example.com"],
+        examples=["opi@example.com"],
     )
     name: str | None = Field(
         default=None,
         description="Full display name.",
-        examples=["Alex Chen"],
+        examples=["Opi Agent"],
     )
     preferred_name: str | None = Field(
         default=None,
         description="Preferred short name used in UI.",
-        examples=["Alex"],
+        examples=["Opi"],
     )
     pronouns: str | None = Field(
         default=None,
@@ -45,12 +45,12 @@ class UserBase(SQLModel):
     notes: str | None = Field(
         default=None,
         description="Internal notes for operators.",
-        examples=["Primary operator for board triage."],
+        examples=["Primary operator for Mission Control."],
     )
     context: str | None = Field(
         default=None,
         description="Additional context used by the system for personalization.",
-        examples=["Handles incident coordination and escalation."],
+        examples=["Coordinates planning, review, and escalations."],
     )
 
 

@@ -295,60 +295,7 @@ export default function EditAgentPage() {
               </div>
             </div>
             <div className="grid gap-6 md:grid-cols-2">
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <label className="text-sm font-medium text-slate-900">
-                    Board
-                    {resolvedIsGatewayMain ? (
-                      <span className="ml-2 text-xs font-normal text-slate-500">
-                        optional
-                      </span>
-                    ) : (
-                      <span className="text-red-500"> *</span>
-                    )}
-                  </label>
-                  {resolvedBoardId ? (
-                    <button
-                      type="button"
-                      className="text-xs font-medium text-slate-600 hover:text-slate-900"
-                      onClick={() => {
-                        setBoardId("");
-                      }}
-                      disabled={isLoading}
-                    >
-                      Clear board
-                    </button>
-                  ) : null}
-                </div>
-                <SearchableSelect
-                  ariaLabel="Select board"
-                  value={resolvedBoardId}
-                  onValueChange={(value) => setBoardId(value)}
-                  options={getBoardOptions(boards)}
-                  placeholder={
-                    resolvedIsGatewayMain
-                      ? "No board (main agent)"
-                      : "Select board"
-                  }
-                  searchPlaceholder="Search boards..."
-                  emptyMessage="No matching boards."
-                  triggerClassName="w-full h-11 rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-900 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-                  contentClassName="rounded-xl border border-slate-200 shadow-lg"
-                  itemClassName="px-4 py-3 text-sm text-slate-700 data-[selected=true]:bg-slate-50 data-[selected=true]:text-slate-900"
-                  disabled={boards.length === 0}
-                />
-                {resolvedIsGatewayMain ? (
-                  <p className="text-xs text-slate-500">
-                    Main agents are not attached to a board. If a board is
-                    selected, it is only used to resolve the gateway main
-                    session key and will be cleared on save.
-                  </p>
-                ) : boards.length === 0 ? (
-                  <p className="text-xs text-slate-500">
-                    Create a board before assigning agents.
-                  </p>
-                ) : null}
-              </div>
+
               <div className="space-y-2">
                 <label className="text-sm font-medium text-slate-900">
                   Emoji

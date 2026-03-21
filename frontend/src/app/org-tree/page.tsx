@@ -127,7 +127,7 @@ function AgentCard({
             <div className="flex items-center gap-1.5">
               <h4 className="font-bold text-slate-900 text-sm">{node.name}</h4>
               {hasSwarmLink && (
-                <span title="Swarm delegation active">
+                <span title="Execution link active">
                   <GitBranch className="h-3 w-3 text-violet-400" />
                 </span>
               )}
@@ -347,7 +347,7 @@ export default function OrgTreePage() {
                     Agent Organization
                   </h1>
                   <p className="mt-0.5 text-sm text-slate-500">
-                    Live hierarchy · active tasks · swarm delegation flow
+                    Live hierarchy · active tasks · execution flow
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
@@ -398,7 +398,7 @@ export default function OrgTreePage() {
               <div className="h-6 w-px bg-slate-300" />
             </div>
 
-            {/* Tier 1 — Sub agents (Bob, Alex) */}
+            {/* Tier 1 — Core agents (Bob only in the minimal runtime) */}
             {subNodes.length > 0 && (
               <div>
                 <div className="flex items-center gap-3 mb-4">

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { X } from "lucide-react";
 import { useAuth } from "@/auth/clerk";
+import { getApiBaseUrl } from "@/lib/api-base";
 
 // Only show toasts for these event types
 const TOAST_EVENTS = new Set(["task.status_changed", "agent.turn.end", "task.created"]);
@@ -27,7 +28,7 @@ const TOAST_LIFETIME_MS = 4500;
 const MAX_TOASTS = 4;
 
 export function ActivityToast() {
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, getToken } = useAuth();
   const [toasts, setToasts] = useState<Toast[]>([]);
   const seenIds = useRef(new Set<string>());
   const abortRef = useRef<AbortController | null>(null);
@@ -66,9 +67,15 @@ export function ActivityToast() {
         const poll = async () => {
           if (cancelled) return;
           try {
+            const token = await getToken();
+            if (!token) return;
             const res = await fetch(
-              "http://127.0.0.1:8000/api/v1/activity?limit=5",
-              { cache: "no-store" }
+              `${getApiBaseUrl()}/api/v1/activity?limit=5`,
+              {
+                cache: "no-store",
+                headers: { Authorization: `Bearer ${token}` },
+                signal: abortRef.current?.signal,
+              }
             );
             if (!res.ok) return;
             const data = await res.json();
@@ -103,7 +110,7 @@ export function ActivityToast() {
       cancelled = true;
       abortRef.current?.abort();
     };
-  }, [isSignedIn, addToast]);
+  }, [isSignedIn, getToken, addToast]);
 
   if (!isSignedIn || toasts.length === 0) return null;
 

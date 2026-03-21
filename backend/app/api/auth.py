@@ -28,13 +28,13 @@ AUTH_CONTEXT_DEP = Depends(get_auth_context)
                     "example": {
                         "id": "11111111-1111-1111-1111-111111111111",
                         "clerk_user_id": "user_2abcXYZ",
-                        "email": "alex@example.com",
-                        "name": "Alex Chen",
-                        "preferred_name": "Alex",
+                        "email": "opi@example.com",
+                        "name": "Opi Agent",
+                        "preferred_name": "Opi",
                         "pronouns": "they/them",
-                        "timezone": "America/Los_Angeles",
-                        "notes": "Primary operator for board triage.",
-                        "context": "Handles incident coordination and escalation.",
+                        "timezone": "Asia/Hebron",
+                        "notes": "Primary operator for Mission Control.",
+                        "context": "Coordinates planning, review, and escalations.",
                         "is_super_admin": False,
                     }
                 }

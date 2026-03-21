@@ -33,16 +33,16 @@ export default function SwarmGraphPage() {
   const agentsQ = useListAgentsApiV1AgentsGet({ limit: 50 }, { query: { enabled: Boolean(isSignedIn) }});
   const boardsQ = useListBoardsApiV1BoardsGet(undefined, { query: { enabled: Boolean(isSignedIn) }});
 
-  const agents = agentsQ.data?.data?.items || [];
-  const boards = boardsQ.data?.data?.items || [];
+  const agents = agentsQ.data?.status === 200 ? (agentsQ.data.data.items ?? []) : [];
+  const boards = boardsQ.data?.status === 200 ? (boardsQ.data.data.items ?? []) : [];
 
   // We simply load the first boards tasks to map real edges, or mock connection if too many
   // To avoid blasting the backend, we just map Boards <-> Agents
   // We'll create one Central Node, then circle of boards, then circle of agents
   
   const { initialNodes, initialEdges } = useMemo(() => {
-    const nodes = [];
-    const edges = [];
+    const nodes: any[] = [];
+    const edges: any[] = [];
     
     // Central Node
     nodes.push({
@@ -89,7 +89,7 @@ export default function SwarmGraphPage() {
       nodes.push({
         id: `agent-${agent.id}`,
         position: { x, y },
-        data: { label: <div className="font-bold text-slate-900 flex flex-col items-center gap-1"><Bot size={18} className="text-amber-500" />{agent.name}<span className="text-[10px] text-slate-500">{role}</span></div> },
+        data: { label: <div className="font-bold text-slate-900 flex flex-col items-center gap-1"><Bot size={18} className="text-amber-500" />{String(agent.name || "Unknown")}<span className="text-[10px] text-slate-500">{String(role)}</span></div> },
         style: { border: "2px solid #e2e8f0", borderRadius: "12px", background: "#ffffff", padding: "12px", boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)" }
       });
 
@@ -132,7 +132,7 @@ export default function SwarmGraphPage() {
       <DashboardShell>
         <DashboardSidebar />
         <main className="flex-1 flex items-center justify-center bg-slate-50">
-          <p className="text-slate-500">Sign in to view Swarm Graph.</p>
+          <p className="text-slate-500">Sign in to view the Org Graph.</p>
         </main>
       </DashboardShell>
     );
@@ -148,7 +148,7 @@ export default function SwarmGraphPage() {
               <Network size={20} />
             </div>
             <div>
-              <h1 className="text-lg font-bold text-slate-900 leading-tight">Swarm Graph</h1>
+              <h1 className="text-lg font-bold text-slate-900 leading-tight">Org Graph</h1>
               <p className="text-[11px] text-slate-500 font-medium">Real-time force layout of active org</p>
             </div>
           </div>

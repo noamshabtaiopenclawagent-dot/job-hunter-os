@@ -27,6 +27,7 @@ from app.models.gateways import Gateway
 from app.models.organization_members import OrganizationMember
 from app.models.organizations import Organization
 from app.models.skills import GatewayInstalledSkill, MarketplaceSkill, SkillPack
+from app.services.openclaw.internal.session_keys import gateway_main_session_key
 from app.services.organizations import OrganizationContext
 
 
@@ -152,7 +153,7 @@ async def test_install_skill_dispatches_instruction_and_persists_installation(
         assert len(sent_messages) == 1
         assert sent_messages[0]["agent_name"] == "Gateway Agent"
         assert sent_messages[0]["deliver"] is True
-        assert sent_messages[0]["session_key"] == f"agent:mc-gateway-{gateway.id}:main"
+        assert sent_messages[0]["session_key"] == gateway_main_session_key(gateway.id)
         message = str(sent_messages[0]["message"])
         assert "SKILL INSTALL REQUEST" in message
         assert str(skill.source_url) in message
